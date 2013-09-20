@@ -1,0 +1,7 @@
+script/vamp directory contains all the scripts and galaxy tool config files, place the folder under galaxy-dist/tools
+
+Change the GALAXY_DIR in script quick_assemble.py, circos.py, quast_main.py to the absolute path where your galaxy is, by default is '/mnt/galaxy/galaxy-dist'
+
+Place the tool_config.xml under 'galaxy-dist'
+
+Proftpd configuration as in 'config/proftpd.conf'
