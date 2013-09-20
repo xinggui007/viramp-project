@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<toolbox>
+  <section name="Get Data" id="getext">
+    <tool file="data_source/upload.xml"/>
+    <tool file="validation/fix_errors.xml" />
+  </section>
+
+ <section name="Entire Pipeline" id="runforall">
+   <tool file="vamp/quick_assemble.xml"/>
+   <tool file="vamp/quick_assemble_snpEff.xml" />
+ </section>
+
+ <section name="Vamp" id="vamp">
+
+   <label text="Quality Control" id="quality" />
+    <tool file="vamp/trim_quality.xml" />
+    <tool file="vamp/trim_base.xml" />
+ 
+   <label text="Diginorm" id="diginorm" />
+    <tool file="vamp/diginorm.xml" />
+
+   <label text="De novo contig assembling" id="velvet" />
+    <tool file="vamp/velvet.xml" />
+
+   <label text="Scaffolding" id="AMOScmp" />
+    <tool file="vamp/AMOScmp.xml" />
+
+   <label text="Assembly Assessment" id="quast" />
+    <tool file="vamp/quast_main.xml" />
+    <tool file="vamp/snp_detection.xml" />
+    <tool file="vamp/genomeCMP.xml" />
+    <tool file="vamp/circos.xml" />
+<!--
+   <label text="SnpEff tools" id="snpEff_tools" />
+    <tool file="snpEff/galaxy/snpEff.xml" />
+    <tool file="snpEff/galaxy/snpEff_download.xml" />
+    <tool file="snpEff/galaxy/snpSift_annotate.xml" />
+    <tool file="snpEff/galaxy/snpSift_caseControl.xml" />
+    <tool file="snpEff/galaxy/snpSift_int.xml" />
+-->
+
+ <label text="Utility" id="utility"/>
+   <tool file="utility/snp2vcf.xml" />
+   <tool file="utility/merge_pe.xml" />
+
+ </section>
+</toolbox>
