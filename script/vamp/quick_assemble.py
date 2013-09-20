@@ -4,7 +4,7 @@
 ## Description: Complete pipeline for virus assembling ##
 
 ## Demo ##
-# #
+# python quick_assemble.py -l read_1.fq -e read_2.fq -r refseq.fa -d output_dir#
 import os,re
 import argparse
 import shutil
