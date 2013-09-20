@@ -1,0 +1,12 @@
+<tool id='snp_det' name='Generating snps in vcf format by comparing the draft and reference genome'>
+	<command interpreter="python"> python snp_detection.py -r $rinput -t $tinput -o $output </command>
+
+	<inputs>
+		<param type="data" format="fasta" name="rinput" label='Reference genome' />
+		<param type="data" format="fasta" name="tinput" lable='Target genome' help='Newly assembled genome for comparison'/> 
+	</inputs>
+
+	<outputs>
+		<data name='output' format='vcf' label="snps on ${on_string}.vcf"/>
+	</outputs>
+</tool>

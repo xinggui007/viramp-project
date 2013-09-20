@@ -1,0 +1,14 @@
+<tool id="de_novo_asmbl" name="Velvet">
+ <command interpreter="python"> velvet.py -k $khmer -p $pinput -s $sinput -o $output -f fasta</command>
+ <inputs>
+ 	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end sequence to be assembled" optional="true"/>
+ 	<param type="data" format="fasta,fastq" name="sinput" label= "Single-end sequence to be assembled"  optional="true"/>
+	<param type="text" name="khmer" size="30" label="k-mer(s) used in velvet assembling" help="put one or more k-mer size, like: 21,25,29; k-mer needs to be odd and does not exceed 91" />
+ </inputs>
+
+ <outputs>
+ 	<data name="output" format="fasta" label="${tool.name} on ${on_string}.fa"/>
+ </outputs>
+</tool>
+
+

@@ -1,0 +1,106 @@
+<tool id="quick_assemble" name="Assembly">
+	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path 
+	#if $varfile
+		-v
+	#end if
+	</command>
+	
+	<inputs>
+		<param type="data" format="fasta,fastq" name="read1" label="File of Read 1" help="Read_1 in paired-end sequencing, for single-end sequence, only choose file from here" />
+		<param type="data" format="fasta,fastq" name="read2" label="File of Read 2" help="Read_2 in paired-end sequencing"/>
+		<param type="data" format="fasta" name="refseq" label="Reference genome" />
+		<param type="boolean" name="create_vcf" checked="true" truevalue="true" falsevalue="false" label="Whether to create variation file" />
+
+<!--
+		<conditional name="annoprocess">
+			<param type="select" name="snpeff" label="(Optional) Excute the snpEff to annotate the variation" help="when choosing 'yes', please specify the annotation file and format listed below">
+				<option value="annotate_snp" selected="true">yes</option>
+				<option value="do_not_annotate">no</option>
+			</param>
+
+		<when value="annotate_snp">
+			<param type="data" format="bed,gff,gtf,gb" name="annotation" label="Genome annotation" help="Supported format includes BED, GFF, GTF and Genbank(gb)"/>
+			<param type="select" name="antformat" label="Annotation file format">
+				<option value="gff">GFF</option>
+				<option value="gtf">GTF</option>
+				<option value="bed">BED</option>
+				<option value="gb">Genbank</option>
+			</param>
+		</when>
+
+		</conditional>
+
+		<param type="drill_down" name="customize" label="Customized parameter settings">
+			<option type="integer" name="coverage" size="30" value="15" label="Coverage cutoff in diginorm"/>
+		</param>
+-->
+
+	</inputs>
+
+	<outputs>
+		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="draft_genome.fasta" />
+		<data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>
+		<data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" >
+		<filter> create_vcf == True </filter>
+		</data>
+		<data name="comparison" format="txt" label="draft vs.reference comparison, result from ${on_string}.coords" from_work_dir="comparison.final.coords"/>
+		<data name="circos" format="pdf" label="circos graph draft vs. reference on ${on_string}" from_work_dir="comparison_circos.pdf" />
+	</outputs>
+
+ <help>
+
+**what it does**
+
+This runs the entire pipeline of the Virus Assembly Pipeline (VAMP) with default settings, for impatient users, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.
+
+
+Virus Assembly Pipeline contains a set of programs to assemble the the virus genome from shotgun sequence in a fast and accurate way with a related genome as guide.  In general, it contains the following steps:
+
+
+1. Quality Control
+
+This step trims out the low quality bases in reads from both end using seqtk toolkit
+
+2. Diginal Normalization
+
+Digital normalization (diginorm) uses a single-pass computational algorithm to reduce the high and redundant coverage in shotgun sequence dataset, thus significantly decreases time and memory requirements for the de novo assembly while remain the accuracy.
+
+3. De novo assembly (velvet)
+
+This step uses the velvet program to do a de novo assembly from the shotgun sequence. This step result in a set of contigs in various length.
+
+4. Scaffolding (AMOScmp)
+
+Contigs generated from velvet in step 3 are oriented and connected into scaffolds by the reference-guided assemling tool AMOScmp
+
+5. Assembly assessment
+
+QUAST (Quality Assessment Tool for Genome Assemblies) program is used for the statistical assessment of the assemblies resulting from step 4
+
+6. SNP generation
+
+MUMmer is used for aligning assembling result to the reference genome and generating snps.
+
+7. Draft and reference genome comparison
+
+MUMmer is used to compare the assembling result (draft genome) with the reference genome.  
+
+The assembly pipeline **completed** here, with a set of scaffolds, for further snp annotation and assessment (step 7), please go to next tool "SNP Effect Assessment" 
+
+--------
+
+8. (Optional) SNP Effect Analysis 
+
+snpEff is used for further analysis of how the snps would effect the genome function.  This step is optional and need to be indicated explicitely by choosing "Yes" in "Excute the snpEff to annootate the variation" section.  An annotation file needs to be uploaded and format of this file should be indicated.
+
+-------
+
+**Citation**
+
+For more details and citation about each tool, please go to "VAMP" section and go through each step separately.
+
+ </help>
+
+
+</tool>
+

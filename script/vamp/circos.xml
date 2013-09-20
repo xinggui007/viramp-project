@@ -1,0 +1,12 @@
+<tool id='circos' name='Create Circos Graph for Draft Genome Assemblies visualization'>
+	<command interpreter="python"> circos.py -i $cinput -l $linput </command>
+
+	<inputs>
+		<param type="data" format="tabular" name="cinput" label='Genome data file' help='Standard circos data file input, describing the length of each chromosome/contig etc'/>
+		<param type="data" format="tabular" name="linput" lable='Link file' help='Standard circos link file input, see circos tutorials for more information '/> 
+	</inputs>
+
+	<outputs>
+		<data name='output' format='pdf' label="circos graph on ${on_string}" from_work_dir='output_circos.pdf'/>
+	</outputs>
+</tool>

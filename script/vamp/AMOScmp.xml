@@ -1,0 +1,12 @@
+<tool id="amoscmp" name="Scaffolding-pipeline">
+	<command interpreter="bash"> AMOScmp.sh -r -c $tinput -f $rinput -p $pinput</command>
+	<inputs>
+		<param type="data" format="fasta" name="tinput" label="contig file" help="Assembly result from velvet"/>
+		<param type="data" format="fasta" name="rinput" label="Reference genome" />
+		<param type="data" format="fasta,fastq" name="pinput" label="paired-end reads" optional="true" help="Help to orient and bridge the contigs" />
+	</inputs>
+
+	<outputs>
+		<data name="output" format="fasta" from_work_dir="amosresult.fasta"/>
+	</outputs>
+</tool>

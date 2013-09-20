@@ -1,0 +1,16 @@
+<tool id='MUMmerCMP' name='Draft vs. Reference genome comparison'>
+	<command interpreter="python"> genomeCMP.py -r $refseq -d $target -s $outformat -c </command>
+
+	<inputs>
+		<param type="data" format="fasta" name="refseq" label="Reference genome"/>
+		<param type="data" format="fasta" name="target" label="Target genome"/>
+		<param type="select" name="outformat" label="output order" help="Choose the result either sorted by reference genome coordinates(reference coordinates) or grouped by the assembled contigs name(contigs)" >
+			<option value='refseq'>Reference Coordinates </option>
+			<option value='target'>Contigs</option>
+		</param>
+	</inputs>
+
+	<outputs>
+		<data name="output" format="tabular" label="Genome comparison on ${on_string}" from_work_dir='comparison.final.coords'/>
+	</outputs>
+</tool>
