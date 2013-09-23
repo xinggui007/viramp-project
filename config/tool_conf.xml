@@ -27,9 +27,11 @@
 
    <label text="Assembly Assessment" id="quast" />
     <tool file="vamp/quast_main.xml" />
-    <tool file="vamp/snp_detection.xml" />
     <tool file="vamp/genomeCMP.xml" />
     <tool file="vamp/circos.xml" />
+    <tool file="vamp/snp_detection.xml" />
+    <tool file="vamp/inexact_repeats.xml" />
+    <tool file="vamp/tandem_repeats.xml"/>
 <!--
    <label text="SnpEff tools" id="snpEff_tools" />
     <tool file="snpEff/galaxy/snpEff.xml" />

@@ -1,0 +1,11 @@
+<tool id='MUMmerREP' name='Inexact Repeat Identification' >
+ <command interpreter="python"> inexact_repeats.py -g $input -o $output </command>
+
+ <inputs>
+	<param type="data" format="fasta" name="input" label="Genome" />
+ </inputs>
+
+ <outputs>
+	<data name="output" format="tabular" label="repeats on ${on_string}" />
+ </outputs>
+</tool>

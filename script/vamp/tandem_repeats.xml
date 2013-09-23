@@ -1,0 +1,13 @@
+<tool id='tandem_rep' name='Tandem Repeats Discovery' >
+ <command interpreter="python">tandem_repeats.py -s $input -o $output -l $replen </command>
+
+  <inputs>
+	<param type="data" format="fasta" name="input" label="Genome sequence"/>
+	<param type="integer" name="replen" size="15" value="50" label="Minimum repeat length"/>
+  </inputs>
+
+  <outputs>
+	<data name="output" format="tabular" label="Tandem repeats on ${on_string}"/>
+  </outputs>
+
+</tool>

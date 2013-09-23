@@ -21,9 +21,19 @@ def wrap():
 	parser = argparse.ArgumentParser(description='This script create circos')
 	parser.add_argument('-i', metavar='circos_input.txt', help='circos data file')
 	parser.add_argument('-l', metavar='circos_links.txt', help='circos link file')
+	parser.add_argument('-r', metavar='(disable -i/l)refseq.fa', help='Reference Genome;if this option, target genome(-t) is required, and circos data/link file is not needed')
+	parser.add_argument('-t', metavar='(disable -i/l)draft_genome.fa', help='Target Genome; if this option, reference genome(-r) is required, and circos data/link file is not needed')
 	parser.add_argument('-o', metavar='output_circos.png',default='output', help='output prefix')
 
-	def draw_circos():
+	def input_files(): 
+		cmp_dir = os.path.join(VAMP_DIR, 'genomeCMP.py')
+		commands = ['python', cmp_dir, '-r', args.r, '-d', args.t, '-o', 'cmp', '-c']
+		run_cmd(commands)	
+		fdata = '_'.join(['cmp','input.txt'])
+		flink = '_'.join(['cmp', 'links.txt'])
+		return fdata, flink
+
+	def draw_circos(fdata, flink):
 
 		CONFILE = '_'.join([args.o,'circos.conf'])
 	        graphName = '_'.join([args.o, 'circos.svg'])
@@ -39,7 +49,7 @@ def wrap():
 		
 		### writing circos configuration file ##					
 
-		input_line = ' '.join(['karyotype','=',args.i])
+		input_line = ' '.join(['karyotype','=',fdata])
 		f.write(input_line+'\n')
 		write_include(CIRCOS_VAMP_DIR,'general.conf')
 	
@@ -51,7 +61,7 @@ def wrap():
 
 		f.write('<links>\n')
 		f.write('<link>\n')
-		link_line = ' '.join(['file','=',args.l])
+		link_line = ' '.join(['file','=',flink])
 		f.write(link_line+'\n')
 		write_include(CIRCOS_VAMP_DIR, 'link.generic.conf')
 		f.write('</link>'+'\n')
@@ -73,7 +83,14 @@ def wrap():
 		commands = ['rsvg-convert', '-d', '300', '-p', '300', '-f', 'pdf','-a', graphName, '-o', graphPDF]		
 		run_command(commands)
 
-	parser.set_defaults(func=draw_circos)
+	def pipeline():
+		if args.r and args.t:
+			fdata, flink = input_files()
+		else:
+			fdata, flink = args.i, args.l
+		draw_circos(fdata, flink)
+				
+	parser.set_defaults(func=pipeline)
 	args = parser.parse_args()
 	args.func()
 

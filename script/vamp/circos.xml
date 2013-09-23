@@ -1,9 +1,9 @@
 <tool id='circos' name='Create Circos Graph for Draft Genome Assemblies visualization'>
-	<command interpreter="python"> circos.py -i $cinput -l $linput </command>
+	<command interpreter="python"> circos.py -r $rinput -t $tinput </command>
 
 	<inputs>
-		<param type="data" format="tabular" name="cinput" label='Genome data file' help='Standard circos data file input, describing the length of each chromosome/contig etc'/>
-		<param type="data" format="tabular" name="linput" lable='Link file' help='Standard circos link file input, see circos tutorials for more information '/> 
+		<param type="data" format="fasta" name="rinput" label='Reference Genome' />
+		<param type="data" format="fasta" name="tinput" lable='Target Genome'/> 
 	</inputs>
 
 	<outputs>
