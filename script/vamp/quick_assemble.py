@@ -13,9 +13,10 @@ def run_cmd(cmds):
 	command = ' '.join(cmds)
 	os.system(command)
 
-TOOL_DIR='/mnt/galaxy/galaxy-dist/tools/'
-VAMP_DIR=os.path.join(TOOL_DIR, 'vamp')
+VAMP_DIR=os.path.split(os.path.abspath(__file__))[0]
+TOOL_DIR=os.path.split(VAMP_DIR)[0]
 UTIL_DIR=os.path.join(TOOL_DIR, 'utility')
+
 READ_1 = 'left.fastq'
 READ_2 = 'right.fastq'
 MERGE_FILE = 'after_merge.fq'

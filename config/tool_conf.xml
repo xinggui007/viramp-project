@@ -32,6 +32,7 @@
     <tool file="vamp/snp_detection.xml" />
     <tool file="vamp/inexact_repeats.xml" />
     <tool file="vamp/tandem_repeats.xml"/>
+    <tool file="vamp/snpEff_annotation.xml" />
 <!--
    <label text="SnpEff tools" id="snpEff_tools" />
     <tool file="snpEff/galaxy/snpEff.xml" />

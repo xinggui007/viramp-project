@@ -8,9 +8,7 @@
 import os, re
 import argparse
 
-GALAXY_DIR = '/mnt/galaxy/galaxy-dist'
-TOOL_DIR= os.path.join(GALAXY_DIR, 'tools')
-VAMP_DIR=os.path.join(TOOL_DIR,'vamp')
+VAMP_DIR=os.path.split(os.path.abspath(__file__))[0]
 QUAST_DIR='/mnt/src/quast-2.2'
 
 def run_cmd(cmds):

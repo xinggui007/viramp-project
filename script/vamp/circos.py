@@ -8,7 +8,8 @@ import re,os
 import argparse
 
 CIRCOS_DIR = '/mnt/src/circos-0.64'
-VAMP_DIR = '/mnt/galaxy/galaxy-dist/tools/vamp/'
+VAMP_DIR = os.path.split(os.path.abspath(__file__))[0] 
+
 CIRCOS_CMD_DIR = os.path.join(CIRCOS_DIR,'bin')
 CIRCOS_ETC_DIR = os.path.join(CIRCOS_DIR, 'etc')
 CIRCOS_VAMP_DIR = os.path.join(VAMP_DIR, 'circos_conf')

@@ -3,13 +3,21 @@
 
 ## AUTHOR: Yinan Wan ##
 ## DATE: 2013/08/28 ##
-## DESCRIPTION: ##
+## DESCRIPTION: This script build up snpEff database and annotating vcf file ##
+## NOTE: Currently only snpEff_main is applied in the galaxy, with database prebuild ##
 
 import argparse
 import re,sys,os,shutil
+import subprocess
 
+SNPEFF_DIR = '/mnt/src/snpEff'
 
-SNPEFF_DIR = '/home/yinan/local/galaxy/galaxy-dist/tools/snpEff'
+def run_cmd(cmds, getval=True):
+	DEVNULL = open(os.devnull, 'wb')
+	p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=DEVNULL)
+	out, err = p.communicate()
+	if getval:
+		return out
 
 def buildDB(ref,ant,fmt,gversion):
 	ref = os.path.abspath(ref)
@@ -86,16 +94,25 @@ def buildDB(ref,ant,fmt,gversion):
 	command = ' '.join(command_para)
 	os.system(command)
 
-def run_snpEff(gversion, varfile, outputvcf):
+def run_snpEff(gversion, varfile, outputvcf, outdir=None):
 	varfile = os.path.abspath(varfile)
 
 	jardir = os.path.join(SNPEFF_DIR, 'snpEff.jar')
 	configf = 'snpEff_' + gversion + '.config' 
 	configdir = os.path.join(SNPEFF_DIR, 'data', configf)
-	commands = ['java', '-Xmx4g', '-jar', jardir, '-c' + configdir, gversion, '-v','>',outputvcf]
+	commands = ['java', '-Xmx2g', '-jar', jardir, '-c', configdir, gversion, '-v', varfile]
 	
-	command = ' '.join(commands)
-	os.system(command)
+	outvcf = run_cmd(commands)
+	f = open(outputvcf, 'wb')
+	f.write(outvcf)
+	f.close()
+
+	if outdir:
+		noutdir = os.path.abspath(os.path.join('.', outdir))
+                if not os.path.exists(noutdir):
+                        os.makedirs(noutdir)
+                	shutil.move(outputvcf, os.path.join(noutdir,'snpEff.vcf'))
+			shutil.move('snpEff_genes.txt', noutdir)
 
 def wrap():
 	parser = argparse.ArgumentParser(description='Annotating the variation about its effect in genome')
@@ -118,10 +135,11 @@ def wrap():
 	parser_main.add_argument('-v', metavar='variation.vcf', help='variation file to be annotated')
         parser_main.add_argument('-o', metavar='output.vcf', help='output vcf file')
 	parser_main.add_argument('-g', metavar='customized-genome', help='Customized genome name')
+	parser_main.add_argument('-d', metavar='output directory', help='Optional, used for galaxy integration, keeping vcf/txt output files')
 
 	def snpEff_main():
-		run_snpEff(args.g, args.v, args.o)
 		print 'Annotating', args.v, '...'
+		run_snpEff(args.g, args.v, args.o, args.d)
 
 	## set main_function mode
 	parser_main.set_defaults(func=snpEff_main)
