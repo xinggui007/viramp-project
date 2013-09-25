@@ -44,13 +44,13 @@ def wrap():
 	def filter_abund():
 		filter_dir = os.path.join(DIGI_SCRIPT_DIR, 'filter-abund.py')
 		hashfile = '.'.join([args.o, 'kh'])
-		filter_file = '.'.join([args.i, 'keep'])
+		filter_file = '.'.join([prefn, 'keep'])
 		commands = [filter_dir, hashfile, filter_file, '2>&1']
 		run_cmd(commands)
 
 	def split_pe():
 		split_dir = os.path.join(DIGI_SANDBOX_DIR, 'strip-and-split-for-assembly.py')
-		infile = '.'.join([args.i, 'keep', 'abundfilt'])
+		infile = '.'.join([prefn, 'keep', 'abundfilt'])
 		commands = ['python', split_dir, infile, '2>&1']
 		run_cmd(commands)
 
@@ -65,7 +65,7 @@ def wrap():
 		}
 
 		for endlb in ['pe', 'se']:
-			normfile = '.'.join([args.i,'keep','abundfilt',endlb])
+			normfile = '.'.join([prefn,'keep','abundfilt',endlb])
 			normalize(int(args.C), normfile, paired=psuffix[endlb])
 
 			newout = '.'.join([args.o,endlb,'fasta'])
@@ -78,6 +78,7 @@ def wrap():
 
 	parser.set_defaults(func=diginorm_all)
 	args = parser.parse_args()
+	prefn = os.path.split(args.i)[1]
 	args.func()
 
 if __name__ == '__main__':

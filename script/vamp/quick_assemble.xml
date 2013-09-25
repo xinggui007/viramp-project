@@ -1,15 +1,11 @@
 <tool id="quick_assemble" name="Assembly">
 	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path 
-	#if $varfile
-		-v
-	#end if
 	</command>
 	
 	<inputs>
 		<param type="data" format="fasta,fastq" name="read1" label="File of Read 1" help="Read_1 in paired-end sequencing, for single-end sequence, only choose file from here" />
 		<param type="data" format="fasta,fastq" name="read2" label="File of Read 2" help="Read_2 in paired-end sequencing"/>
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
-		<param type="boolean" name="create_vcf" checked="true" truevalue="true" falsevalue="false" label="Whether to create variation file" />
 
 <!--
 		<conditional name="annoprocess">
@@ -40,9 +36,7 @@
 	<outputs>
 		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="draft_genome.fasta" />
 		<data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>
-		<data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" >
-		<filter> create_vcf == True </filter>
-		</data>
+		<data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" />
 		<data name="comparison" format="txt" label="draft vs.reference comparison, result from ${on_string}.coords" from_work_dir="comparison.final.coords"/>
 		<data name="circos" format="pdf" label="circos graph draft vs. reference on ${on_string}" from_work_dir="comparison_circos.pdf" />
 	</outputs>

@@ -10,7 +10,6 @@ print_help()
 {
  echo "-h help"
  echo "-r Randomly place repetitive reads into one of their copy locations if they cannot be placed via mate-pair info"
- echo "-t Target file, AMOS message file format(*.afg); if assigned, do not further assign contig files (-c) & paired-end reads files (-p)"
  echo "-c Contig file, fasta format"
  echo "-p Paired-end reads file, fasta format"
  echo "-f Reference file, fasta format"
@@ -60,12 +59,10 @@ FASTA=${PREFIX}.fasta
 
 if [ $perds ];then
  cat $perds > combined_seq.fa
- cat $ctg >> combined_seq.fa
- toAmos -s combined_seq.fa -o ${PREFIX}.afg 2>&1
-## rm combined_seq.fa
-else
- mv $tgt ${PREFIX}.afg
 fi
+
+cat $ctg >> combined_seq.fa
+toAmos -s combined_seq.fa -o ${PREFIX}.afg 2>&1
 
 ## building AMOS bank
 bank-transact -c -z -b $BANK -m ${PREFIX}.afg 2>&1
@@ -89,6 +86,6 @@ bank2contig $BANK > $CONTIG 2>&1
 bank2fasta -b $BANK > $FASTA 2>&1
 
 ## remove unrelated stuff
-mv ${FASTA} ${outpref}.fasta 2>&1
- rm -r -f ${PREFIX}.*
- rm combined_seq.fa
+mv ${FASTA} ${outpref}.fasta 
+rm -r -f ${PREFIX}.*
+rm combined_seq.fa
