@@ -3,7 +3,7 @@
 
 	<inputs>
 		<param type="data" format="fasta" name="rinput" label='Reference Genome' />
-		<param type="data" format="fasta" name="tinput" lable='Target Genome'/> 
+		<param type="data" format="fasta" name="tinput" label='Target Genome'/> 
 	</inputs>
 
 	<outputs>

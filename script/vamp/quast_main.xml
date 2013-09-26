@@ -8,7 +8,6 @@
 		<param type="data" format="fasta" name="rinput" label="Reference genome" />
 		<param name="targetseq" type="data" format="fasta" label="Target Sequence" />
 		<param name="min_contig" type="integer" size="15" value="500" label="Lower threshold for contig length" />
-		<param name="create_vcf" type="boolean" checked="true" truevalue="true" falsevalue="false" label="Whether to create variation file" />
 	</inputs>
 
 	<outputs>

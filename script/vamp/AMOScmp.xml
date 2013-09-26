@@ -1,8 +1,8 @@
 <tool id='amoscmp' name='Scaffolding pipeline'>
 <command interpreter="bash"> AMOScmp.sh -r -c $cinput -f $finput -o draft_genome
-				# if $pinput
+				#if $pinput
 					-p $pinput
-				# end if
+				#end if
 				</command>
 
  <inputs>

@@ -1,12 +1,12 @@
 <tool id="de_novo_asmbl" name="Velvet">
- <command interpreter="python"> velvet.py -k $khmer 
-				# if $pinput
-				-p $pinput 
-				# end if
-				# if $sinput
-				-s $sinput 
-				# end if
-				-o $output -f fasta</command>
+ <command interpreter="python"> velvet.py -k $khmer -o $output 
+				#if $pinput
+				  -p $pinput
+				#end if 
+				#if $sinput
+				  -s $sinput 
+				#end if
+				</command>
  <inputs>
  	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end sequence to be assembled" optional="true"/>
  	<param type="data" format="fasta,fastq" name="sinput" label= "Single-end sequence to be assembled"  optional="true"/>
