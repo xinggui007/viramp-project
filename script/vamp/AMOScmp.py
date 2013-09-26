@@ -73,8 +73,11 @@ def wrap():
 			run_cmds(commands, getval=False)
 
 		def consensus():
-			commands = ['make-consensus', '-B', '-b', BANK]
-			run_cmds(commands,getval=False)
+			commands = ['make-consensus', '-f', '-b', BANK]
+			fasta = run_cmds(commands)
+			f = open(FASTA, 'wb')
+                        f.write(fasta)
+                        f.close()
 
 		def mcontigs():
 			commands = ['bank2contig', BANK]
@@ -94,8 +97,6 @@ def wrap():
 			rnucmer()
 			layout()
 			consensus()
-			mcontigs()
-			tfasta()
 			
 			os.rename(FASTA, FOUTPUT)
 			os.remove(INPUT)

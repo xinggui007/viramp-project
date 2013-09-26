@@ -5,7 +5,7 @@
 		<param type="data" format="fasta" name="refseq" label="Reference genome"/>
 		<param type="data" format="fasta" name="target" label="Target genome"/>
 		<param type="select" name="outformat" label="output order" help="Choose the result either sorted by reference genome coordinates(reference coordinates) or grouped by the assembled contigs name(contigs)" >
-			<option value='refseq'>Reference Coordinates </option>
+			<option value='ref'>Reference Coordinates </option>
 			<option value='target'>Contigs</option>
 		</param>
 	</inputs>
