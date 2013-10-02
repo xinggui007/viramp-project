@@ -1,0 +1,20 @@
+<tool id='spades' name="SPAdes" >
+<command interpreter="python"> SPAdes.py -k $khmer -o $output 
+				#if $pinput
+				-p $pinput
+				#end if
+				#if $sinput
+				-s $sinput
+				#end if
+				</command>
+
+ <inputs>
+	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end reads"/>
+	<param type="data" format="fasta,fastq" name="sinput" label="Single-end reads"/>
+	<param type="text" name="khmer" size="30" label="k-mer(s)" help="k-mers used in de novo assembling, multiple kmers allowed" />
+ </inputs>
+
+ <outputs>
+	<data name="output" format="fasta" label="contig file from SPAdes on ${on_string}.fa" work_from_dir="spades_sc.fa" />
+ </outputs>
+</tool>

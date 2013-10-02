@@ -24,10 +24,19 @@ def wrap():
 		allfasta = open('all_contigs.fa','a')
 		khmer_ary = args.k.split(',')
 		khmer = ' '.join(khmer_ary)
+		
+		sd = str()
+		pd = str()
+
+		if len(args.p) > 0:
+			pd = ' '.join(['-shortPaired', args.p])
+		if len(args.s) > 0:
+			sd = ' '.join(['-short', args.s])
 
 		for i in khmer_ary:
+
 			dirname = '.'.join(['hsv','beforedigipe',i])
-			commands_1 = ['velveth', dirname, i, '-'+args.f, args.p, args.s ]
+			commands_1 = ['velveth', dirname, i, '-'+args.f, pd, sd ]
 			run_cmd(commands_1)
 
 			commands_2 = ['velvetg', dirname, '-exp_cov', 'auto', '-cov_cutoff', 'auto', '-scaffolding', 'yes' ]

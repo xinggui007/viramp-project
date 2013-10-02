@@ -73,7 +73,7 @@ def wrap():
 			run_cmds(commands, getval=False)
 
 		def consensus():
-			commands = ['make-consensus', '-f', '-b', BANK]
+			commands = ['make-consensus', '-f', '-o', '10', '-b', BANK]
 			fasta = run_cmds(commands)
 			f = open(FASTA, 'wb')
                         f.write(fasta)

@@ -33,6 +33,7 @@ def wrap():
 	parser.add_argument('-e', metavar='read_2.fq', help='read-2 from paired-end sequencing, fastq format')
 	parser.add_argument('-r', metavar='refseq.fa', help='reference genome, fasta format')
 	parser.add_argument('-d', metavar='quast_out', default='quast_out', help='(optional), output directory for quast report, only necessary for Galaxy integration')
+	parser.add_argument('-a', choices=['velvet', 'vicuna', 'spades'], default='velvet', help='choose the de novo assembler, by default velvet')	
 
 	def quality_trim(infile, outfile, ort_label):
 		qual_dir = os.path.join(VAMP_DIR, 'trim_quality.py')
@@ -58,6 +59,23 @@ def wrap():
 		single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])
 		commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', VELVET_FILE, '-f', 'fasta']
 		run_cmd(commands)
+
+	def vicuna():
+		vicuna_dir = os.path.join(VAMP_DIR, 'vicuna.py')
+		paired_rd = '.'.join([DIGINORM_PREFIX,'pe','fasta'])
+                single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])
+
+		commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-f', 'fasta', '-o', VELVET_FILE]
+		run_cmd(commands)
+
+	def spades():
+		spades_dir = os.path.join(VAMP_DIR, 'spades.py')
+		khmers = ','.join(str(x) for x in range(31,72,5))
+		paired_rd = '.'.join([DIGINORM_PREFIX,'pe','fasta'])
+                single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])
+	
+		commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', VELVET_FILE]
+		run_cmd(commands)	
 
 	def AMOScmp():
 		AMOScmp_dir = os.path.join(VAMP_DIR, 'AMOScmp.sh')
@@ -95,7 +113,14 @@ def wrap():
 		quality_trim(args.e, READ_2, 'R')
 		merge_pair()
 		diginorm()
-		velvet()
+
+		if args.a == 'velvet':
+			velvet()
+		elif args.a == 'vicuna':
+			vicuna()
+		elif args.a == 'spades':
+			spades()
+
 		AMOScmp()
 		Quast()
 		SNP_det()

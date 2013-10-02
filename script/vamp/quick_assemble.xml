@@ -1,35 +1,16 @@
 <tool id="quick_assemble" name="Assembly">
-	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path 
+	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path -a $asbtype 
 	</command>
 	
 	<inputs>
 		<param type="data" format="fasta,fastq" name="read1" label="File of Read 1" help="Read_1 in paired-end sequencing, for single-end sequence, only choose file from here" />
 		<param type="data" format="fasta,fastq" name="read2" label="File of Read 2" help="Read_2 in paired-end sequencing"/>
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
-
-<!--
-		<conditional name="annoprocess">
-			<param type="select" name="snpeff" label="(Optional) Excute the snpEff to annotate the variation" help="when choosing 'yes', please specify the annotation file and format listed below">
-				<option value="annotate_snp" selected="true">yes</option>
-				<option value="do_not_annotate">no</option>
-			</param>
-
-		<when value="annotate_snp">
-			<param type="data" format="bed,gff,gtf,gb" name="annotation" label="Genome annotation" help="Supported format includes BED, GFF, GTF and Genbank(gb)"/>
-			<param type="select" name="antformat" label="Annotation file format">
-				<option value="gff">GFF</option>
-				<option value="gtf">GTF</option>
-				<option value="bed">BED</option>
-				<option value="gb">Genbank</option>
-			</param>
-		</when>
-
-		</conditional>
-
-		<param type="drill_down" name="customize" label="Customized parameter settings">
-			<option type="integer" name="coverage" size="30" value="15" label="Coverage cutoff in diginorm"/>
+		<param type="select" name="asbtype" label="Assembler" >
+			<option value="velvet">Velvet</option>
+			<option value="vicuna">VICUNA</option>
+			<option value="spades">SPAdes</option>
 		</param>
--->
 
 	</inputs>
 

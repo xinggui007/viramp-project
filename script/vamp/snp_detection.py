@@ -11,8 +11,8 @@ import subprocess
 import argparse
 
 def run_cmd(cmds, getval=True):
-	DEVNULL = open(os.devnull, 'wb')
-	p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=DEVNULL)
+	# DEVNULL = open(os.devnull, 'wb')
+	p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out, err = p.communicate()
 	if getval:
 		return out
