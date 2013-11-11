@@ -1,0 +1,12 @@
+<tool id='circos_ct' name='Create Circos Graph for comparison between two sets of contigs'>
+	<command interpreter="python"> circos.py -r $rinput -t $tinput -c</command>
+
+	<inputs>
+		<param type="data" format="fasta" name="rinput" label='Reference contigs' />
+		<param type="data" format="fasta" name="tinput" label='Target contigs'/> 
+	</inputs>
+
+	<outputs>
+		<data name='output' format='pdf' label="circos graph on ${on_string}" from_work_dir='output_circos.pdf'/>
+	</outputs>
+</tool>

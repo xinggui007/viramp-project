@@ -97,6 +97,7 @@ def wrap():
 			rnucmer()
 			layout()
 			consensus()
+			mcontigs()
 			
 			os.rename(FASTA, FOUTPUT)
 			os.remove(INPUT)

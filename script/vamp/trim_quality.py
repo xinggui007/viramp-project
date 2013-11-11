@@ -15,8 +15,8 @@ def wrap():
 	parser.add_argument('-l', metavar='30', help='Maximumly trim down to INT bp')
 
 	SUFFIX = {
-		'L':'#0/1',
-		'R':'#0/2',
+		'L':'/1',
+		'R':'/2',
 		'S':'',
 	}
 

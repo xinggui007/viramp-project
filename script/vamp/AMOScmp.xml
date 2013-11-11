@@ -7,8 +7,8 @@
 
  <inputs>
 	<param type="data" format="fasta" name="cinput" label="Contig file" />
-	<param type="data" format="fasta" name="finput" label="Reference sequence"/>
 	<param type="data" format="fasta,fastq" name="pinput" optional="true" label="Paired-end sequence" />
+	<param type="data" format="fasta" name="finput" label="Reference sequence"/>
  </inputs>
 
  <outputs>

@@ -22,8 +22,9 @@ def wrap():
 	parser = argparse.ArgumentParser(description='This script create circos')
 	parser.add_argument('-i', metavar='circos_input.txt', help='circos data file')
 	parser.add_argument('-l', metavar='circos_links.txt', help='circos link file')
-	parser.add_argument('-r', metavar='(disable -i/l)refseq.fa', help='Reference Genome;if this option, target genome(-t) is required, and circos data/link file is not needed')
+	parser.add_argument('-r', metavar='(disable -i/l)refseq.fa', help='Input is fasta format reference sequence;if this option, target genome(-t) is required, and circos data/link file is not needed')
 	parser.add_argument('-t', metavar='(disable -i/l)draft_genome.fa', help='Target Genome; if this option, reference genome(-r) is required, and circos data/link file is not needed')
+	parser.add_argument('-c', action='store_true', help='Input reference sequence is multi-fasta')
 	parser.add_argument('-o', metavar='output_circos.png',default='output', help='output prefix')
 
 	def input_files(): 
@@ -53,6 +54,8 @@ def wrap():
 		input_line = ' '.join(['karyotype','=',fdata])
 		f.write(input_line+'\n')
 		write_include(CIRCOS_VAMP_DIR,'general.conf')
+		if not args.c:
+			f.write('chromosome_scale = /refseq/=0.5rn\n')
 	
 		f.write('<image>\n')
 		image_line = ' '.join(['file','=',graphName])

@@ -37,19 +37,20 @@ def wrap():
 	def reformat(target=True):
 
 		f=open('.'.join([args.o,'final','coords']),'w')
-		beginline = '\t'.join(['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[CGT_ID]'])
+		beginline = '\t'.join(['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]'])
+
 		f.write(beginline+'\n')
 		if target:
 			commands_group = ['cut','-f13', '.'.join([args.o, 'coords'])]
 			out = run_cmd(commands_group)
 			cgroup = set(out.split())
 			for i in sorted(cgroup, key=int):
-				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$13}', '.'.join([args.o,'coords'])]
+				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([args.o,'coords'])]
 				newline = run_cmd(command_grep)
 				f.write(newline)
 				f.write(''.join(['='*len(beginline),'\n']))
 		else:
-			command_grep = ['cut','-f1-4,7-11,13','.'.join([args.o,'coords'])]
+			command_grep = ['cut','-f1-4,7-13','.'.join([args.o,'coords'])]
 			newline = run_cmd(command_grep)
 			f.write(newline)
 		f.close()
@@ -72,7 +73,8 @@ def wrap():
 
 		cdfile = '.'.join([args.o, 'coords'])
 		contigs = dict()
-		refseq = ''
+		refseq = dict() 
+		refNum = dict()
 		segdup = 0 ## linkid
 		links = dict()
 
@@ -83,19 +85,26 @@ def wrap():
 			segdup = segdup + 1
 			linkid = ''.join(['segdup',str(segdup)])
 	
-			links.update({linkid:[elem[12], elem[2], elem[3], elem[0], elem[1]]}) ## linkid:[contig_num, contig_start, contig_end, refseq_start, refseq_end]	
+			links.update({linkid:[elem[12], elem[2], elem[3], elem[11], elem[0], elem[1]]}) ## linkid:[contig_num, contig_start, contig_end, refseq_num, refseq_start, refseq_end]	
 				
 			## record data file
-			if len(refseq) == 0:
-				refseq = elem[7]
-				write_data('refseq',elem[7],'reference-genome','chrY')
+			if elem[11] not in refseq.keys():
+				refseq.update({elem[11]:elem[7]})
+				# write_data('refseq',elem[7],'reference-genome','chrY')
 			if elem[12] not in contigs.keys():
 				contigs.update({elem[12]:elem[8]})
 
 		## deal with color
 		cdiv = 360/len(contigs)
 
-		## write data file		
+		## write data file
+		if None in [re.match('^\d+$', a) for a in refseq.keys()]:
+			sortsb = str
+		else:
+			sortsb=int
+
+		for rf in sorted(refseq.keys(), key=sortsb):
+			write_data(''.join(['refseq', rf]), refseq[rf], rf, 'chrY')	
 		for ct in sorted(contigs.keys(),key=int, reverse=True):	
 			color = str(int(ct)*cdiv)
 			cdigit = '0'*(3-len(color))+color
@@ -108,7 +117,7 @@ def wrap():
 			chrm = ''.join(['hs',links[lid][0]])
 			fcolor = ''.join(['hue',cdigit])
 			write_links(lid, chrm, links[lid][1], links[lid][2], fcolor)
-			write_links(lid, 'refseq', links[lid][3],links[lid][4], fcolor)
+			write_links(lid, ''.join(['refseq',links[lid][3]]), links[lid][4],links[lid][5], fcolor)
 
 		f.close()
 		fl.close()

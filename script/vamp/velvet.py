@@ -39,7 +39,7 @@ def wrap():
 			commands_1 = ['velveth', dirname, i, '-'+args.f, pd, sd ]
 			run_cmd(commands_1)
 
-			commands_2 = ['velvetg', dirname, '-exp_cov', 'auto', '-cov_cutoff', 'auto', '-scaffolding', 'yes' ]
+			commands_2 = ['velvetg', dirname, '-exp_cov', 'auto', '-ins_length', '250', '-cov_cutoff', 'auto', '-scaffolding', 'yes' ]
 			run_cmd(commands_2)
 
 			## append to bigfa
