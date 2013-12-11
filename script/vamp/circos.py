@@ -29,10 +29,11 @@ def wrap():
 
 	def input_files(): 
 		cmp_dir = os.path.join(VAMP_DIR, 'genomeCMP.py')
-		commands = ['python', cmp_dir, '-r', args.r, '-d', args.t, '-o', 'cmp', '-c']
+		prfx = '_'.join([args.o, 'cmp'])
+		commands = ['python', cmp_dir, '-r', args.r, '-d', args.t, '-o', prfx, '-c']
 		run_command(commands)	
-		fdata = '_'.join(['cmp','circos','input.txt'])
-		flink = '_'.join(['cmp', 'circos','links.txt'])
+		fdata = '_'.join([prfx,'circos','input.txt'])
+		flink = '_'.join([prfx, 'circos','links.txt'])
 		return fdata, flink
 
 	def draw_circos(fdata, flink):

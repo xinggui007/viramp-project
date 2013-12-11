@@ -1,21 +1,30 @@
 <tool id="quick_assemble" name="Assembly">
-	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path -a $asbtype 
+	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path -a $asbtype -i $ins $glinear
 	</command>
 	
 	<inputs>
-		<param type="data" format="fasta,fastq" name="read1" label="File of Read 1" help="Read_1 in paired-end sequencing, for single-end sequence, only choose file from here" />
+		<param type="data" format="fasta,fastq" name="read1" label="File of Read 1" help="Read_1 in paired-end sequencing" />
 		<param type="data" format="fasta,fastq" name="read2" label="File of Read 2" help="Read_2 in paired-end sequencing"/>
+		<para type="integer" name="ins" size="15" value="350" label="Insertion size" help="Insertion size for paired-end seuqencing" />
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
 		<param type="select" name="asbtype" label="Assembler" >
 			<option value="velvet">Velvet</option>
 			<option value="vicuna">VICUNA</option>
 			<option value="spades">SPAdes</option>
 		</param>
+		<param type="select" name="glinear" label="Create one linear genome sequence" >
+			<option value="-m">yes</option>
+			<option value="">no</option>
+		</param>
+
 
 	</inputs>
 
 	<outputs>
-		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="draft_genome.fasta" />
+		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="sspace.fasta" />
+		#if $glinear=="-m"
+			<data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" />
+		#end if
 		<data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>
 		<data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" />
 		<data name="comparison" format="txt" label="draft vs.reference comparison, result from ${on_string}.coords" from_work_dir="comparison.final.coords"/>
@@ -24,10 +33,12 @@
 
  <help>
 
-**what it does**
+**Quick Reference**
 
-This runs the entire pipeline of the Virus Assembly Pipeline (VAMP) with default settings, for impatient users, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.
+This runs the entire pipeline of the Virus Assembly Pipeline (VAMP) with default settings. **For impatient users**, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.  If you know the insertion size of your paired-end library, you may also change the number.  Otherwise by default it's set to 350.
 
+
+** What it does**
 
 Virus Assembly Pipeline contains a set of programs to assemble the the virus genome from shotgun sequence in a fast and accurate way with a related genome as guide.  In general, it contains the following steps:
 

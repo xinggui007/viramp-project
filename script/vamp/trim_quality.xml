@@ -1,14 +1,9 @@
 <tool id="quality_trim" name="Trim Sequence by Quality">
 	<requirements><requirement type="package">seqtk toolkit</requirement></requirements>
-	<command interpreter="python">trim_quality.py -l $maxlen -o $orient -i $input > $output</command>
+	<command interpreter="python">trim_quality.py -l $maxlen -i $input > $output</command>
 	<inputs>
 		<param type="data" format="fastq" name="input" label="File to trim" />
 		<param type="integer" name="maxlen" value="30" size="15" label="Maximally trim read down to INT bp" />
-		<param type="select" name="orient" label="Read Label">
-			<option value='L'>1</option>
-			<option value='R'>2</option>
-			<option value='S'>single_end</option>
-		</param>
 
 	</inputs>
 	<outputs>

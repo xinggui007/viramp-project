@@ -1,0 +1,14 @@
+<tool id="snp2vcf_tool" name="SNP to VCF format converter">
+	<command interpreter="python"> 
+		snp2vcf.py $snpinput $refinput $genomename> $output
+	</command>
+	<inputs>
+		<param type="data" format="used_snp,snp" name="snpinput" label="SNP file to be converted" />
+		<param type="data" format="fasta" name="refinput" label="Reference genome" />
+		<param type="text" size="50" name="genomename" label="Genome name" help="genome name used in vcf file first column, should be consistent with reference genome header and other annotation file; by default the system will use reference genome header name" />
+	</inputs>
+
+	<outputs>
+		<data name="output" format="vcf" />
+	</outputs>
+</tool>

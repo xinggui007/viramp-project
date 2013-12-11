@@ -11,8 +11,8 @@ import os
 def wrap():
 	parser = argparse.ArgumentParser(description='Quality trimming with seqtk')
 	parser.add_argument('-i', metavar='input.fastq', help='fastq file for quality trimming')
-	parser.add_argument('-o', choices=['L','R','S'], help='Assigning read orient (left,right for paired-end, or single-end) to read name')
-	parser.add_argument('-l', metavar='30', help='Maximumly trim down to INT bp')
+	# parser.add_argument('-o', choices=['L','R','S'], help='Assigning read orient (left,right for paired-end, or single-end) to read name')
+	parser.add_argument('-l', metavar='30', default='30', help='Maximumly trim down to INT bp')
 
 	SUFFIX = {
 		'L':'/1',
@@ -24,14 +24,7 @@ def wrap():
 		seqtk_cmds = ['seqtk','trimfq', '-l', args.l, args.i]
 		seqtk_cmd = ' '.join(seqtk_cmds)
 
-		bioawk_cmds = ['bioawk', '-c', 'fastx', "'{print $0}'"]
-		bioawk_cmd = ' '.join(bioawk_cmds)
-
-		awk_cmds = ['awk', '-v', 'var='+SUFFIX[args.o], "'BEGIN{OFS=\"\\n\"}{print \"@\"$1var,$2,\"+\",$3}'"]
-		awk_cmd = ' '.join(awk_cmds)
-
-		command = '|'.join([seqtk_cmd, bioawk_cmd, awk_cmd])	
-		os.system(command)
+		os.system(seqtk_cmd)
 
 	parser.set_defaults(func=trimming)
 	args = parser.parse_args()

@@ -40,7 +40,7 @@ def wrap():
 		fheader = '\t'.join(['Start','Extent', 'UnitLen', 'Copies', 'Ctg#'])
 		fnew.write(fheader+'\n')
 
-		for ct in sorted(ctg.keys(), key=int):
+		for ct in sorted(ctg.keys()):
 			f = open('tmp.fa','wb')
 			f.write(''.join(['>',ct]))
 			f.write('\n')

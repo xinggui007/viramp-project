@@ -7,6 +7,7 @@
 import sys, os, re
 import subprocess
 import argparse
+import shutil
 
 def run_cmd(cmds, getval=True):
 	DEVNULL = open(os.devnull, 'wb')
@@ -14,6 +15,13 @@ def run_cmd(cmds, getval=True):
 	out, err = p.communicate()
 	if getval:
 		return out
+def purge(dir, pattern):
+        for f in os.listdir(dir):
+                if re.search(pattern, f):
+                        try:
+                                os.remove(os.path.join(dir,f))
+                        except:
+                                shutil.rmtree(os.path.join(dir,f))
 
 def wrap():
 	parser = argparse.ArgumentParser(description='Compare the draft genome and reference genome assembling')
@@ -24,13 +32,13 @@ def wrap():
 	parser.add_argument('-c', action='store_true', help='output data files for circos visualization input')
 
 	def gcmp():
-		commands = ['nucmer', '='.join(['--prefix', args.o]), args.r, args.d]
+		commands = ['nucmer', '='.join(['--prefix', PREFIX]), args.r, args.d]
 		run_cmd(commands, getval=False)
 
 	def coords():
-		commands = ['show-coords', '-rclHT', '.'.join([args.o, 'delta'])]
+		commands = ['show-coords', '-rclHT', '.'.join([PREFIX, 'delta'])]
 		result = run_cmd(commands)
-		f = open('.'.join([args.o, 'coords']), 'w')
+		f = open('.'.join([PREFIX, 'coords']), 'w')
 		f.write(result)
 		f.close()
 
@@ -41,16 +49,16 @@ def wrap():
 
 		f.write(beginline+'\n')
 		if target:
-			commands_group = ['cut','-f13', '.'.join([args.o, 'coords'])]
+			commands_group = ['cut','-f13', '.'.join([PREFIX, 'coords'])]
 			out = run_cmd(commands_group)
 			cgroup = set(out.split())
 			for i in sorted(cgroup, key=int):
-				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([args.o,'coords'])]
+				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([PREFIX,'coords'])]
 				newline = run_cmd(command_grep)
 				f.write(newline)
 				f.write(''.join(['='*len(beginline),'\n']))
 		else:
-			command_grep = ['cut','-f1-4,7-13','.'.join([args.o,'coords'])]
+			command_grep = ['cut','-f1-4,7-13','.'.join([PREFIX,'coords'])]
 			newline = run_cmd(command_grep)
 			f.write(newline)
 		f.close()
@@ -71,7 +79,7 @@ def wrap():
 			output = ' '.join(data)
 			fl.write(output+'\n')
 
-		cdfile = '.'.join([args.o, 'coords'])
+		cdfile = '.'.join([args.o,'final','coords']) 
 		contigs = dict()
 		refseq = dict() 
 		refNum = dict()
@@ -80,19 +88,19 @@ def wrap():
 
 		for line in file(cdfile):
 			line = line.strip()
-			elem = line.split('\t')
-			## write link file
-			segdup = segdup + 1
-			linkid = ''.join(['segdup',str(segdup)])
-	
-			links.update({linkid:[elem[12], elem[2], elem[3], elem[11], elem[0], elem[1]]}) ## linkid:[contig_num, contig_start, contig_end, refseq_num, refseq_start, refseq_end]	
-				
-			## record data file
-			if elem[11] not in refseq.keys():
-				refseq.update({elem[11]:elem[7]})
-				# write_data('refseq',elem[7],'reference-genome','chrY')
-			if elem[12] not in contigs.keys():
-				contigs.update({elem[12]:elem[8]})
+			if re.match('^\d+', line):
+				elem = line.split('\t')
+				## write link file
+				segdup = segdup + 1
+				linkid = ''.join(['segdup',str(segdup)])
+				ctgname = elem[10].replace('|','_')		
+				links.update({linkid:[ctgname, elem[2], elem[3], elem[9], elem[0], elem[1]]}) ## linkid:[contig_num, contig_start, contig_end, refseq_num, refseq_start, refseq_end]	
+					
+				## record data file
+				if elem[9] not in refseq.keys():
+					refseq.update({elem[9]:elem[5]})
+				if elem[10] not in contigs.keys():
+					contigs.update({ctgname:[elem[6], int(elem[0])]}) # [contig len, ref_st]
 
 		## deal with color
 		cdiv = 360/len(contigs)
@@ -104,18 +112,23 @@ def wrap():
 			sortsb=int
 
 		for rf in sorted(refseq.keys(), key=sortsb):
-			write_data(''.join(['refseq', rf]), refseq[rf], rf, 'chrY')	
-		for ct in sorted(contigs.keys(),key=int, reverse=True):	
-			color = str(int(ct)*cdiv)
+			write_data(''.join(['refseq', rf]), refseq[rf], rf, 'chrY')
+	
+		ctcolor = 0
+		coldict = dict()	
+		for ct in sorted(contigs,key=lambda x:contigs[x][1], reverse=True): ## only reverse the tick, but not the order	
+			ctnum = len(contigs)-ctcolor
+			ctcolor += 1
+			color = str(ctcolor*cdiv)
 			cdigit = '0'*(3-len(color))+color
-			write_data(''.join(['hs',ct]), contigs[ct], ct, ''.join(['hue',cdigit]))
+			fcolor = ''.join(['hue',cdigit])
+			coldict.update({ct:fcolor})
+			write_data(''.join(['hs',ct]), contigs[ct][0], '_'.join(['ctg',str(ctnum)]), fcolor)
 
 		## write link file
 		for lid in links.keys():
-			color = str(int(links[lid][0])*cdiv)
-			cdigit = '0'*(3-len(color))+color
 			chrm = ''.join(['hs',links[lid][0]])
-			fcolor = ''.join(['hue',cdigit])
+			fcolor = coldict[links[lid][0]]  
 			write_links(lid, chrm, links[lid][1], links[lid][2], fcolor)
 			write_links(lid, ''.join(['refseq',links[lid][3]]), links[lid][4],links[lid][5], fcolor)
 
@@ -125,16 +138,21 @@ def wrap():
 	def all_pipeline():
 		gcmp()
 		coords()
+
 		if args.s == 'target':
 			reformat()
 		else:
 			reformat(target=False)
+		purge('./', PREFIX)
 
 		if args.c:
 			circos_input()
 
 	parser.set_defaults(func=all_pipeline)
 	args = parser.parse_args()
+
+	PREFIX = '_'.join([args.o, 'tmp'])
+
 	args.func()
 
 if __name__ == '__main__':
