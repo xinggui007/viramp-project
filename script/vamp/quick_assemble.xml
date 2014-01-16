@@ -1,4 +1,4 @@
-<tool id="quick_assemble" name="Assembly">
+<tool id="quick_assemble" name="Paired-end pipeline">
 	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path -a $asbtype -i $ins $glinear
 	</command>
 	
@@ -22,7 +22,7 @@
 
 	<outputs>
 		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="sspace.fasta" />
-		#if $glinear=="-m"
+		#if $param.glinear=="-m":
 			<data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" />
 		#end if
 		<data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>

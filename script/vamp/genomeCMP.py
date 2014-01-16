@@ -49,9 +49,9 @@ def wrap():
 
 		f.write(beginline+'\n')
 		if target:
-			commands_group = ['cut','-f13', '.'.join([PREFIX, 'coords'])]
+			commands_group = ['cut','-f13', '.'.join([PREFIX, 'coords']), '|', 'sort', '-V', '|', 'uniq']
 			out = run_cmd(commands_group)
-			cgroup = set(out.split())
+			cgroup = out.split()
 			for i in sorted(cgroup, key=int):
 				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([PREFIX,'coords'])]
 				newline = run_cmd(command_grep)

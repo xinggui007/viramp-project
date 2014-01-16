@@ -99,7 +99,7 @@ def wrap():
 	
 	def genomeCMP(target, cmp_prefix):
 		CMP_dir = os.path.join(VAMP_DIR, 'genomeCMP.py')
-		commands = ['python', CMP_dir, '-r', args.r, '-d', target, '-s', 'target', '-o', cmp_prefix, '-c']
+		commands = ['python', CMP_dir, '-r', args.r, '-d', target, '-o', cmp_prefix, '-c']
 		run_cmd(commands)
 
 	def Circos(cinput, linput, cpref):

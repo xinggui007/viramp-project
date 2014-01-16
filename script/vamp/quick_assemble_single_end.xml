@@ -1,0 +1,30 @@
+<tool id="quick_assmeble_single_rd" name="Single-end pipeline" >
+	<command interpreter="python"> quick_assemble_single_end.py -l $rinput -r $refseq $report.files_path -a $asbtype $glinear
+	</command>
+
+	<inputs>
+		<param type="data" format="fasta,fastq" name="rinput" label="Read set" help="single-end read dataset for assembly" />
+		<param type="data" format="fasta" name="refseq" label="Reference genome" />
+		<param type="select" name="asbtype" label="Assembler" >
+                        <option value="velvet">Velvet</option>
+                        <option value="vicuna">VICUNA</option>
+                        <option value="spades">SPAdes</option>
+                </param>
+
+		<param type="select" name="glinear" label="Create one linear genome sequence" >
+			<option value="-m">yes</option>
+			<option value="">no</option>
+		</param>
+	</inputs>
+
+	<outputs>
+		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="draft_genome.fasta" />
+                #if $param.glinear=="-m"
+                        <data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" />
+                #end if
+                <data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>
+                <data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" />
+                <data name="comparison" format="txt" label="draft vs.reference comparison, result from ${on_string}.coords" from_work_dir="comparison.final.coords"/>
+                <data name="circos" format="pdf" label="circos graph draft vs. reference on ${on_string}" from_work_dir="comparison_circos.pdf" />
+        </outputs>
+</tool>

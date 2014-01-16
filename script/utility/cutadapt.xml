@@ -1,0 +1,82 @@
+<tool id='cutadapt' name='Remove sequencing adaptors' >
+<command> cutadapt -f $format -a $three_prime -b $any_prime -g $five_prime $finput $paired 
+	#if $param.psetting.plist == "sfull":
+		-e $psetting.error_rate
+		-n $psetting.count
+		-O $overlaplen
+		#if $param.psetting.wildcards == "yes":
+			--match-read-wildcards
+		#end if
+	#end if
+	
+	#if $filtering_setting.flist == "f_all":
+		#if $filtering_setting.dscard_trim == "dtrim":
+			--discard-trimmed
+		#end if
+		#if $filtering_setting.dscard_trim == "duntrim":
+			--discard-untrimmed
+		#end if
+
+	-m $discard_short
+	
+	#end if
+	-o $foutput 
+</command>
+	
+	<inputs>
+		<param name="format" type="select" label="Format of the dataset">
+		 <option value="fasta">FASTA</option>
+		 <option value="fastq">FASTQ</option>
+		</param>
+		 
+		<param name="finput" type="data" format="fasta,fastq" label="Input file" />
+		<param name="three_prime" type="text" size="200" label="Three prime adaptor" help="paste your 3-prime adaptor here"/>
+		<param name="five_prime" type="text" size="200" label="Five prime adaptor" help="paste your 5-prime adaptor here"/>
+		<param name="any_prime" type="text" size="200" label="Other adaptor" help="If you are not sure where your adaptor located, paste below"/>
+		<param name="paired" type="select" label="paired-end input">
+			<option value="-p">paired-end</option>
+			<option value="">single-end</option>
+		</param>
+
+		<conditional name="psetting">
+		 <param name="plist" type="select" label="Cutadapt settings">
+			<option value="sdefault">Default setting</option>
+			<option value="sfull">Full setting</option>
+		 </param>
+		 <when value="sfull">
+			<param name="error_rate" type="float" value="0.1" label="Maximum allowed error rate" />
+			<param name="count" type="integer" value="1" label="Only remove adapters at MOST count N times" help="This is helpful to remove adapters appearing multiple times" />
+			<param name="overlaplen" type="integer" value="3" label="Minimum overlap length" help="Read is not modified if the overlap between adapter and read is shorter than N"/>
+			<param name="wildcards" type="select" label="Allow 'N's in the read as matches to the adapter">
+				<option value="yes">Yes</option>
+				<option value="no">No</option>
+			</param>
+		 </when>
+		 <when value="sdefault" />
+		</conditional>
+
+		<conditional name="filter_setting">
+		 <param name="flist" type="select" label="Data filtering process">
+		  <option value="fdefault">Default setting</option>
+		  <option value="f_all">Full setting</option>
+		</param>
+
+		<when value="f_all">
+		 <param name="discard_trim" type="select" label="Which reads to discard" help="Discard reads containing adapters rather than trimmed">
+			<option value="dtrim" >Discard trimmed</option>
+			<option value="duntrim" >Discard untrimmed</option>
+			<option selected="True" value="nothing">Do not discard</option>
+		</param>
+
+		<param name="discard_short" type="integer" value="0" size="15" label="Discard short reads" help="Discard trimmed reads that are shorter than N, Reads originally shorter than N will also be discarded"/>
+		</when>
+		<when value="fdefault" />
+		</conditional>
+
+	</inputs>
+
+	<outputs>
+		<data name="foutput" format="fasta,fastq" label="cutadapt result on ${on_string}"/>
+	</outputs>
+</tool>
+

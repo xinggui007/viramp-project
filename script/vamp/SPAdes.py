@@ -41,7 +41,7 @@ def wrap():
 			new_srd = SRD
 			shutil.copyfile(args.s, new_srd)
 
-		commands = ['spades.py', '-k', args.k, '--careful', '--only-assembler', paired_rd, new_prd, single_rd, new_srd, '-o', 'spades_out']
+		commands = ['spades.py', '-k', args.k, '--careful', '--sc', paired_rd, new_prd, single_rd, new_srd, '-o', 'spades_out']
 		print ' '.join(commands)
 		run_cmd(commands, getval=False)
 		shutil.copyfile('spades_out/scaffolds.fasta', args.o)
