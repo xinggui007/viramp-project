@@ -33,7 +33,7 @@ def p_mkdir(ndir):
 def wrap():
 	parser = argparse.ArgumentParser(description='Running the vicuna')
 	parser.add_argument('-p', metavar='paired.fa', help='paired-end read file')
-	parser.add_argument('-s', metavar='single.fa', help='single-end read file')
+	parser.add_argument('-s', metavar='single.fa', help='(optional) single-end read file')
 	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help='read file format')
 	parser.add_argument('-o', metavar='outfile.fa', default='outfile.fa', help='output file name')
 
@@ -51,7 +51,9 @@ def wrap():
 		p_mkdir(SFPATH)
 
 		shutil.copyfile(args.p, dst_p)
-		shutil.copyfile(args.s, dst_s)
+		if len(args.s)>0:
+			shutil.copyfile(args.s, dst_s)
+
 		config_f = os.path.join(VICUNA_CONF, confile)
 
 		commands_1 = ['vicuna-omp-v1.0', config_f]

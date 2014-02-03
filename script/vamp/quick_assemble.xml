@@ -1,41 +1,75 @@
 <tool id="quick_assemble" name="Paired-end pipeline">
-	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path -a $asbtype -i $ins $glinear
+	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path $glinear 
+					#if $settings.dset == "asb_full":
+						-a $settings.asbtype 
+						-i $settings.ins 
+						-k $settings.kmers
+						$settings.highcov
+						$settings.gcircos
+					#end if
 	</command>
 	
 	<inputs>
 		<param type="data" format="fasta,fastq" name="read1" label="File of Read 1" help="Read_1 in paired-end sequencing" />
 		<param type="data" format="fasta,fastq" name="read2" label="File of Read 2" help="Read_2 in paired-end sequencing"/>
-		<para type="integer" name="ins" size="15" value="350" label="Insertion size" help="Insertion size for paired-end seuqencing" />
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
-		<param type="select" name="asbtype" label="Assembler" >
-			<option value="velvet">Velvet</option>
-			<option value="vicuna">VICUNA</option>
-			<option value="spades">SPAdes</option>
-		</param>
 		<param type="select" name="glinear" label="Create one linear genome sequence" >
 			<option value="-m">yes</option>
-			<option value="">no</option>
+			<option selected="True" value="">no</option>
 		</param>
 
+		<conditional name="settings">
+			<param name='dset' type="select" label="Assembly settings">
+				<option selected="True" value="asb_default">Default Setting</option>
+				<option value="asb_full">Advanced Setting</option>
+			</param>
+
+			<when value="asb_full">
+				<param type="select" name="asbtype" label="Assembler" >
+					<option value="velvet">Velvet</option>
+					<option value="vicuna">VICUNA</option>
+					<option value="spades">SPAdes</option>
+				</param>
+				<param type="text" name="kmers" size="30" value="35,45,55,65" label="K-mer size" help="K-mers used in the de novo assemlbly"/>
+				<param type="integer" name="ins" size="15" value="350" label="Insertion size" help="Insertion size for paired-end seuqencing" />
+				<param type="select" name="highcov" label="Coverage" help="Choose 'High' if average coverage is higher than x500">
+					<option selected="True" value="">High</option>
+					<option value="-c">Normal</option>
+				</param>
+				<param type="select" name="gcircos" label="Whether to create visualization for assembly result" help="Suggestions: Choose no if you have more than 100 contigs in your assembly result">
+					<option selected="True" value="">Yes</option>
+					<option value="-g">No</option>
+				</param>
+		
+			</when>
+
+			<when value="asb_normal" />
+		</conditional>
 
 	</inputs>
 
 	<outputs>
 		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="sspace.fasta" />
-		#if $param.glinear=="-m":
-			<data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" />
-		#end if
+
+		<data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" >
+			<filter>glinear == "-m" </filter>
+		</data>	
+
 		<data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>
 		<data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" />
 		<data name="comparison" format="txt" label="draft vs.reference comparison, result from ${on_string}.coords" from_work_dir="comparison.final.coords"/>
-		<data name="circos" format="pdf" label="circos graph draft vs. reference on ${on_string}" from_work_dir="comparison_circos.pdf" />
+
+		<data name="circos" format="pdf" label="circos graph draft vs. reference on ${on_string}" from_work_dir="comparison_circos.pdf" >
+		<filter> settings["gcircos"] != "-g"</filter>
+		</data>
+
 	</outputs>
 
  <help>
 
 **Quick Reference**
 
-This runs the entire pipeline of the Virus Assembly Pipeline (VAMP) with default settings. **For impatient users**, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.  If you know the insertion size of your paired-end library, you may also change the number.  Otherwise by default it's set to 350.
+This runs the entire pipeline of the Virus Assembly Pipeline (VIRAMP) with default settings. **For impatient users**, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.  If you know the insertion size of your paired-end library, you may also change the number.  Otherwise by default it's set to 350.
 
 
 ** What it does**
@@ -55,19 +89,23 @@ Digital normalization (diginorm) uses a single-pass computational algorithm to r
 
 This step uses the velvet program to do a de novo assembly from the shotgun sequence. This step result in a set of contigs in various length.
 
-4. Scaffolding (AMOScmp)
+4. Reference-guided Scaffolding (AMOScmp)
 
 Contigs generated from velvet in step 3 are oriented and connected into scaffolds by the reference-guided assemling tool AMOScmp
 
-5. Assembly assessment
+5. Scaffolding using paired-end information (SSPACE)
+
+Using paired-end reads from the original dataset to extend and scaffold contigs
+
+6. Assembly assessment
 
 QUAST (Quality Assessment Tool for Genome Assemblies) program is used for the statistical assessment of the assemblies resulting from step 4
 
-6. SNP generation
+7. SNP generation
 
 MUMmer is used for aligning assembling result to the reference genome and generating snps.
 
-7. Draft and reference genome comparison
+8. Draft and reference genome comparison
 
 MUMmer is used to compare the assembling result (draft genome) with the reference genome.  
 

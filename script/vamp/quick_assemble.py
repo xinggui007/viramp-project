@@ -5,7 +5,7 @@
 
 ## Demo ##
 # python quick_assemble.py -l read_1.fq -e read_2.fq -r refseq.fa -d output_dir#
-import os,re
+import os,re,sys
 import argparse
 import shutil
 
@@ -30,6 +30,9 @@ QUAST_FOLDER = 'quast_out'
 CMP_PREFIX='comparison'
 
 def wrap():
+	if len(sys.argv)<2:
+		print "Try '-h' option for more information"
+		exit(1)
 
 	parser = argparse.ArgumentParser(description="This script runs the whole pipeline")
 	parser.add_argument('-l', metavar='read_1.fq', help='read-1 from paired-end sequencing, fastq format')
@@ -38,8 +41,10 @@ def wrap():
 	parser.add_argument('-d', metavar='quast_out', default='quast_out', help='(optional), output directory for quast report, only necessary for Galaxy integration')
 	parser.add_argument('-a', choices=['velvet', 'vicuna', 'spades'], default='velvet', help='choose the de novo assembler, by default velvet')	
 	parser.add_argument('-i', metavar='INT', default='350', help='inserstion size of paired end reads, by default is 350')
+	parser.add_argument('-k', metavar='35,45,55,65', default='35,45,55,65', help='k-mer set used in de novo assembly')
+	parser.add_argument('-c', action='store_true', help='Do not perform digital normalization')
+	parser.add_argument('-g', action='store_true', help='Do not create Circos graph for contig alignment visualization')
 	parser.add_argument('-m', action='store_true', help='create one linear genome sequence')
-
 
 	def quality_trim(infile, outfile):
 		qual_dir = os.path.join(VAMP_DIR, 'trim_quality.py')
@@ -58,23 +63,31 @@ def wrap():
 		commands = ['python', diginorm_dir, '-i', fmerged, '-o', predig, '-C', '10', '-x', '1e8', '-p']	
 		run_cmd(commands)
 
-	def velvet(paired_rd, single_rd, fvelvet):
+	def velvet(fvelvet, paired_rd, single_rd=None):
 		velvet_dir = os.path.join(VAMP_DIR, 'velvet.py')
-		khmers = ','.join(str(x) for x in range(31,72,5))
-		commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fvelvet, '-f', 'fasta']
+		khmers = args.k
+		if single_rd: 
+			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fvelvet, '-f', 'fasta']
+		else:
+			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-o', fvelvet, '-f', 'fasta']
 		run_cmd(commands)
 
-	def vicuna(paired_rd, single_rd, fvicuna):
+	def vicuna(fvicuna, paired_rd, single_rd=None):
 		vicuna_dir = os.path.join(VAMP_DIR, 'vicuna.py')
 
-		commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-f', 'fasta', '-o', fvicuna]
+		if single_rd:
+			commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-f', 'fasta', '-o', fvicuna]
+		else:
+			commands = ['python', vicuna_dir, '-p', paired_rd, '-f', 'fasta', '-o', fvicuna]	
 		run_cmd(commands)
 
-	def spades(paired_rd, single_rd, fspades):
+	def spades(fspades, paired_rd, single_rd=None):
 		spades_dir = os.path.join(VAMP_DIR, 'spades.py')
 		khmers = ','.join(str(x) for x in range(31,72,5))
-	
-		commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fspades]
+		if single_rd:	
+			commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fspades]
+		else:
+			commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-o', fspades]
 		run_cmd(commands)	
 
 	def AMOScmp(fctg, preamos, paired_rd):
@@ -116,17 +129,22 @@ def wrap():
 		quality_trim(args.l, READ_1)
 		quality_trim(args.e, READ_2)
 		merge_pair(READ_1, READ_2, MERGE_FILE)
-		diginorm(MERGE_FILE, DIGINORM_PREFIX)
 
-		single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])
-		paired_rd = '.'.join([DIGINORM_PREFIX,'pe','fasta'])
+
+		if args.c:
+			paired_rd = MERGE_FILE
+                        single_rd = None
+		else:
+			diginorm(MERGE_FILE, DIGINORM_PREFIX)
+			single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])
+			paired_rd = '.'.join([DIGINORM_PREFIX,'pe','fasta'])
 
 		if args.a == 'velvet':
-			velvet(paired_rd, single_rd, CTG_FILE)
+			velvet(CTG_FILE, paired_rd, single_rd)
 		elif args.a == 'vicuna':
-			vicuna(paired_rd, single_rd, CTG_FILE)
+			vicuna(CTG_FILE, paired_rd, single_rd)
 		elif args.a == 'spades':
-			spades(paired_rd, single_rd, CTG_FILE)
+			spades(CTG_FILE, paired_rd, single_rd)
 
 		AMOScmp(CTG_FILE, AMOS_PREFIX, paired_rd)
 
@@ -147,7 +165,9 @@ def wrap():
 
 		cinput = '_'.join([CMP_PREFIX,'circos_input.txt'])
 		linput = '_'.join([CMP_PREFIX, 'circos_links.txt'])
-		Circos(cinput, linput, CMP_PREFIX)
+	
+		if not args.g:	
+			Circos(cinput, linput, CMP_PREFIX)
 
 	parser.set_defaults(func=pipeline)
 	args = parser.parse_args()
