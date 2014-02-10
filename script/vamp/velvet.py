@@ -2,7 +2,7 @@
 ## DATE: 2013/08/30 ##
 ## Description: Velvet wrap in Galaxy ##
 ## Demo ##
-# python velvet.py -k 31,41,51 -p pair.fq -s single.fq -f fasta -o velvet_contigs.fa#
+# python velvet.py -k 31,41,51 -p pair.fq -s single.fq -f fastq -o velvet_contigs.fa#
 
 import os, re
 import shutil

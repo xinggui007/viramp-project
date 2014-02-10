@@ -1,15 +1,10 @@
 <tool id="base_trim" name="Trim Sequence by Bases">
 	<requirements><requirement type="package">seqtk toolkit</requirement></requirements>
-	<command>seqtk trimfq -b $leftlen -e $rightlen$input|hawk -c fastx '{print $0}'|awk -v var="$orient" 'BEGIN{OFS="\n"}{print "@"$1var,$2,"+",$3}' > $output </command>
+	<command>seqtk trimfq -b $leftlen -e $rightlen $input > $output </command>
 	<inputs>
 		<param type="data" format="fastq" name="input" label="File to trim" />
 		<param type="integer" name="leftlen" size="15" value="0" label="Number of bases trim from left" />
 		<param type="integer" name="rightlen" size="15" value="0" label="Number of bases trim from right" />
-		<param type="select" name="orient" label="Paired-end Read Label">
-			<option value="#1">1</option>
-			<option value="#2">2</option>
-			<option value="">single_end</option>
-		</param>
 
 	</inputs>
 	<outputs>
@@ -18,11 +13,9 @@
 
 	<help>
 
-** Read Quality Trimming Tool **
+**Read Quality Trimming Tool**
 
 Trim certain number of bases from left and/or right end 
-
-If paired-end read, please process reads from each end separately and choose proper label (1 or 2) for each end
 
 Please consult your sequencing facility about paired-end read label if you have trouble identify them 
 

@@ -8,4 +8,23 @@
  <outputs>
 	<data name="output" format="tabular" label="repeats on ${on_string}" />
  </outputs>
+
+ <help>
+
+This tool uses MUMmer package to find large inexact repeats by comparing the set of sequences in the target genome. 
+
+--------------
+
+**Output example**::
+
+	st1	end1	st2	end2	len1	len2	%idy	ctg1#	ctg2#
+	53454	53597	53597	53454	144	144	100.00	scaffold1_size108094	scaffold1_size108094
+	75286	75393	75387	75494	108	108	98.15	scaffold1_size108094	scaffold1_size108094
+	75387	75494	75286	75393	108	108	98.15	scaffold1_size108094	scaffold1_size108094
+	3184	3283	3285	3384	100	100	100.00	scaffold3_size9181	scaffold3_size9181
+	3285	3384	3184	3283	100	100	100.00	scaffold3_size9181	scaffold3_size9181
+
+
+
+ </help>
 </tool>

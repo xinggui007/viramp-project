@@ -13,4 +13,78 @@
 	<outputs>
 		<data name="output" format="tabular" label="Genome comparison on ${on_string}" from_work_dir='comparison.final.coords'/>
 	</outputs>
+
+ <help>
+
+**What is does**
+
+Draft vs. Reference genome comparison gives user an overview of the similarity between the new assembled genome and reference.  It uses MUMmer package to align the assembly to the reference genome, and provide a tab-delimited file elaborate alignment of all parts.
+
+-----------------
+
+**What to input**
+
+1. Reference genome in FASTA format
+
+2. Target genome (or any genome you want to compare to the reference) in FASTA format
+
+3. Output order: you can choose how the result record is listed (see examples for details):
+
+- **Reference coordinates** lists the record according to the starting coordinates of each reference segmant in ascending order:
+
+- **Contig coordinates** lists the record according to the starting coordinates of each target genome in ascending order:
+
+-----------------
+
+**Output format**
+
+- 1. **[R_St]** Reference starting coordinates
+
+- 2. **[R_Ed]** Reference ending coordinates
+
+- 3. **[T_St]** Target genome starting coordinates
+
+- 4. **[T_Ed]** Target genome ending coordinates
+
+- 5. **[% IDY]** Percentage identity between the reference and target genome fragment
+
+- 6. **[LEN_R]** Reference genome fragment length
+
+- 7. **[LEN_T]** Target genome fragment length
+
+- 8. **[COV_R]** Percentage coverage of the reference fragment comparing to the whole reference sequence
+
+- 9. **[COV_T]** Percentage coverage of the target fragment comparing to the whole target genome sequence
+
+- 10. **[REF_ID]** Reference genome ID
+
+- 11. **[CGT_ID]** Target genome ID
+
+-----------------
+
+**Example** 
+
+- Listed according to **Reference coordinates**::
+
+        [R_St]  [R_Ed]  [T_St]  [T_Ed]  [% IDY] [LEN_R] [LEN_T] [COV_R] [COV_T] [REF_ID]      [CGT_ID]
+        1       62457   288     62722   99.46   136376  108094  45.80   57.76   Reference      scaffold1|size108094
+        53191   53334   53597   53454   100.00  136376  108094  0.11    0.13    Reference      scaffold1|size108094
+        62638   108009  62722   108094  99.15   136376  108094  33.27   41.98   Reference      scaffold1|size108094
+        108111  108301  186     1       92.75   136376  108094  0.14    0.17    Reference      scaffold1|size108094
+        108299  108496  5       193     92.96   136376  9181    0.15    2.06    Reference      scaffold3|size9181
+
+
+- Listed according to **Contig coordinates**::
+
+        [R_St]  [R_Ed]  [T_St]  [T_Ed]  [% IDY] [LEN_R] [LEN_T] [COV_R] [COV_T] [REF_ID]      [CGT_ID]
+        108111  108301  186     1       92.75   136376  108094  0.14    0.17    Reference      scaffold1|size108094
+        1       62457   288     62722   99.46   136376  108094  45.80   57.76   Reference      scaffold1|size108094
+        53191   53334   53597   53454   100.00  136376  108094  0.11    0.13    Reference      scaffold1|size108094
+        62638   108009  62722   108094  99.15   136376  108094  33.27   41.98   Reference      scaffold1|size108094
+        108111  108301  186     1       92.75   136376  108094  0.14    0.17    Reference      scaffold1|size108094
+        108299  108496  5       193     92.96   136376  9181    0.15    2.06    Reference      scaffold3|size9181
+
+
+ </help>
+
 </tool>

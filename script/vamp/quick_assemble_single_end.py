@@ -22,6 +22,13 @@ LINEAR_PREFIX = 'linear'
 QUAST_FOLDER = 'quast_out'
 CMP_PREFIX = 'comparison'
 
+def run_cmd(cmds, getval=True):
+	DEVNULL = open(os.devnull, 'wb')
+	p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=DEVNULL)
+	out, err = p.communicate()
+	if getval:
+		return out
+	
 def wrap():
 	
 	parser = argparse.ArgumentParser(description='This script runs the whole pipeline with single-end reads')
@@ -33,13 +40,15 @@ def wrap():
 
 	def quality_trim(infile, outfile):
                 qual_dir = os.path.join(VAMP_DIR, 'trim_quality.py')
-                commands = ['python', qual_dir, '-i', infile, '-l', '30', '>', outfile]
-                print 'Trimming', infile, '...'
-                run_cmd(commands)
+                commands = ['python', qual_dir, '-i', infile, '-l', '30']
+                nfile = run_cmd(commands)
+		f = open(outfile, 'w')
+		f.write(nfile)
+		f.close()	
 
 	def diginorm(infile, predig):
                 diginorm_dir = os.path.join(VAMP_DIR, 'diginorm.py')
-                commands = ['python', diginorm_dir, '-i', infile, '-o', predig, '-C', '10', '-x', '1e8'] 
+                commands = ['python', diginorm_dir, '-i', infile, '-o', predig] 
                 run_cmd(commands)
 
 	def velvet(single_rd, fvelvet):
@@ -94,7 +103,7 @@ def wrap():
 
 	def pipeline():
 		quality_trim(args.l, TRIM_RD)	
-		diginorm(TRIM_RD, DIGINORM_PTRFIX)
+		diginorm(TRIM_RD, DIGINORM_PREFIX)
 	
 		single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])	
 		if args.a == 'velvet':
@@ -102,7 +111,7 @@ def wrap():
 		elif args.a == 'vicuna':
 			vicuna(single_rd, CTG_FILE)
 		elif args.a == 'spades':
-			spades(single_rd, CTG)
+			spades(single_rd, CTG_FILE)
 
 		AMOScmp(CTG_FILE, AMOS_PREFIX)
 		pretarget = '.'.join([AMOS_PREFIX, 'fasta'])

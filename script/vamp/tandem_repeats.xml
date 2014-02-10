@@ -3,11 +3,35 @@
 
   <inputs>
 	<param type="data" format="fasta" name="input" label="Genome sequence"/>
-	<param type="integer" name="replen" size="15" value="50" label="Minimum repeat length"/>
+	<param type="integer" name="replen" size="15" value="15" label="Minimum repeat length"/>
   </inputs>
 
   <outputs>
 	<data name="output" format="tabular" label="Tandem repeats on ${on_string}"/>
   </outputs>
+
+  <help>
+
+A tandem repeat is a pattern of two or more nucleotides is repeated and the repetitions are directly adjacent to each other.  This tool uses MUMmer package to find all tandem repeats with minimum length N (defined by user, default to be 15)
+
+------------
+
+**Output example**::
+
+	Start	Extent	UnitLen	Copies	Ctg#
+	169	25	7	3.6	scaffold1_size108094
+	195	47	1	47.0	scaffold1_size108094
+	242	46	7	6.6	scaffold1_size108094
+	21171	19	4	4.8	scaffold1_size108094
+	62656	60	12	5.0	scaffold1_size108094
+	90106	20	3	6.7	scaffold1_size108094
+	108047	48	7	6.9	scaffold1_size108094
+	1	59	22	2.7	scaffold2_size11337
+	7956	84	21	4.0	scaffold2_size11337
+	8632	19	1	19.0	scaffold2_size11337
+	11297	41	15	2.7	scaffold2_size11337
+	42	18	3	6.0	scaffold3_size9181
+
+  </help>
 
 </tool>

@@ -9,4 +9,34 @@
 	<outputs>
 		<data name='output' format='pdf' label="circos graph on ${on_string}" from_work_dir='output_circos.pdf'/>
 	</outputs>
+
+ <help>
+
+
+**What is Circos**
+
+Circos visualize data in a circular layout, here it is used for visualize reference-draft genome comparison, especially genomic rearrangements and large INDELs.  The tool is visualizing the comparison information from the previous session **Draft vs. Reference genome comparison**. Position based data is presented in circular way, which projects the specific regions in draft genome to the mapped reference genome region.
+
+------------------
+
+**What to input**
+
+1. Reference genome in FASTA format
+
+2. Target genome (new assembly or other genome you want to compare) in FASTA format
+
+------------------
+
+**Output example**
+
+The grey segment on the right side represents the reference genome, and the colored segments on the left represent the contigs from the target genome.  The unit of the axis is kb.  The semi-transparant bands inside the circo connect the aligned fragment between target genome and reference genome.  
+
+.. image:: ${static_path}/vamp_images/circos_new.png
+.. image:: ${static_path}/vamp_images/circos_new2.png
+
+
+ </help>
+
+
+
 </tool>

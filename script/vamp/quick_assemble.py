@@ -148,7 +148,7 @@ def wrap():
 
 		AMOScmp(CTG_FILE, AMOS_PREFIX, paired_rd)
 
-		AMOS_CTG = '.'.join([AMOS_PREFIX,'fa'])
+		AMOS_CTG = '.'.join([AMOS_PREFIX,'fasta'])
 
 		SSPACE(AMOS_CTG, READ_1, READ_2, args.i, 'fastq', SSPACE_PREFIX)
 

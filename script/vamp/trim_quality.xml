@@ -12,11 +12,9 @@
 
 	<help>
 
-** Read Quality Trimming Tool **
+**Read Quality Trimming Tool**
 
 Trim low-quality bases from both end using Phred Algorithm
-
-If paired-end reads, please process reads from each end separately and choose proper label (1 or 2) for each end
 
 Please consult your sequencing facility about paired-end read label if you have trouble identify them 
 

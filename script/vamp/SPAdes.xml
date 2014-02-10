@@ -9,12 +9,40 @@
 				</command>
 
  <inputs>
-	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end reads"/>
-	<param type="data" format="fasta,fastq" name="sinput" label="Single-end reads"/>
-	<param type="text" name="khmer" size="30" label="k-mer(s)" help="k-mers used in de novo assembling, multiple kmers allowed" />
+	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end reads" optional="true"/>
+	<param type="data" format="fasta,fastq" name="sinput" label="Single-end reads" optional="true"/>
+	<param type="text" name="khmer" size="30" label="k-mer(s)" value="21,33,55" help="k-mers used in de novo assembling, multiple kmers allowed" />
  </inputs>
 
  <outputs>
 	<data name="output" format="fasta" label="contig file from SPAdes on ${on_string}.fa" work_from_dir="spades_sc.fa" />
  </outputs>
+
+ <help>
+
+**What is SPAdes**
+
+SPAdes (St. Petersburg genome assembler) is also a de-bruijn graph based de novo assembler provided here as an alternative to velvet.  Other than standard NGS dataset, SPAdes specializes in single-cell MDA bacteria assemblies, which is a similar situation as virus genome assemblies when comparing to large genome assembly.  Thus SPAdes sometimes does better job than a lot other single assemblers in de novo assembly of virus genome. It is encouraged to try to use all the de novo assemblers provided here and comparing the results.  The assemblers could perform differently depending on the data.
+
+For more details about SPAdes, please go to http://bioinf.spbau.ru/spades
+
+---------------
+
+**What to input**
+
+Here we require combining dataset of similar kind into one file and submit at most one sing-end file and one paired-end file. This means if you have the paired-end reads separately in different file, you will need to combine them together into one interleaved file. We provide this tool under **UTILITY** section.
+
+Please fill one or more odd numbers as k-mer size, separated by commas.  By default the k-mers are set to be "21,33,55", which is recommended by SPAdes manual.  
+
+--------------
+
+**Reference**
+
+Anton Bankevich, Sergey Nurk, Dmitry Antipov, Alexey A. Gurevich, Mikhail Dvorkin, Alexander S. Kulikov, Valery M. Lesin, Sergey I. Nikolenko, Son Pham, Andrey D. Prjibelski, Alexey V. Pyshkin, Alexander V. Sirotkin, Nikolay Vyahhi, Glenn Tesler, Max A. Alekseyev, and Pavel A. Pevzner. SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing. Journal of Computational Biology 19(5) (2012), 455-477. doi:10.1089/cmb.2012.0021
+
+ </help>
+
+
+
 </tool>
+

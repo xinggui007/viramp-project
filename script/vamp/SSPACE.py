@@ -3,7 +3,7 @@
 ## Description: using SSPACE to check and extend contigs ##
 
 ## Demo ##
-#  #
+# python SSPACE.py -c contigs.fa -l left.fastq -e right.fastq -f fastq -i 350  #
 
 import re, os
 import argparse

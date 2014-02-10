@@ -71,8 +71,25 @@
 
 This runs the entire pipeline of the Virus Assembly Pipeline (VIRAMP) with default settings. **For impatient users**, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.  If you know the insertion size of your paired-end library, you may also change the number.  Otherwise by default it's set to 350.
 
+------------
 
-** What it does**
+**What you will get**
+
+1. A complete assembly normally contains 4~10 contigs, listed in the order of reference genome
+
+2. A comprehensive report evaluating the assembly produced by Quast
+
+3. A SNP report in VCF format, when comparing the new assembly to the reference genome
+
+4. A stucture comparison report describing how the new assembly assigned to the reference genome
+
+5. A circos graph visualizing the situation of **4**.  When the assembly result contains more than 100 contigs, it is suggested to turn down this option in **Advanced Setting**.
+
+6. (Optional) One linear genome created from the assembly result of **1**.  By default this is not provided.  We strongly recommend to use the result of **1** and look into those gaps before closing them, especially when **1** contains more than 20 contigs.
+
+------------
+
+**VIRAMP workflow**
 
 Virus Assembly Pipeline contains a set of programs to assemble the the virus genome from shotgun sequence in a fast and accurate way with a related genome as guide.  In general, it contains the following steps:
 
@@ -109,15 +126,7 @@ MUMmer is used for aligning assembling result to the reference genome and genera
 
 MUMmer is used to compare the assembling result (draft genome) with the reference genome.  
 
-The assembly pipeline **completed** here, with a set of scaffolds, for further snp annotation and assessment (step 7), please go to next tool "SNP Effect Assessment" 
-
---------
-
-8. (Optional) SNP Effect Analysis 
-
-snpEff is used for further analysis of how the snps would effect the genome function.  This step is optional and need to be indicated explicitely by choosing "Yes" in "Excute the snpEff to annootate the variation" section.  An annotation file needs to be uploaded and format of this file should be indicated.
-
--------
+-------------
 
 **Citation**
 

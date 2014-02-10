@@ -1,4 +1,4 @@
-<tool id='snp_det' name='Generating snps in vcf format by comparing the draft and reference genome'>
+<tool id='snp_det' name='SNP detection'>
 	<command interpreter="python">snp_detection.py -r $rinput -t $tinput -o $output </command>
 
 	<inputs>
@@ -9,4 +9,45 @@
 	<outputs>
 		<data name='output' format='vcf' label="snps on ${on_string}.vcf"/>
 	</outputs>
+
+ <help>
+
+
+**How to detect SNPs**
+
+This SNP detection tool uses MUMmer package to align the target genome to the reference genome and identify the SNPs.
+
+----------------------
+
+**Input and Output**
+
+**Input**:
+
+1. Reference genome in FASTA format
+
+2. Target genome (new assembly or other genome sequence you want to compare with the reference) in FASTA format
+
+**Output**:
+A VCF format SNP file
+
+----------------------
+
+**Output example**::
+
+	#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
+	Reference      1700    nucmer  T       C       0       PASS    .
+	Reference      1704    nucmer  G       T       0       PASS    .
+	Reference      1867    nucmer  G       A       0       PASS    .
+	Reference      1909    nucmer  T       G       0       PASS    .
+	Reference      2239    nucmer  C       T       0       PASS    .
+	Reference      2463    nucmer  C       CC      0       PASS    .
+	Reference      2466    nucmer  A       G       0       PASS    .
+	Reference      2467    nucmer  T       C       0       PASS    .
+	Reference      2558    nucmer  AAG     A       0       PASS    .
+	Reference      2568    nucmer  G       T       0       PASS    .
+	Reference      2731    nucmer  T       C       0       PASS    .
+
+
+ </help>
+
 </tool>

@@ -1,5 +1,5 @@
 <tool id="de_novo_asmbl" name="Velvet">
- <command interpreter="python"> velvet.py -k $khmer -o $output 
+ <command interpreter="python"> velvet.py -k $khmer -o $output -f $fmt
 				#if $pinput
 				  -p $pinput
 				#end if 
@@ -11,11 +11,49 @@
  	<param type="data" format="fasta,fastq" name="sinput" label="Single-end sequence to be assembled" optional="true"/>
  	<param type="data" format="fasta,fastq" name="pinput" label= "Paired-end sequence to be assembled"  optional="true"/>
 	<param type="text" name="khmer" size="30" label="k-mer(s) used in velvet assembling" help="put one or more k-mer size, like: 21,25,29; k-mer needs to be odd and does not exceed 91" />
+	<param type="select" name="fmt" label="Data format">
+		<option value="fastq">FASTQ</option>
+		<option value="fasta">FASTA</option>
+	</param>
+
  </inputs>
 
  <outputs>
  	<data name="output" format="fasta" label="${tool.name} on ${on_string}.fa"/>
  </outputs>
+
+	<help>
+
+**What is Velvet**
+
+Velvet is one of the earliest yet still most popular de-bruijn graph algorithm based de novo genomic assembler especially designed from short read seuqncing technologies.  Currently Velvet takes in short read sequences (either single-end or paired-end) and produces high quality unique contigs.  Velvet also contains build-in error removals and schaffolding module. Velvet is our default de novo assembly in the full-pipeline.
+
+For more details, please go to http://www.ebi.ac.uk/~zerbino/velvet/
+
+---------
+
+**What to input**
+
+1. Here we require combining dataset of similar kind into one file and submit at most one sing-end file and one paired-end file.  This means if you have the paired-end reads separately in different file, you will need to combine them together into **one** interleaved file.  We provide this tool under **UTILITY** section.
+
+2. Please fill one or more odd numbers as k-mer size, separated by commas, the number(s) should not exceed 91
+
+3. Please indicate your dataset format, choose from FASTA/FASTQ
+
+---------
+
+**Expected Result**
+
+A set of contigs is provided in FASTA format.  If multiple k-mers are provided, the results from several rounds (using different k-mer size) will be combined into one file
+
+---------
+
+**Reference**
+
+Velvet: algorithms for de novo short read assembly using de Bruijn graphs. D.R. Zerbino and E. Birney. Genome Research 18:821-829.
+
+	</help>
+
 </tool>
 
 

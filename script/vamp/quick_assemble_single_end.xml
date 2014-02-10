@@ -1,5 +1,5 @@
 <tool id="quick_assmeble_single_rd" name="Single-end pipeline" >
-	<command interpreter="python"> quick_assemble_single_end.py -l $rinput -r $refseq $report.files_path -a $asbtype $glinear
+	<command interpreter="python"> quick_assemble_single_end.py -l $rinput -r $refseq -d $report.files_path -a $asbtype $glinear
 	</command>
 
 	<inputs>
@@ -19,12 +19,46 @@
 
 	<outputs>
 		<data name="target_genome" format="fasta" label="assembled genome on ${on_string}.fasta" from_work_dir="draft_genome.fasta" />
-                #if $param.glinear=="-m"
-                        <data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" />
-                #end if
+                        <data name="linear_genome" format="fasta" label="linear genome from assembly on ${on_string}.fa" from_work_dir="linear.fasta" >
+			<filter> glinear == "-m"</filter>
+			</data>
+		
                 <data name="report" format="html" label="Quast report on ${on_string}.html" from_work_dir="quast2show.html"/>
                 <data name="varfile" format="vcf" label="variation file on ${on_string}.vcf" from_work_dir="variation.vcf" />
                 <data name="comparison" format="txt" label="draft vs.reference comparison, result from ${on_string}.coords" from_work_dir="comparison.final.coords"/>
                 <data name="circos" format="pdf" label="circos graph draft vs. reference on ${on_string}" from_work_dir="comparison_circos.pdf" />
         </outputs>
+
+	<help>
+
+**Quick Reference**
+
+This is a modified version of the full **VIRAMP** to fit the single-end dataset.  You will need the following **two** files to run this pipeline: A dataset of single-end reads in either FASTA or FASTQ format, and a reference genome in FASTA format.
+
+----------
+
+**What you will get**
+
+1. A new assembly from the dataset in FASTA format, usually contains 10~20 contigs in the order refering to the reference genome.
+
+2. comprehensive report evaluating the assembly produced by Quast.
+
+3. A SNP report in VCF format, when comparing the new assembly to the reference genome.
+
+4. A stucture comparison report describing how the new assembly assigned to the reference genome
+
+5. A circos graph visualizing the situation of **4** 
+
+6. (Optional) One linear genome created from the assembly result of 1. By default this is not provided. We strongly recommend to use the result of 1 and look into those gaps before closing them.  If the assembly from **1** contains too many contigs especially when the overlaps are not consistent when orienting on the reference, the linear genome may not provide useful information.
+
+---------
+
+**VIRAMP-single workflow**
+
+The VIRAMP-single pipeline contains all the steps the same as the **Full-pipeline** except step-5, which is to use paired-end information to extend and scaffold the contigs.  This may cause slight information loss from step-2 (Digital Normalization).
+ 
+Please refer to the **Full-pipeline** section for more details
+
+	</help>
+
 </tool>

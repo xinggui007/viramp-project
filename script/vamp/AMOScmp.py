@@ -27,7 +27,7 @@ def purge(dir, pattern):
 def wrap():
 	parser = argparse.ArgumentParser(description='Running the AMOScmp pipeline')
 	parser.add_argument('-c', metavar='contigs.fa', help='Contigs file, fasta format')
-	parser.add_argument('-p', metavar='reads.pe.fa',help='Paired-end reads file, fasta or fastw format')
+	parser.add_argument('-p', metavar='reads.pe.fa',help='(optional) Paired-end reads file, fasta or fastq format')
 	parser.add_argument('-f', metavar='refseq.fa', help='Reference sequence, fasta format')
 	parser.add_argument('-o', metavar='AMOSoutput', default='AMOSouput', help='Output prefix, by default is AMOSoutput')
 
@@ -56,7 +56,7 @@ def wrap():
 			formatting()
 			go_AMOScmp()
 			fasta = '.'.join([PREFIX, 'fasta']) 
-			FOUTPUT = '.'.join([args.o, 'fa'])	
+			FOUTPUT = '.'.join([args.o, 'fasta'])	
 			os.rename(fasta, FOUTPUT)
 			os.remove('combined_seq.fa')
 			purge('./', PREFIX)	

@@ -1,0 +1,48 @@
+<tool id='sspace' name='Scaffolding pre-assembled contigs using paired-read data' >
+ <command interpreter='python'>SSPACE.py -c $fcontigs -l $linput -e $rinput -f $fmt -i $ins </command>
+
+ <inputs>
+	<param type="data" format="fasta" name="fcontigs" label="Contigs to be scaffolded" />
+	<param type="data" format="fasta,fastq" name="linput" label="paired-end dataset READ-1"/>
+	<param type="data" format="fasta,fastq" name="rinput" label="paired-end dataset READ-2"/>
+	<param type="integer" name="ins" size="15" value="350" label="Insertion size" help="Insertion size of the paired-end reads, please consult the sequencing facility if you are not sure about this value"/>
+
+	<param type="select" name="fmt" label="paired-end dataset format">
+		<option value="fasta">FASTA</option>
+		<option value="fastq">FATSQ</option>
+	</param>
+
+ </inputs> 
+
+ <outputs>
+	<data name="sspace_res" format="fasta" label="scaffolded-genome after sspace on ${on_string}.fasta" from_work_dir="sspace_out.fasta"/>
+
+ </outputs>
+
+ <help>
+
+**How it works**
+
+This module uses SSPACE, a stand-alone scaffolding tool to bridge the preassembled contigs by using paired-read information. SSPACE uses paired-read mapping back to the contigs, extend the length of existing contigs using the paired-reads which only one mapped to the end and the other is unmapped. Then SSPACE bridge extended contigs using paired-end information.
+
+Here in the VIRAMP pipeline, we recommend using the original paired-end dataset for this step, besides all the advantage mentioned above, by using original dataset, we are trying to pick up any possible information lost during the previous steps. 
+
+**What to input**
+
+1. Pre-assembled contigs from de novo assemblers in FASTA format
+
+2. Paired-end reads dataset in either FASTA or FASTQ format
+
+3. Insertion size of the sequencing library
+
+4. Indicate the paired-end reads dataset's format, choose from FASTA and FATSQ
+
+**Reference**
+
+Boetzer, Marten, et al. "Scaffolding pre-assembled contigs using SSPACE." Bioinformatics 27.4 (2011): 578-579.
+
+
+ </help>
+
+
+</tool>

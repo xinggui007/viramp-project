@@ -55,16 +55,20 @@ def wrap():
 		run_cmd(commands)
 
 	def diginorm_all():
-		normalize(int(args.C)*5, args.i)
+		normalize(int(args.C)*5, args.i, paired=args.p)
 		filter_abund()
 		split_pe()
+		if args.p:
+			ffix = ['pe', 'se']
+		else:
+			ffix = ['se']
 
 		psuffix = {
 			'pe':True,
 			'se':False,
 		}
 
-		for endlb in ['pe', 'se']:
+		for endlb in ffix:
 			normfile = '.'.join([prefn,'keep','abundfilt',endlb])
 			normalize(int(args.C), normfile, paired=psuffix[endlb])
 
