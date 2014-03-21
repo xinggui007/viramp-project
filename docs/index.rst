@@ -24,16 +24,18 @@ To get everything running, your will need the following softwares installed:
 6. MUMmer for genome comparison and variation discovery: http://mummer.sourceforge.net/
 7. Circos for visualization: http://circos.ca/
 
-For running the whole assembling pipeline at once run quick_assemble.py::
+**For running the whole assembling pipeline at once on command line, run quick_assemble.py:**:
 
     python quick_assemble.py -l read_1.fq -e read_2.fq -r refseq.fa -d out_dir
 
-Contents:
+**For VIRAmp platform installation and usage:**
 
 .. toctree::
-   :maxdepth: 2
+	:maxdepth: 2
 
-
+	ec2_import
+	viramp_login
+	viramp_intro
 
 Indices and tables
 ==================
