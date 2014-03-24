@@ -1,5 +1,5 @@
 VIRamp assembly pipeline manual
-=======================
+================================
 
 This is a general description of the function of each tool via `VIRAMP website <http://viramp.com:8080/>`_ or in your own version of platform. Detailed description is posted under the webpage of each tool.
 
