@@ -36,6 +36,7 @@ To get everything running, your will need the following softwares installed:
 	ec2_import
 	viramp_login
 	viramp_intro
+	variation_assess
 
 Indices and tables
 ==================
