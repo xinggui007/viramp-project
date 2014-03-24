@@ -19,6 +19,10 @@ An instruction and overview of the basic steps and parameters you need to login 
 
 .. image:: viramp-doc/connect-info.png
 
+Hit the "Connect" buttom to view information you need for login to the backend of the system
+
+.. image:: viramp-doc/connect.png
+
 Start your terminal and type the following command:
 
         ``chmod 400 inst-demo.pem``
@@ -31,7 +35,7 @@ Change to the galaxy directory:
 
         ``cd /mnt/galaxy/galaxy-dist/``
 
-(optional) Change viramp settings:
+Change viramp settings:
 
         ``vi universe_wsgi.ini``
 
