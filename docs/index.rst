@@ -14,6 +14,8 @@ Following is an overview of how VIRamp platform works:
 
 **For install VIRamp on your local machine**
 
+* Download an `Galaxy <http://galaxyproject.org/>`_ and follow the `installation instruction <https://wiki.galaxyproject.org/Admin/GetGalaxy>`_
+
 * The Script/vamp directory contains all the scripts and galaxy tool config files, place the folder under galaxy-dist/tools.
 
 * Place the tool_config.xml in config under 'galaxy-dist'.
