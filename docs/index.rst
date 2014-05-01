@@ -21,8 +21,6 @@ Following is an overview of how VIRamp platform works:
         viramp_login
         viramp_intro
         variation_assess
-	ftp_config
-
 
 **For install VirAmp on your local machine**
 
