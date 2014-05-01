@@ -14,6 +14,7 @@ Open viramp from browser, type in public_IP:8080 (for example, the demo is viram
 
 
 .. _inst_login_ref:
+
 (optional) Log in to the new instance
 --------------------------------------
 
@@ -47,7 +48,7 @@ Start the viramp server:
 
         ``sh run.sh``
 
-(Optional) FTP configuration for large dataset uploading
+(optional) FTP configuration for large dataset uploading
 ----------------------------------------------
 
 Galaxy's generic uploading function cannot handle files larger than 2GB properly.  Use FTP to upload data instead. ProFTPd has been preinstalled in the instance, and most of the configuration is already done, but users still may need to log in to the instance for some change.
@@ -61,4 +62,4 @@ Galaxy's generic uploading function cannot handle files larger than 2GB properly
 
 * The FTP configuration file is located at `/usr/local/etc`. In general, it has been configed to fit in the system.  Only experienced users may want to modify for further adjustment
 
-For more information about general ftp configuration on Galaxy, please visit the `Galaxy wiki <https://wiki.galaxyproject.org/Admin/Config/UploadviaFTP>`
+For more information about general ftp configuration on Galaxy, please visit the `Galaxy wiki <https://wiki.galaxyproject.org/Admin/Config/UploadviaFTP>`_
