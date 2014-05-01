@@ -12,7 +12,19 @@ Following is an overview of how VIRamp platform works:
 
 .. image:: viramp-doc/pipeline_overview.png
 
-**For install VIRamp on your local machine**
+**For VirAmp platform installation and usage on the Cloud:**
+
+.. toctree::
+        :maxdepth: 2
+
+        ec2_import
+        viramp_login
+        viramp_intro
+        variation_assess
+	ftp_config
+
+
+**For install VirAmp on your local machine**
 
 * Download an `Galaxy <http://galaxyproject.org/>`_ and follow the `installation instruction <https://wiki.galaxyproject.org/Admin/GetGalaxy>`_
 
@@ -31,15 +43,5 @@ Following is an overview of how VIRamp platform works:
 	* `Quast <http://bioinf.spbau.ru/quast>`_
 	* `MUMmer <http://mummer.sourceforge.net/>`_
 	* `Circos <http://circos.ca/>`_
-
-**For VIRAmp platform installation and usage on the Cloud:**
-
-.. toctree::
-	:maxdepth: 2
-
-	ec2_import
-	viramp_login
-	viramp_intro
-	variation_assess
 
 

@@ -1,3 +1,5 @@
+.. _viramp_login_ref:
+
 Login to your VIRAMP instance and start the server
 ==================================================
 
