@@ -1,11 +1,11 @@
 .. _viramp_login_ref:
 
-Login to your VIRAMP instance and start the server
+Login to your VirAmp instance and start the server
 ==================================================
 
-At this point you have successfully owned your own version of VIRAMP instance, so what's next?
+At this point you have successfully owned your own version of VirAmp instance, so what's next?
 
-Start exploring the VIRamp platform
+Start exploring the VirAmp platform
 ------------------------------------
 
 Open viramp from browser, type in public_IP:8080 (for example, the demo is viramp.com:8080), which public_IP is the IP assigned to your instance, by default the server is open to public via port 8080

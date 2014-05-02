@@ -1,7 +1,7 @@
-VIRamp assembly pipeline manual
+VirAmp assembly pipeline manual
 ================================
 
-This is a general description of the function of each tool via `VIRAMP website <http://viramp.com/>`_ or in your own version of platform. Detailed description is posted under the webpage of each tool.
+This is a general description of the function of each tool via `VirAmp website <http://viramp.com/>`_ or in your own version of platform. Detailed description is posted under the webpage of each tool.
 
 One-click pipeline
 -------------------
