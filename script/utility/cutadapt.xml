@@ -1,5 +1,5 @@
 <tool id='cutadapt' name='Remove sequencing adaptors' >
-<command> cutadapt -f $format -a $three_prime -b $any_prime -g $five_prime $finput $paired 
+<command> cutadapt -f $format -a $three_prime -b $any_prime -g $five_prime $finput 
 	#if $param.psetting.plist == "sfull":
 		-e $psetting.error_rate
 		-n $psetting.count
@@ -33,10 +33,6 @@
 		<param name="three_prime" type="text" size="200" label="Three prime adaptor" help="paste your 3-prime adaptor here"/>
 		<param name="five_prime" type="text" size="200" label="Five prime adaptor" help="paste your 5-prime adaptor here"/>
 		<param name="any_prime" type="text" size="200" label="Other adaptor" help="If you are not sure where your adaptor located, paste below"/>
-		<param name="paired" type="select" label="paired-end input">
-			<option value="-p">paired-end</option>
-			<option value="">single-end</option>
-		</param>
 
 		<conditional name="psetting">
 		 <param name="plist" type="select" label="Cutadapt settings">
