@@ -1,5 +1,5 @@
 <tool id='vicuna_assembler' name='VICUNA' >
- <command interpreter="python"> vicuna.py -f $fmt
+ <command interpreter="python"> vicuna.py 
 				#if $pinput
 				    -p $pinput 
 				#end if
@@ -11,10 +11,6 @@
  <inputs>
 	<param type="data" format="fasta,fastq" name="pinput" optional="true" label="paired-end reads file"/>
 	<param type="data" format="fasta,fastq" name="sinput" optional="true" label="single-end reads file"/>
-	<param type="select" name="fmt" label="File format">
-		<option value="fasta">Fasta</option>
-		<option value="fastq">Fastq</option>
-	</param>
  </inputs>
 
  <outputs>

@@ -26,7 +26,7 @@ DIGINORM_PREFIX = 'afterdiginorm'
 SSPACE_PREFIX = 'sspace'
 AMOS_PREFIX = 'draft_genome'
 LINEAR_PREFIX = 'linear'
-QUAST_FOLDER = 'quast_out'
+## QUAST_FOLDER = 'quast_out'
 CMP_PREFIX='comparison'
 
 def wrap():
@@ -76,7 +76,7 @@ def wrap():
 		vicuna_dir = os.path.join(VAMP_DIR, 'vicuna.py')
 
 		if single_rd:
-			commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-f', 'fasta', '-o', fvicuna]
+			commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-o', fvicuna]
 		else:
 			commands = ['python', vicuna_dir, '-p', paired_rd, '-f', 'fasta', '-o', fvicuna]	
 		run_cmd(commands)
@@ -92,7 +92,7 @@ def wrap():
 
 	def AMOScmp(fctg, preamos, paired_rd):
 		AMOScmp_dir = os.path.join(VAMP_DIR, 'AMOScmp.py')
-		commands = ['python', AMOScmp_dir, '-c', fctg, '-p', paired_rd, '-f', args.r, '-o', preamos]
+		commands = ['python', AMOScmp_dir, '-c', fctg, '-f', args.r, '-o', preamos]
 		run_cmd(commands)	
 	
 	def SSPACE(fctg, RD1, RD2, INS, FMT, PREFIX):
@@ -159,7 +159,7 @@ def wrap():
 		else:
 			target = pretarget
 
-		Quast(target, QUAST_FOLDER)
+		Quast(target, args.d)
 		SNP_det(target)
 		genomeCMP(target, CMP_PREFIX)
 

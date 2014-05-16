@@ -19,7 +19,7 @@ DIGINORM_PREFIX = 'afterdiginorm'
 CTG_FILE = 'contigs.fa'
 AMOS_PREFIX = 'draft_genome'
 LINEAR_PREFIX = 'linear'
-QUAST_FOLDER = 'quast_out'
+## QUAST_FOLDER = 'quast_out'
 CMP_PREFIX = 'comparison'
 
 def run_cmd(cmds, getval=True):
@@ -122,7 +122,7 @@ def wrap():
 		else:
 			target = pretarget
 
-		Quast(target, QUAST_FOLDER)
+		Quast(target, args.d)
                 SNP_det(target)
                 genomeCMP(target, CMP_PREFIX)
 

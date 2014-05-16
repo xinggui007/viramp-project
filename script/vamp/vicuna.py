@@ -34,25 +34,36 @@ def wrap():
 	parser = argparse.ArgumentParser(description='Running the vicuna')
 	parser.add_argument('-p', metavar='paired.fa', help='paired-end read file')
 	parser.add_argument('-s', metavar='single.fa', help='(optional) single-end read file')
-	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help='read file format')
 	parser.add_argument('-o', metavar='outfile.fa', default='outfile.fa', help='output file name')
 
 	def vicuna():
-		if args.f == 'fasta':
-			dst_p = os.path.join(PFPATH, 'reads.fa')
-			dst_s = os.path.join(SFPATH, 'sreads.fa')
-			confile = 'fa_vicuna_conf.txt' 
-		elif args.f == 'fastq':
-			dst_p = os.path.join(PFPATH, 'reads.fq')
-			dst_s = os.path.join(SFPATH, 'sreads.fq')
-			confile = 'fq_vicuna_conf.txt'
+		awk_cmd1 = '{if(NR%2==1) {if(length($qual)==0){s=""; while(length(s)<length($seq)) s=s"I"}else{s=$qual;} print "@"$1; print $2; print "+"; print s}}'
+		awk_cmd2 = '{if(NR%2==0) {if(length($qual)==0){s=""; while(length(s)<length($seq)) s=s"I"}else{s=$qual;} print "@"$1; print $2; print "+"; print s}}'
+
+		dst_p1 = os.path.join(PFPATH, 'reads.1.fq')
+                dst_p2 = os.path.join(PFPATH, 'reads.2.fq')
+		dst_s = os.path.join(SFPATH, 'sreads.fq')
+		confile = 'fq_vicuna_conf.txt'
 
 		p_mkdir(PFPATH)
 		p_mkdir(SFPATH)
+		
+		if args.p is not None:
+			cmd_p1 = ['bioawk', '-c', 'fastx', awk_cmd1, args.p] 
+			f_p1 = open(dst_p1, 'wb')
+			f_p1.write(run_cmd(cmd_p1, getval=True))
+			f_p1.close()
 
-		shutil.copyfile(args.p, dst_p)
-		if len(args.s)>0:
-			shutil.copyfile(args.s, dst_s)
+			cmd_p2 = ['bioawk', '-c', 'fastx', awk_cmd2, args.p]
+			f_p2 = open(dst_p2, 'wb')
+			f_p2.write(run_cmd(cmd_p2, getval=True))
+			f_p2.close()
+
+		if args.s is not None:
+			single_cmd = ['bioawk', '-c', 'fastx', '{if(length($qual)==0){s=""; while(length(s)<length($seq)) s=s"I";}else{s=$qual;} print "@"$1; print $2; print "+"; print s;}']
+			s_rd = open(dst_s, 'wb')
+			s_rd.write(run_cmd(single_cmd, getval=True))
+			s_rd.close()
 
 		config_f = os.path.join(VICUNA_CONF, confile)
 

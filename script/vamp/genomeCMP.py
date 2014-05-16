@@ -32,7 +32,7 @@ def wrap():
 	parser.add_argument('-c', action='store_true', help='output data files for circos visualization input')
 
 	def gcmp():
-		commands = ['nucmer', '='.join(['--prefix', PREFIX]), args.r, args.d]
+		commands = ['nucmer', '--maxmatch', '='.join(['--prefix', PREFIX]), args.r, args.d]
 		run_cmd(commands, getval=False)
 
 	def coords():
@@ -93,12 +93,13 @@ def wrap():
 				## write link file
 				segdup = segdup + 1
 				linkid = ''.join(['segdup',str(segdup)])
-				ctgname = elem[10].replace('|','_')		
-				links.update({linkid:[ctgname, elem[2], elem[3], elem[9], elem[0], elem[1]]}) ## linkid:[contig_num, contig_start, contig_end, refseq_num, refseq_start, refseq_end]	
+				ctgname = elem[10].replace('|','_')	
+				refname = elem[9].replace('|', '_')	
+				links.update({linkid:[ctgname, elem[2], elem[3], refname, elem[0], elem[1]]}) ## linkid:[contig_num, contig_start, contig_end, refseq_num, refseq_start, refseq_end]	
 					
 				## record data file
 				if elem[9] not in refseq.keys():
-					refseq.update({elem[9]:elem[5]})
+					refseq.update({refname:elem[5]})
 				if elem[10] not in contigs.keys():
 					contigs.update({ctgname:[elem[6], int(elem[0])]}) # [contig len, ref_st]
 

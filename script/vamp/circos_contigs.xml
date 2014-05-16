@@ -1,4 +1,4 @@
-<tool id='circos_ct' name='Create Circos Graph for comparison between two sets of contigs'>
+<tool id='circos_ct' name='Circos visualization of contig sets'>
 	<command interpreter="python"> circos.py -r $rinput -t $tinput -c</command>
 
 	<inputs>

@@ -7,7 +7,7 @@
 
 	</inputs>
 	<outputs>
-		<data name="output" format="fastq" label="${tool.name} on ${on_string}.${orient}"/>
+		<data name="output" format="fastq" label="${tool.name} on ${on_string}"/>
 	</outputs>
 
 	<help>
