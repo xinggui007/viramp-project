@@ -17,12 +17,12 @@ def run_cmd(cmds, getval=True):
 		return out
 
 def purge(dir, pattern):
-        for f in os.listdir(dir):
-                if re.search(pattern, f):
-                        try:
-                                os.remove(os.path.join(dir,f))
-                        except:
-                                shutil.rmtree(os.path.join(dir,f))
+    for f in os.listdir(dir):
+        if re.search(pattern, f):
+            try:
+                os.remove(os.path.join(dir,f))
+            except:
+                shutil.rmtree(os.path.join(dir,f))
 
 def wrap():
 	parser = argparse.ArgumentParser(description='Compare the draft genome and reference genome assembling')
