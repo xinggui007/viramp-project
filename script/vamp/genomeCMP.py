@@ -43,12 +43,12 @@ def wrap():
 		f.write(result)
 		f.close()
 
-	def reformat(outfile, target=True):
+	def reformat(outprefix, target=True):
                 """
 
                 """
 
-		f = open('.'.join([outfile, 'final', 'coords']), 'w')
+		f = open('.'.join([outprefix, 'final', 'coords']), 'w')
 		beginline = '\t'.join(['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]'])
 
 		f.write(beginline+'\n')
@@ -67,11 +67,11 @@ def wrap():
 			f.write(newline)
 		f.close()
 
-## circos data file and link file
-	def circos_input():
+        ## circos data file and link file
+	def circos_input(outprefix):
 
-		f = open('_'.join([args.o,'circos','input.txt']), 'w')
-		fl = open('_'.join([args.o,'circos','links.txt']), 'w')
+		f = open('_'.join([outprefix, 'circos','input.txt']), 'w')
+		fl = open('_'.join([outprefix, 'circos','links.txt']), 'w')
 
 		def write_data(dtid, value,label,ctcolor):
                         data = ['chr','-',dtid, label, '0', value, ctcolor]     
@@ -83,7 +83,7 @@ def wrap():
 			output = ' '.join(data)
 			fl.write(output+'\n')
 
-		cdfile = '.'.join([args.o,'final','coords']) 
+		cdfile = '.'.join([outprefix, 'final','coords']) 
 		contigs = dict()
 		refseq = dict() 
 		refNum = dict()
@@ -145,13 +145,13 @@ def wrap():
 		coords()
 
 		if args.s == 'target':
-			reformat(outfile=args.o)
+			reformat(outprefix=args.o)
 		else:
-			reformat(outfile=args.o, target=False)
+			reformat(outprefix=args.o, target=False)
 		purge('./', PREFIX)
 
 		if args.c:
-			circos_input()
+			circos_input(outprefix=args.o)
 
 	parser.set_defaults(func=all_pipeline)
 	args = parser.parse_args()
