@@ -43,9 +43,12 @@ def wrap():
 		f.write(result)
 		f.close()
 
-	def reformat(target=True):
+	def reformat(outfile, target=True):
+                """
 
-		f=open('.'.join([args.o,'final','coords']),'w')
+                """
+
+		f = open('.'.join([outfile, 'final', 'coords']), 'w')
 		beginline = '\t'.join(['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]'])
 
 		f.write(beginline+'\n')
@@ -142,9 +145,9 @@ def wrap():
 		coords()
 
 		if args.s == 'target':
-			reformat()
+			reformat(outfile=args.o)
 		else:
-			reformat(target=False)
+			reformat(outfile=args.o, target=False)
 		purge('./', PREFIX)
 
 		if args.c:
