@@ -15,6 +15,7 @@ def run_cmd(cmds, getval=True):
 	out, err = p.communicate()
 	if getval:
 		return out
+
 def purge(dir, pattern):
         for f in os.listdir(dir):
                 if re.search(pattern, f):
