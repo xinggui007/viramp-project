@@ -8,13 +8,18 @@ import sys, os, re
 import subprocess
 import argparse
 import shutil
+import logging
+
+logger = logging.getLogger('genomeCMP')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
 
 def run_cmd(cmds, getval=True):
 	DEVNULL = open(os.devnull, 'wb')
 	p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=DEVNULL)
 	out, err = p.communicate()
 	if getval:
-		return out
+                return out
 
 def purge(dir, pattern):
     for f in os.listdir(dir):
@@ -54,10 +59,13 @@ def wrap():
 		f.write(beginline+'\n')
 		if target:
 			commands_group = ['cut','-f13', '.'.join([PREFIX, 'coords']), '|', 'sort', '-V', '|', 'uniq']
+                        logger.debug(" ".join(commands_group))
 			out = run_cmd(commands_group)
+                        logger.debug("out = %s" % (out,))
 			cgroup = out.split()
 			for i in sorted(cgroup, key=int):
 				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([PREFIX,'coords'])]
+                                logger.debug(" ".join(commands_grep))
 				newline = run_cmd(command_grep)
 				f.write(newline)
 				f.write(''.join(['='*len(beginline),'\n']))
