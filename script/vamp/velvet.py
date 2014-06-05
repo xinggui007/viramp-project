@@ -14,7 +14,7 @@ def run_cmd(cmds):
 
 def wrap():
 	parser = argparse.ArgumentParser(description='This script runs velvet with a series of kmers and output a combined fasta files containing all the assembled contigs')
-	parser.add_argument('-k', metavar='khmers', help='k-mers used in velvet assembling, multiple k-mers should be separated by commas, e.x 21,31,41,51')
+	parser.add_argument('-k', metavar='kmers', help='k-mers used in velvet assembling, multiple k-mers should be separated by commas, e.x 21,31,41,51')
 	parser.add_argument('-p', metavar='paired-end file', default=str(), help='file with paired-end reads')
 	parser.add_argument('-s', metavar='single-end file', default=str(), help='file with single-end reads')
 	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help="file format of input")	
