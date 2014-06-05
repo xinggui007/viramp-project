@@ -18,8 +18,9 @@ To get everything running, your will need the following softwares installed:
 5. Quast for assembly quality assessment: http://bioinf.spbau.ru/quast
 6. MUMmer for genome comparison and variation discovery: http://mummer.sourceforge.net/
 7. Circos for visualization: http://circos.ca/
+8. bioawk for interleaving paired end read files: https://github.com/lh3/bioawk
 
-For running the whole assembling pipeline at once run quick_assemble.py::
+For running the whole assembling pipeline at once run quick_assemble.py:
 
     python quick_assemble.py -l read_1.fq -e read_2.fq -r refseq.fa -d out_dir
 
