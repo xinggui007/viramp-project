@@ -8,11 +8,7 @@ import sys, os, re
 import subprocess
 import argparse
 import shutil
-import logging
-
-logger = logging.getLogger('genomeCMP')
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+import csv
 
 def run_cmd(cmds, getval=True):
 	DEVNULL = open(os.devnull, 'wb')
@@ -48,32 +44,41 @@ def wrap():
 		f.write(result)
 		f.close()
 
-	def reformat(outprefix, target=True):
-                """
+        def sortbytarget(x, y, contigcol=-1, targetstartcol=2, targetendcol=3):
+                minx = min(int(x[targetstartcol], x[targetendcol]))
+                miny = min(int(y[targetstartcol], y[targetendcol]))
+
+                return (x[contigcol] > y[contigcol]) and (minx > miny)
+
+        _input_colnames = ['[R_St]','[R_Ed]','[T_St]','[T_Ed]','col5', 'col6', '[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]']
+        _output_colnames = ['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]']
+
+        _contigcol = '[CGT_ID]'
+        _targetstartcol = '[T_St]'
+        _targetendcol = '[T_Ed]'
+
+        def reformat(outprefix, target=True):
+                """Reformat the output of nucmer, removing columns 5 and 6.
+
+                If target=True, the rows are resorted by the target genome,
+                first by contig name, then by the minimum start/end position.
 
                 """
 
 		f = open('.'.join([outprefix, 'final', 'coords']), 'w')
-		beginline = '\t'.join(['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]'])
+                ow = csv.DictWriter(f, delimiter="\t", fieldnames=_output_colnames, extrasaction='ignore')
+                ow.writerow(dict(zip(_output_colnames, _output_colnames)))
 
-		f.write(beginline+'\n')
-		if target:
-			commands_group = ['cut','-f13', '.'.join([PREFIX, 'coords']), '|', 'sort', '-V', '|', 'uniq']
-                        logger.debug(" ".join(commands_group))
-			out = run_cmd(commands_group)
-                        logger.debug("out = %s" % (out,))
-			cgroup = out.split()
-			for i in sorted(cgroup, key=int):
-				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([PREFIX,'coords'])]
-                                logger.debug(" ".join(commands_grep))
-				newline = run_cmd(command_grep)
-				f.write(newline)
-				f.write(''.join(['='*len(beginline),'\n']))
-		else:
-			command_grep = ['cut','-f1-4,7-13','.'.join([PREFIX,'coords'])]
-			newline = run_cmd(command_grep)
-			f.write(newline)
-		f.close()
+                infile = open('.'.join([PREFIX, 'coords']))
+                data = map(lambda s: dict(zip(_input_colnames, s.strip().split("\t"))), list(infile))
+
+                # Resort by target genome, otherwise do nothing
+                if target:
+                        data = sorted(data, key=lambda x: (x[_contigcol], min(int(x[_targetstartcol]), int(x[_targetendcol]))))
+
+                ow.writerows(data)
+
+                f.close()
 
         ## circos data file and link file
 	def circos_input(outprefix):
