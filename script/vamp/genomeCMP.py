@@ -58,8 +58,8 @@ def wrap():
                 first by contig name, then by the minimum start/end position.
 
                 """
-
-		f = open('.'.join([outprefix, 'final', 'coords']), 'w')
+                
+                f = open('.'.join([outprefix, 'final', 'coords']), 'w')
                 ow = csv.DictWriter(f, delimiter="\t", fieldnames=_output_colnames, extrasaction='ignore')
                 ow.writerow(dict(zip(_output_colnames, _output_colnames)))
 
