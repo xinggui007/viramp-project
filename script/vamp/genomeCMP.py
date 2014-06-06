@@ -64,12 +64,14 @@ def wrap():
                 ow.writerow(dict(zip(_output_colnames, _output_colnames)))
 
                 infile = open('.'.join([PREFIX, 'coords']))
-                data = map(lambda s: dict(zip(_input_colnames, s.strip().split("\t"))), list(infile))
+                ireader = csv.DictReader(infile, fieldnames=_input_colnames, delimiter="\t")
 
                 # Resort by target genome, otherwise do nothing
                 if target:
-                        data = sorted(data, key=lambda x: (x[_contigcol], min(int(x[_targetstartcol]), int(x[_targetendcol]))))
-
+                        data = sorted(ireader, key=lambda x: (x[_contigcol], min(int(x[_targetstartcol]), int(x[_targetendcol]))))
+                else:
+                        data = ireader
+                        
                 ow.writerows(data)
 
                 f.close()
