@@ -43,13 +43,7 @@ def wrap():
 		f = open('.'.join([PREFIX, 'coords']), 'w')
 		f.write(result)
 		f.close()
-
-        def sortbytarget(x, y, contigcol=-1, targetstartcol=2, targetendcol=3):
-                minx = min(int(x[targetstartcol], x[targetendcol]))
-                miny = min(int(y[targetstartcol], y[targetendcol]))
-
-                return (x[contigcol] > y[contigcol]) and (minx > miny)
-
+        
         _input_colnames = ['[R_St]','[R_Ed]','[T_St]','[T_Ed]','col5', 'col6', '[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]']
         _output_colnames = ['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]']
 
