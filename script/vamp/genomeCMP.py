@@ -8,20 +8,22 @@ import sys, os, re
 import subprocess
 import argparse
 import shutil
+import csv
 
 def run_cmd(cmds, getval=True):
 	DEVNULL = open(os.devnull, 'wb')
 	p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=DEVNULL)
 	out, err = p.communicate()
 	if getval:
-		return out
+                return out
+
 def purge(dir, pattern):
-        for f in os.listdir(dir):
-                if re.search(pattern, f):
-                        try:
-                                os.remove(os.path.join(dir,f))
-                        except:
-                                shutil.rmtree(os.path.join(dir,f))
+    for f in os.listdir(dir):
+        if re.search(pattern, f):
+            try:
+                os.remove(os.path.join(dir,f))
+            except:
+                shutil.rmtree(os.path.join(dir,f))
 
 def wrap():
 	parser = argparse.ArgumentParser(description='Compare the draft genome and reference genome assembling')
@@ -41,33 +43,44 @@ def wrap():
 		f = open('.'.join([PREFIX, 'coords']), 'w')
 		f.write(result)
 		f.close()
+        
+        _input_colnames = ['[R_St]','[R_Ed]','[T_St]','[T_Ed]','col5', 'col6', '[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]']
+        _output_colnames = ['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]']
 
-	def reformat(target=True):
+        _contigcol = '[CGT_ID]'
+        _targetstartcol = '[T_St]'
+        _targetendcol = '[T_Ed]'
 
-		f=open('.'.join([args.o,'final','coords']),'w')
-		beginline = '\t'.join(['[R_St]','[R_Ed]','[T_St]','[T_Ed]','[% IDY]','[LEN_R]','[LEN_T]','[COV_R]','[COV_T]','[REF_ID]','[CGT_ID]'])
+        def reformat(outprefix, target=True):
+                """Reformat the output of nucmer, removing columns 5 and 6.
 
-		f.write(beginline+'\n')
-		if target:
-			commands_group = ['cut','-f13', '.'.join([PREFIX, 'coords']), '|', 'sort', '-V', '|', 'uniq']
-			out = run_cmd(commands_group)
-			cgroup = out.split()
-			for i in sorted(cgroup, key=int):
-				command_grep = ['awk', '-v', '='.join(['var',i]),'BEGIN{OFS=\"\\t\"}{if ($13==var) print $1, $2, $3,$4,$7,$8,$9,$10,$11,$12,$13}', '.'.join([PREFIX,'coords'])]
-				newline = run_cmd(command_grep)
-				f.write(newline)
-				f.write(''.join(['='*len(beginline),'\n']))
-		else:
-			command_grep = ['cut','-f1-4,7-13','.'.join([PREFIX,'coords'])]
-			newline = run_cmd(command_grep)
-			f.write(newline)
-		f.close()
+                If target=True, the rows are resorted by the target genome,
+                first by contig name, then by the minimum start/end position.
 
-## circos data file and link file
-	def circos_input():
+                """
+                
+                f = open('.'.join([outprefix, 'final', 'coords']), 'w')
+                ow = csv.DictWriter(f, delimiter="\t", fieldnames=_output_colnames, extrasaction='ignore')
+                ow.writerow(dict(zip(_output_colnames, _output_colnames)))
 
-		f = open('_'.join([args.o,'circos','input.txt']), 'w')
-		fl = open('_'.join([args.o,'circos','links.txt']), 'w')
+                infile = open('.'.join([PREFIX, 'coords']))
+                ireader = csv.DictReader(infile, fieldnames=_input_colnames, delimiter="\t")
+
+                # Resort by target genome, otherwise do nothing
+                if target:
+                        data = sorted(ireader, key=lambda x: (x[_contigcol], min(int(x[_targetstartcol]), int(x[_targetendcol]))))
+                else:
+                        data = ireader
+                        
+                ow.writerows(data)
+
+                f.close()
+
+        ## circos data file and link file
+	def circos_input(outprefix):
+
+		f = open('_'.join([outprefix, 'circos','input.txt']), 'w')
+		fl = open('_'.join([outprefix, 'circos','links.txt']), 'w')
 
 		def write_data(dtid, value,label,ctcolor):
                         data = ['chr','-',dtid, label, '0', value, ctcolor]     
@@ -79,7 +92,7 @@ def wrap():
 			output = ' '.join(data)
 			fl.write(output+'\n')
 
-		cdfile = '.'.join([args.o,'final','coords']) 
+		cdfile = '.'.join([outprefix, 'final','coords']) 
 		contigs = dict()
 		refseq = dict() 
 		refNum = dict()
@@ -141,13 +154,13 @@ def wrap():
 		coords()
 
 		if args.s == 'target':
-			reformat()
+			reformat(outprefix=args.o)
 		else:
-			reformat(target=False)
+			reformat(outprefix=args.o, target=False)
 		purge('./', PREFIX)
 
 		if args.c:
-			circos_input()
+			circos_input(outprefix=args.o)
 
 	parser.set_defaults(func=all_pipeline)
 	args = parser.parse_args()
