@@ -25,7 +25,7 @@ def wrap():
 	parser.add_argument('-r', metavar='(disable -i/l)refseq.fa', help='Input is fasta format reference sequence;if this option, target genome(-t) is required, and circos data/link file is not needed')
 	parser.add_argument('-t', metavar='(disable -i/l)draft_genome.fa', help='Target Genome; if this option, reference genome(-r) is required, and circos data/link file is not needed')
 	parser.add_argument('-c', action='store_true', help='Input reference sequence is multi-fasta')
-	parser.add_argument('-o', metavar='output_circos.png',default='output', help='output prefix')
+	parser.add_argument('-o', metavar='output_circos',default='output', help='output prefix')
 
 	def input_files(): 
 		cmp_dir = os.path.join(VAMP_DIR, 'genomeCMP.py')

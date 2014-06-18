@@ -1,5 +1,5 @@
 <tool id='spades' name="SPAdes" >
-<command interpreter="python"> SPAdes.py -k $khmer -o $output 
+<command interpreter="python"> SPAdes.py -k $khmer -o $output -f $fmt 
 				#if $pinput
 				-p $pinput
 				#end if
@@ -12,6 +12,10 @@
 	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end reads" optional="true"/>
 	<param type="data" format="fasta,fastq" name="sinput" label="Single-end reads" optional="true"/>
 	<param type="text" name="khmer" size="30" label="k-mer(s)" value="21,33,55" help="k-mers used in de novo assembling, multiple kmers allowed" />
+	<param type='select' name="fmt" label='Data format'>
+		<option value='fasta'>FASTA</option>
+		<option value='fastq'>FASTQ</option>
+	</param>
  </inputs>
 
  <outputs>

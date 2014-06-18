@@ -1,5 +1,19 @@
 <tool id='sspace' name='Scaffolding pre-assembled contigs using paired-read data' >
- <command interpreter='python'>SSPACE.py -c $fcontigs -l $linput -e $rinput -f $fmt -i $ins </command>
+ <command interpreter='python'>SSPACE.py -c $fcontigs -l $linput -e $rinput -f $fmt -i $ins 
+				#if $settings.dset == "sp_full":
+					-r $settings.err_rate
+					-t $settings.orient
+					-z $settings.contlen
+					-k $settings.rd_scf
+					-s $settings.contolp
+
+					-x $settings.ext_settings.ext
+					#if $settings.ext_settings.ext == "1":
+						-m $settings.ext_settings.rdbases
+						-b $settings.ext_settings.rdoverlaps						
+					#end if
+				#end if
+</command>
 
  <inputs>
 	<param type="data" format="fasta" name="fcontigs" label="Contigs to be scaffolded" />
@@ -12,6 +26,40 @@
 		<option value="fastq">FATSQ</option>
 	</param>
 
+	<conditional name='settings'>
+		<param name='dset' type='select' label='SSPACE settings'>
+			<option selected="True" value='sp_default'>Default Settings</option>
+			<option value='sp_full'>Advanced Settings</option>
+		</param>
+
+		<when value='sp_full'>
+			<param type="float" name="err_rate" size="15" value="0.25" label='Error rate between expected and observed insertion size'/>
+			<param name='orient' type='select' label='Read Orientation' help='Forward-Reverse is the most common orientation, consult the library preparation protocol or sequencing facility center if you are not sure about this information'>
+				<option selected="True" value="FR">Forward-Reverse</option>
+				<option value='FF'>Forward-Forward</option>
+				<option value='RF'>Reverse-Forward</option>
+				<option value='RR'>Reverse-Reverse</option>
+			</param>
+
+			<conditional name='ext_settings'>
+				<param name='ext' type='select' label='contig extension' help='Whether to perform contig extension, this action will pick up information lost during assembly, but the process takes relative long time compared to only performing scaffolding'>
+					<option selected='True' value='1'>Yes</option>
+					<option value='0'>No</option>
+				</param>
+				<when value='1'>	
+					<param type='integer' name='rdbases' size='15' value='20' label='Minimum number of reads to call a base during extension'/>
+					<param type='integer' name='rdoverlaps' size='15' value='32' label='Minimum number of bases pairs to overlap to call overhang between read and the contigs' />
+				</when>
+				<when value='0' />
+			</conditional>
+
+			<param name='contlen' type='integer' label='Minimum contig length for scaffolding' size='15' value='0' />
+			<param name='rd_scd' type='integer' size='15' value='5' label='Minimum number of read pairs to compute scaffold' />
+			<param name='contolp' type='integer' size='15' value='15' label='Minimum overlaps between contigs to merge'/>
+		</when>
+		<when value='sp_default' />
+
+	</conditional>
  </inputs> 
 
  <outputs>
@@ -23,19 +71,29 @@
 
 **How it works**
 
-This module uses SSPACE, a stand-alone scaffolding tool to bridge the preassembled contigs by using paired-read information. SSPACE uses paired-read mapping back to the contigs, extend the length of existing contigs using the paired-reads which only one mapped to the end and the other is unmapped. Then SSPACE bridge extended contigs using paired-end information.
+This module uses SSPACE, a stand-alone scaffolding tool that scaffolds or connects the preassembled contigs by using paired-read information. SSPACE begins by mapping paired-end reads back to the contigs. It then extends the length of existing contigs by finding locations where unmapped reads can be added to the assembly by estimating their position in a gap, relative to the mapped member of the pair. After this contig-extension step, SSPACE bridges or scaffolds the contigs into larger assemblies using paired-end information.
 
-Here in the VIRAMP pipeline, we recommend using the original paired-end dataset for this step, besides all the advantage mentioned above, by using original dataset, we are trying to pick up any possible information lost during the previous steps. 
+In the VirAmp pipeline, we recommend using the original paired-end dataset for this step. In addition to the advantages mentioned above, using original dataset allows SSPACE to recover any information that was lost during the digital normalization or input filtering steps. 
 
 **What to input**
 
-1. Pre-assembled contigs from de novo assemblers in FASTA format
+1. Pre-assembled contigs from de novo assembly in FASTA format
 
-2. Paired-end reads dataset in either FASTA or FASTQ format
+2. Paired-end sequence reads in either FASTA or FASTQ format
 
-3. Insertion size of the sequencing library
+3. Insert size of the paired-end sequencing library
 
-4. Indicate the paired-end reads dataset's format, choose from FASTA and FATSQ
+4. Indicate the paired-end sequence read format, either FASTA or FASTQ
+
+Consult the SSPACE page for parameters in the advanced settings
+http://www.baseclear.com/lab-products/bioinformatics-tools/sspace-standard/
+
+**How to compute the insert size**
+
+The insertion size refers to the observed average library fragment size without adaptors during library preparation. Here's an example:
+
+.. image:: ${static_path}/vamp_images/insertion_size.png 
+
 
 **Reference**
 

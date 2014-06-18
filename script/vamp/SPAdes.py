@@ -11,8 +11,8 @@ import subprocess
 import shutil
 
 CPATH = os.path.abspath('./')
-PRD = 'spades_paired.fa'
-SRD = 'spades_single.fa'
+PRD = 'spades_paired'
+SRD = 'spades_single'
 def run_cmd(cmds, getval=True):
         p = subprocess.Popen(cmds, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out,err = p.communicate()
@@ -24,9 +24,15 @@ def wrap():
 	parser.add_argument('-p', metavar='paired.fa', help='paired-end reads file')
 	parser.add_argument('-s', metavar='single.fa', help='single-end reads file')
 	parser.add_argument('-k', metavar='khmers', help='k-mers used in SPAdes de novo assembling, multiple khmers allowed')
+	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help="file format of input")
 	parser.add_argument('-o', metavar='spades_sc.fa', default='spades_sc.fa', help='output file name, by default sapdes_sc.fa')
 
 	def run_spades():
+		if args.f == 'fasta':
+			SFX = 'fa'
+		else:
+			SFX = 'fq'
+
 		paired_rd = str()
 		single_rd = str()
 		new_prd = str()
@@ -34,17 +40,20 @@ def wrap():
 
 		if args.p:
 			paired_rd = '--12'
-			new_prd = PRD
+			new_prd = '.'.join([PRD, SFX])
 			shutil.copyfile(args.p, new_prd) 
 		if args.s:
 			single_rd = '-s'
-			new_srd = SRD
+			new_srd = '.'.join([SRD, SFX])
 			shutil.copyfile(args.s, new_srd)
 
 		commands = ['spades.py', '-k', args.k, '--careful', '--sc', paired_rd, new_prd, single_rd, new_srd, '-o', 'spades_out']
 		print ' '.join(commands)
-		run_cmd(commands, getval=False)
-		shutil.copyfile('spades_out/scaffolds.fasta', args.o)
+		run_cmd(commands, getval=True)
+		if args.p:
+			shutil.copyfile('spades_out/scaffolds.fasta', args.o)
+		else:
+			shutil.copyfile('spades_out/contigs.fasta', args.o)
 
 	parser.set_defaults(func=run_spades)
 	args = parser.parse_args()

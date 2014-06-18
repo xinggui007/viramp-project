@@ -38,12 +38,21 @@ def wrap():
 	parser.add_argument('-l', metavar='left.fastq', help='paired end reads set-1')
 	parser.add_argument('-e', metavar='right.fastq', help='paired end reads set-2')
 	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help='format of reads set, by default "fasta"')
-	parser.add_argument('-i', metavar='INT', default='350', help='inserstion size of the paired end reads, by default 250')
+	parser.add_argument('-i', metavar='INT', default='350', help='inserstion size of the paired end reads, by default 350')
+	parser.add_argument('-r', metavar='FLOAT', default=0.25, help='error rate between expected and observed insertion size, by default 0.25')
+	parser.add_argument('-t', choices=['FF', 'FR', 'RF', 'RR'], default='FR', help='Orientation of the paired-reads, F indicates forward; R indicates reverse; by default FR')
 	parser.add_argument('-o', metavar='sspace_out', default='sspace_out', help='prefix of the output, by default sspace_out')
 
+	parser.add_argument('-x', choices=['0','1'], default='1', help='whether to execute extension mode (yes=1, np=0), ignoring extension will be much faster, but may miss some information; by default is 1')
+	parser.add_argument('-m', metavar='INT', default='32', help='Minimum number of overlapping bases with the seed/contig during overhang consensus build up (default -m 32)')
+	parser.add_argument('-b', metavar='INT', default='20', help='Minimum number of reads needed to call a base during an extension (default -o 20)')
+	parser.add_argument('-z', metavar='INT', default='0', help='Minimum contig length used for scaffolding. Filters out contigs that are below -z, default is 0')
+	parser.add_argument('-k', metavar='INT', default='5', help='Minimum number of read pairs to compute scaffold, default is 5')
+	parser.add_argument('-s', metavar='INT', default='15', help='Minimum overlap required between contigs to merge adjacent contigs in a scaffold; default is 15')
+
 	def libfile():
-		ORIENT = 'FR'
-		ERR = '0.25'
+		ORIENT = args.t 
+		ERR = args.r
 		fleft = '.'.join([PREFIX, 'left', args.f])
 		fright = '.'.join([PREFIX, 'right', args.f])
 		shutil.copyfile(RD1, fleft)
@@ -53,7 +62,7 @@ def wrap():
 		f.close()
 
 	def run_SSPACE():
-		commands = [SSPACE_DIR, '-l', 'library.txt', '-s', CTG, '-x', '1', '-b', PREFIX]
+		commands = [SSPACE_DIR, '-l', 'library.txt', '-s', CTG, '-x', args.x, '-b', PREFIX, '-m', args.m, '-o', args.b, '-z', args.z, '-k', args.k, '-n', args.s]
 		run_cmd(commands)
 
 	def clean():

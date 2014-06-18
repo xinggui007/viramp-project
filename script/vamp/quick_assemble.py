@@ -63,13 +63,13 @@ def wrap():
 		commands = ['python', diginorm_dir, '-i', fmerged, '-o', predig, '-C', '10', '-x', '1e8', '-p']	
 		run_cmd(commands)
 
-	def velvet(fvelvet, paired_rd, single_rd=None):
+	def velvet(fvelvet, paired_rd, single_rd=None, fmt="fasta"):
 		velvet_dir = os.path.join(VAMP_DIR, 'velvet.py')
 		khmers = args.k
 		if single_rd: 
-			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fvelvet, '-f', 'fasta']
+			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fvelvet, '-f', fmt]
 		else:
-			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-o', fvelvet, '-f', 'fasta']
+			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-o', fvelvet, '-f', fmt]
 		run_cmd(commands)
 
 	def vicuna(fvicuna, paired_rd, single_rd=None):
@@ -78,16 +78,16 @@ def wrap():
 		if single_rd:
 			commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-o', fvicuna]
 		else:
-			commands = ['python', vicuna_dir, '-p', paired_rd, '-f', 'fasta', '-o', fvicuna]	
+			commands = ['python', vicuna_dir, '-p', paired_rd, '-o', fvicuna]	
 		run_cmd(commands)
 
-	def spades(fspades, paired_rd, single_rd=None):
-		spades_dir = os.path.join(VAMP_DIR, 'spades.py')
-		khmers = ','.join(str(x) for x in range(31,72,5))
+	def spades(fspades, paired_rd, single_rd=None, fmt='fasta'):
+		spades_dir = os.path.join(VAMP_DIR, 'SPAdes.py')
+		khmers = ','.join(str(x) for x in range(31,72,10))
 		if single_rd:	
-			commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fspades]
+			commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fspades, '-f', fmt]
 		else:
-			commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-o', fspades]
+			commands = ['python', spades_dir, '-k', khmers, '-p', paired_rd, '-o', fspades, '-f', fmt]
 		run_cmd(commands)	
 
 	def AMOScmp(fctg, preamos, paired_rd):
@@ -134,17 +134,18 @@ def wrap():
 		if args.c:
 			paired_rd = MERGE_FILE
                         single_rd = None
+			fmt="fastq"
 		else:
 			diginorm(MERGE_FILE, DIGINORM_PREFIX)
 			single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])
 			paired_rd = '.'.join([DIGINORM_PREFIX,'pe','fasta'])
-
+			fmt="fasta"
 		if args.a == 'velvet':
-			velvet(CTG_FILE, paired_rd, single_rd)
+			velvet(CTG_FILE, paired_rd, single_rd, fmt)
 		elif args.a == 'vicuna':
 			vicuna(CTG_FILE, paired_rd, single_rd)
 		elif args.a == 'spades':
-			spades(CTG_FILE, paired_rd, single_rd)
+			spades(CTG_FILE, paired_rd, single_rd, fmt)
 
 		AMOScmp(CTG_FILE, AMOS_PREFIX, paired_rd)
 
