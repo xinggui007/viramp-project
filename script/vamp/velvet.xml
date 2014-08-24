@@ -9,7 +9,7 @@
 				</command>
  <inputs>
  	<param type="data" format="fasta,fastq" name="pinput" label= "Paired-end sequence to be assembled"  optional="true"/>
-        <param type="data" format="fasta,fastq" name="sinput" label="Single-end sequence to be assembled" optional="true"/ help="At least one of the input file (paired-end/single) should be selected">
+        <param type="data" format="fasta,fastq" name="sinput" label="Single-end sequence to be assembled" optional="true" help="At least one of the input file (paired-end/single) should be selected" />
 	<param type="text" name="khmer" size="30" label="k-mer(s) used in velvet assembly" help="put one or more k-mer sizes, like: 21,25,29; k-mer needs to be an odd number and can not exceed 91.  K-mers should be seperated by commas, without any blanks in between" />
 
  </inputs>
