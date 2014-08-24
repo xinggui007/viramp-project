@@ -3,7 +3,7 @@
 	<command interpreter="python">trim_quality.py -l $maxlen -i $input > $output</command>
 	<inputs>
 		<param type="data" format="fastq" name="input" label="File to trim" />
-		<param type="integer" name="maxlen" value="30" size="15" label="Maximally trim read down to INT bp" />
+		<param type="integer" name="maxlen" value="30" size="15" label="Maximally trim read down to this number of base pairs" />
 
 	</inputs>
 	<outputs>
@@ -12,12 +12,13 @@
 
 	<help>
 
-**Read Quality Trimming Tool**
+**Trim Sequence by Quality**
 
-Trim low-quality bases from both end using Phred Algorithm
+This tool trims low-quality bases from both ends of a sequence read using the Phred algorithm.
 
-Please consult your sequencing facility about paired-end read label if you have trouble identify them 
+Please consult your sequencing facility about paired-end read labels if you have trouble identifying them. 
 
-For details about this tool, please go to https://github.com/lh3/seqtk
+For details about this tool, please go to https://github.com/lh3/seqtk .
+
 	</help>
 </tool>

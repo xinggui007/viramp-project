@@ -1,4 +1,4 @@
-<tool id='circos' name='Create Circos Graph for Draft Genome Assemblies visualization'>
+<tool id='circos' name='Create Circos Graph for Draft Genome Assemblies visualization' version="0.64">
 	<command interpreter="python"> circos.py -r $rinput -t $tinput</command>
 
 	<inputs>
@@ -34,7 +34,11 @@ The grey segment on the right side represents the reference genome, and the colo
 .. image:: ${static_path}/vamp_images/circos_new.png
 .. image:: ${static_path}/vamp_images/circos_new2.png
 
+--------------------
 
+**Reference**
+
+Krzywinski, M. et al. Circos: an Information Aesthetic for Comparative Genomics. Genome Res (2009) 19:1639-1645
  </help>
 
 

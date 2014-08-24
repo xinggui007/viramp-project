@@ -1,4 +1,4 @@
-<tool id="quast_stat" name="Quality Assessment For Genome Assembling">
+<tool id="quast_stat" name="Quality Assessment For Genome Assembling" version=2.2>
 	<command interpreter="python"> quast_main.py -r $rinput 
 	-t $targetseq
 	-o $report.files_path

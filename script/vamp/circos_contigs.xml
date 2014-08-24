@@ -1,4 +1,4 @@
-<tool id='circos_ct' name='Circos visualization of contig sets'>
+<tool id='circos_ct' name='Circos visualization of contig sets' version="0.64">
 	<command interpreter="python"> circos.py -r $rinput -t $tinput -c</command>
 
 	<inputs>

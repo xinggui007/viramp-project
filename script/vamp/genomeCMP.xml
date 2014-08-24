@@ -1,4 +1,4 @@
-<tool id='MUMmerCMP' name='Draft vs. Reference genome comparison'>
+<tool id='MUMmerCMP' name='Draft vs. Reference genome comparison' version="1.0">
 	<command interpreter="python"> genomeCMP.py -r $refseq -d $target -s $outformat -c </command>
 
 	<inputs>
@@ -18,7 +18,7 @@
 
 **What is does**
 
-Draft vs. Reference genome comparison gives user an overview of the similarity between the new assembled genome and reference.  It uses MUMmer package to align the assembly to the reference genome, and provide a tab-delimited file elaborate alignment of all parts.
+Draft vs. Reference genome comparison gives user an overview of the similarity between the new assembled genome and reference.  It is built upon MUMmer package version 3.23 to align the assembly to the reference genome, and provide a tab-delimited file elaborate alignment of all parts.
 
 -----------------
 
@@ -84,7 +84,11 @@ Draft vs. Reference genome comparison gives user an overview of the similarity b
         108111  108301  186     1       92.75   136376  108094  0.14    0.17    Reference      scaffold1|size108094
         108299  108496  5       193     92.96   136376  9181    0.15    2.06    Reference      scaffold3|size9181
 
+-----------------------
 
+**Reference**
+
+For more details about MUMmer package, please go to http://mummer.sourceforge.net/
  </help>
 
 </tool>

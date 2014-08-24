@@ -17,7 +17,7 @@ def wrap():
 	parser.add_argument('-k', metavar='kmers', help='k-mers used in velvet assembling, multiple k-mers should be separated by commas, e.x 21,31,41,51')
 	parser.add_argument('-p', metavar='paired-end file', default=str(), help='file with paired-end reads')
 	parser.add_argument('-s', metavar='single-end file', default=str(), help='file with single-end reads')
-	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help="file format of input")	
+##	parser.add_argument('-f', choices=['fasta', 'fastq'], default='fasta', help="file format of input")	
 	parser.add_argument('-o', metavar='output', default='velvet_contigs.fa', help='output file name, by default velvet-contigs.fa')
 
 	def run_velvet():
@@ -36,7 +36,7 @@ def wrap():
 		for i in khmer_ary:
 
 			dirname = '.'.join(['hsv','beforedigipe',i])
-			commands_1 = ['velveth', dirname, i, '-'+args.f, pd, sd ]
+			commands_1 = ['velveth', dirname, i, '-fmtAuto', pd, sd ]
 			run_cmd(commands_1)
 
 			commands_2 = ['velvetg', dirname, '-exp_cov', 'auto', '-ins_length', '250', '-cov_cutoff', 'auto', '-scaffolding', 'yes' ]

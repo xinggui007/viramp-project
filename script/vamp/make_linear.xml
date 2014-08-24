@@ -1,4 +1,4 @@
-<tool id='make_linear' name="Generate linear genome from contigs" >
+<tool id='make_linear' name="Generate linear genome from contigs" version="1.0">
 	<command interpreter="python"> make_linear.py -c $cinput -r $refseq -o linear_out </command>
 
 	<inputs>

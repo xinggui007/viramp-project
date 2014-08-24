@@ -1,4 +1,4 @@
-<tool id='snp_det' name='SNP detection'>
+<tool id='snp_det' name='SNP detection' version="1.0">
 	<command interpreter="python">snp_detection.py -r $rinput -t $tinput -o $output </command>
 
 	<inputs>
@@ -15,7 +15,7 @@
 
 **How to detect SNPs**
 
-This SNP detection tool uses MUMmer package to align the target genome to the reference genome and identify the SNPs.
+This SNP detection tool is built upon MUMmer package version 3.23 to align the target genome to the reference genome and identify the SNPs.
 
 ----------------------
 
@@ -47,7 +47,11 @@ A VCF format SNP file
 	Reference      2568    nucmer  G       T       0       PASS    .
 	Reference      2731    nucmer  T       C       0       PASS    .
 
+---------------------
 
+**Reference**
+
+For more details about MUMmer package, please go to http://mummer.sourceforge.net/
  </help>
 
 </tool>

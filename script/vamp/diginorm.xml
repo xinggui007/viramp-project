@@ -1,7 +1,7 @@
-<tool id="diginorm" name="Reduce the coverage">
+<tool id="diginorm" name="Reduce the coverage" version="">
 	<command interpreter="python"> diginorm.py -i $input -C $cutoff -N $hashnum -x $hashsize $pairflag </command>
 	<inputs>
-		<param type="data" format="fasta,fastq" name="input" label="File to diginorm" help="shotgun seuquecing data of fasta or fastq format"/>
+		<param type="data" format="fasta,fastq" name="input" label="File to diginorm" help="shotgun sequecing data of fasta or fastq format"/>
 		<param type="select" name="pairflag" label="sequence type">
 			<option value="-p">paired end</option>
 			<option value="">single end</option>
@@ -20,9 +20,14 @@
 
 **Diginorm Tools**
 
-Digital Normalization uses a single-pass computational algorithm that systematizes coverage in shotgun sequencing data set, thus to decreasing sampling variation and discarding redundant data. Digital normalization substantially reduces the size of shotgun data sets and decreases the memory and time requirements for de novo sequence assembly, all without significantly impacting content of the generated contigs.
+Digital Normalization uses a single-pass computational algorithm that systematizes coverage in shotgun sequence data, thus decreasing sampling variation and discarding redundant data. Digital normalization substantially reduces the size of shotgun sequence data sets and decreases the memory and time requirements for de novo sequence assembly, without significantly impacting content of the generated contigs.
 
-Since this process will slightly only one end of some reads, two files will be generated after digital normalization, containing paired-end reads and single-end reads, nameing \*.pe.fasta and \*.se.fasta. Statistics shows about 90% of the reads in the output remain paired.
+In some cases, this process will affect only one sequence in the read pairs.  Therefore, two files will be generated after digital normalization, one containing paired-end reads (named \*.pe.fasta) and the other containing single-end reads (named \*.se.fasta). Statistics show that about 90% of the reads in the output remain paired.
 
+---------------------
+
+**Reference**
+
+For more details about Diginorm, please go to http://ged.msu.edu/angus/diginorm-2012/tutorial.html
 	</help>
 </tool>

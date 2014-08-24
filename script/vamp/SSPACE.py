@@ -58,7 +58,7 @@ def wrap():
 		shutil.copyfile(RD1, fleft)
 		shutil.copyfile(RD2, fright)
 		f = open('library.txt', 'wb')
-		f.write(' '.join(['Lib1', fleft, fright, args.i, ERR, ORIENT]))
+		f.write(' '.join(['Lib1', fleft, fright, str(args.i), str(ERR), ORIENT]))
 		f.close()
 
 	def run_SSPACE():

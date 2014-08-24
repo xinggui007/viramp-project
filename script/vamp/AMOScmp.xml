@@ -1,4 +1,4 @@
-<tool id='amoscmp' name='Reference-guided Scaffolding'>
+<tool id='amoscmp' name='Reference-guided Scaffolding' version="3.1.0">
 <command interpreter="python"> AMOScmp.py -c $cinput -f $finput -o draft_genome
 				#if $pinput
 					-p $pinput

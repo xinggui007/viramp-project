@@ -13,12 +13,14 @@
 
 	<help>
 
-**Read Quality Trimming Tool**
 
-Trim certain number of bases from left and/or right end 
+**Alternative Read Quality Triming Tool**
 
-Please consult your sequencing facility about paired-end read label if you have trouble identify them 
+This tool trims a defined number of bases from the left and/or the right end of a sequence read.
+
+Please consult your sequencing facility about paired-end read labels if you have trouble identifying them 
 
 For details about this tool, please go to https://github.com/lh3/seqtk
+
 	</help>
 </tool>

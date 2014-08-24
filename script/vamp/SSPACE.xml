@@ -1,4 +1,4 @@
-<tool id='sspace' name='Scaffolding pre-assembled contigs using paired-read data' >
+<tool id='sspace' name='Scaffolding pre-assembled contigs using paired-read data' version="2.0">
  <command interpreter='python'>SSPACE.py -c $fcontigs -l $linput -e $rinput -f $fmt -i $ins 
 				#if $settings.dset == "sp_full":
 					-r $settings.err_rate

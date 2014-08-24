@@ -63,13 +63,13 @@ def wrap():
 		commands = ['python', diginorm_dir, '-i', fmerged, '-o', predig, '-C', '10', '-x', '1e8', '-p']	
 		run_cmd(commands)
 
-	def velvet(fvelvet, paired_rd, single_rd=None, fmt="fasta"):
+	def velvet(fvelvet, paired_rd, single_rd=None):
 		velvet_dir = os.path.join(VAMP_DIR, 'velvet.py')
 		khmers = args.k
 		if single_rd: 
-			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fvelvet, '-f', fmt]
+			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-s', single_rd, '-o', fvelvet]
 		else:
-			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-o', fvelvet, '-f', fmt]
+			commands = ['python', velvet_dir, '-k', khmers, '-p', paired_rd, '-o', fvelvet]
 		run_cmd(commands)
 
 	def vicuna(fvicuna, paired_rd, single_rd=None):
@@ -141,7 +141,7 @@ def wrap():
 			paired_rd = '.'.join([DIGINORM_PREFIX,'pe','fasta'])
 			fmt="fasta"
 		if args.a == 'velvet':
-			velvet(CTG_FILE, paired_rd, single_rd, fmt)
+			velvet(CTG_FILE, paired_rd, single_rd)
 		elif args.a == 'vicuna':
 			vicuna(CTG_FILE, paired_rd, single_rd)
 		elif args.a == 'spades':

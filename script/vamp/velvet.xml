@@ -1,5 +1,5 @@
-<tool id="de_novo_asmbl" name="Velvet">
- <command interpreter="python"> velvet.py -k $khmer -o $output -f $fmt
+<tool id="de_novo_asmbl" name="Velvet" version="1.2.10">
+ <command interpreter="python"> velvet.py -k $khmer -o $output 
 				#if $pinput
 				  -p $pinput
 				#end if 
@@ -9,12 +9,8 @@
 				</command>
  <inputs>
  	<param type="data" format="fasta,fastq" name="pinput" label= "Paired-end sequence to be assembled"  optional="true"/>
-        <param type="data" format="fasta,fastq" name="sinput" label="Single-end sequence to be assembled" optional="true"/>
-	<param type="text" name="khmer" size="30" label="k-mer(s) used in velvet assembling" help="put one or more k-mer size, like: 21,25,29; k-mer needs to be odd and does not exceed 91.  K-mers should be seperated by commas and do not put any blanks in between" />
-	<param type="select" name="fmt" label="Data format">
-		<option value="fastq">FASTQ</option>
-		<option value="fasta">FASTA</option>
-	</param>
+        <param type="data" format="fasta,fastq" name="sinput" label="Single-end sequence to be assembled" optional="true"/ help="At least one of the input file (paired-end/single) should be selected">
+	<param type="text" name="khmer" size="30" label="k-mer(s) used in velvet assembly" help="put one or more k-mer sizes, like: 21,25,29; k-mer needs to be an odd number and can not exceed 91.  K-mers should be seperated by commas, without any blanks in between" />
 
  </inputs>
 
@@ -26,7 +22,7 @@
 
 **What is Velvet**
 
-Velvet is one of the earliest yet still most popular de-bruijn graph algorithm based de novo genomic assembler especially designed from short read seuqncing technologies.  Currently Velvet takes in short read sequences (either single-end or paired-end) and produces high quality unique contigs.  Velvet also contains build-in error removals and schaffolding module. Velvet is our default de novo assembly in the full-pipeline.
+Velvet is one of the earliest yet still most popular de Bruijn graph-based algorithm based de novo genome assemblers especially designed for short read seuqncing technologies. Velvet takes in short read sequences (either single-end or paired-end) and produces high quality unique contigs.  Velvet also contains builtd-in error removals and scaffolding modules. Velvet is our default de novo assembler in the full VirAmp pipeline.
 
 For more details, please go to http://www.ebi.ac.uk/~zerbino/velvet/
 
@@ -34,17 +30,17 @@ For more details, please go to http://www.ebi.ac.uk/~zerbino/velvet/
 
 **What to input**
 
-1. Here we require combining dataset of similar kind into one file and submit at most one sing-end file and one paired-end file.  This means if you have the paired-end reads separately in different file, you will need to combine them together into **one** interleaved file.  We provide this tool under **UTILITY** section.
+1. Here we require that you combine datasets of similar kind into one file and that you submit at most one single-end sequence file and one paired-end sequence file.  This means if you have the paired-end reads separated in two files (e.g. forward and reverse, as outputted by Illumina sequencers), you will need to combine them together into **one** interleaved file.  We provide a tool for this task under **UTILITY** section.
 
-2. Please fill one or more odd numbers as k-mer size, separated by commas, the number(s) should not exceed 91
+2. Please fill in one or more odd numbers as the k-mer size, separated by commas (no spaces), Each k-mer length should be less than 91.
 
-3. Please indicate your dataset format, choose from FASTA/FASTQ
+3. Please indicate your dataset format: choose from FASTA or FASTQ
 
 ---------
 
 **Expected Result**
 
-A set of contigs is provided in FASTA format.  If multiple k-mers are provided, the results from several rounds (using different k-mer size) will be combined into one file
+A set of contigs is produced in FASTA format.  If multiple k-mers are provided, the results from several rounds (using different k-mer sizes) will be combined into one file.
 
 ---------
 

@@ -1,4 +1,4 @@
-<tool id='MUMmerREP' name='Inexact Repeat Identification' >
+<tool id='MUMmerREP' name='Inexact Repeat Identification' version="3.23">
  <command interpreter="python"> inexact_repeats.py -g $input -o $output </command>
 
  <inputs>
@@ -11,7 +11,7 @@
 
  <help>
 
-This tool uses MUMmer package to find large inexact repeats by comparing the set of sequences in the target genome. 
+This tool uses MUMmer package version 3.23 to find large inexact repeats by comparing the set of sequences in the target genome. 
 
 --------------
 
@@ -24,7 +24,11 @@ This tool uses MUMmer package to find large inexact repeats by comparing the set
 	3184	3283	3285	3384	100	100	100.00	scaffold3_size9181	scaffold3_size9181
 	3285	3384	3184	3283	100	100	100.00	scaffold3_size9181	scaffold3_size9181
 
+------------------
 
+**Reference**
+
+For more details about MUMmer package, please go to http://mummer.sourceforge.net/
 
  </help>
 </tool>
