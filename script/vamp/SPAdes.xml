@@ -9,9 +9,26 @@
 				</command>
 
  <inputs>
-	<param type="data" format="fasta,fastq" name="pinput" label="Paired-end reads" optional="true"/>
-	<param type="data" format="fasta,fastq" name="sinput" label="Single-end reads" optional="true" help="At least one of the input files(paired-end/single end) should be selected"/>
-	<param type="text" name="khmer" size="30" label="k-mer(s)" value="21,33,55" help="k-mers used in de novo assembly, multiple kmers allowed" />
+ <conditional name="single_paired" >
+        <param type="select" name="datatype" label="input format">
+                <option value="paired">Interleaved paired-end reads</option>
+                <option value="single">Single-end reads</option>
+                <option value="both">Interleaved paired-end reads AND Single-end reads</option>
+        </param>
+
+        <when value="paired">
+                <param type="data" format="fasta,fastq" name="pinput" label= "Input file"/>
+        </when>
+        
+        <when value="single">
+                <param type="data" format="fasta,fastq" name="sinput" label="Input file" />
+        </when>
+
+        <when value="both">
+                <param type="data" format="fasta,fastq" name="pinput" label="Paired-end input file"/>
+                <param type="data" format="fasta,fastq" name="sinput" label="Single-end input file"/>
+        </when>
+ </conditional>
 	<param type='select' name="fmt" label='Data format'>
 		<option value='fasta'>FASTA</option>
 		<option value='fastq'>FASTQ</option>
