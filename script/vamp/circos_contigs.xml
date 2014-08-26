@@ -9,4 +9,9 @@
 	<outputs>
 		<data name='output' format='pdf' label="circos graph on ${on_string}" from_work_dir='output_circos.pdf'/>
 	</outputs>
+	<help>
+**Reference**
+
+Krzywinski, M. et al. Circos: an Information Aesthetic for Comparative Genomics. Genome Res (2009) 19:1639-1645
+	</help>
 </tool>
