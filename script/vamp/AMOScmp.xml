@@ -7,7 +7,7 @@
 
  <inputs>
 	<param type="data" format="fasta" name="cinput" label="Contig file" />
-	<param type="data" format="fasta,fastq" name="pinput" optional="true" label="Paired-end sequence" />
+	<param type="data" format="fasta,fastq" name="pinput" optional="true" label="Paired-end sequence" help="This should be an interleaved paired-end read file, if you have two separated read files, please merge them using 'Merge Pair' tool in UTILITY section"/>
 	<param type="data" format="fasta" name="finput" label="Reference sequence"/>
  </inputs>
 
@@ -27,7 +27,7 @@ In our pipeline, this step uses contigs as input instead of shotgun sequences, t
 
 For minimum, one FASTA file containing contigs assembled from de novo assemblers and a reference genome in FATSA format is required.
 
-A dataset of pair-end read information is also encouraged, which will further help orient and bridge the contigs.
+An interleaved dataset of pair-end read information is also encouraged, which will further help orient and bridge the contigs.
 
 **Reference**  
 
