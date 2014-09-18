@@ -98,7 +98,7 @@
 	</conditional>
 
 	<conditional name="method">
-	<param name="mapping_method" type="select" label="which mapping method to use" help="bwa-mem usually work with read length 70bp-1Mbp and can deal with large INDELs; if you have reads shorter than 100bp, normal-bwa is recommended">
+	<param name="mapping_method" type="select" label="which mapping method to use" help="bwa-mem usually works with read length 70bp-1Mbp and can deal with large INDELs; if you have reads shorter than 100bp, normal-bwa is recommended">
 		<option value="mem">BWA-MEM</option>
 		<option selected="True" value="normal">Normal BWA</option>
 	</param>
@@ -161,5 +161,9 @@
  <outputs>
 	<data name="boutput" format="bam" />
  </outputs>
+
+ <help>
+BWA is a general tool to map the short sequence reads back to the newly assembled genome. This can be used for quality assessment of the new assembly. For instance, the output of bwa mapping can be used to detect the minor variants that are present within the viral population sequenced.
+ </help>
 
 </tool>

@@ -19,7 +19,7 @@
 	<param type="data" format="fasta" name="fcontigs" label="Contigs to be scaffolded" />
 	<param type="data" format="fasta,fastq" name="linput" label="paired-end dataset READ-1"/>
 	<param type="data" format="fasta,fastq" name="rinput" label="paired-end dataset READ-2"/>
-	<param type="integer" name="ins" size="15" value="350" label="Insertion size" help="Insertion size of the paired-end reads, please consult the sequencing facility if you are not sure about this value"/>
+	<param type="integer" name="ins" size="15" value="350" label="Insert size" help="Insert size of the paired-end reads, please consult the sequencing facility if you are not sure about this value"/>
 
 	<param type="select" name="fmt" label="paired-end dataset format">
 		<option value="fasta">FASTA</option>
@@ -42,7 +42,7 @@
 			</param>
 
 			<conditional name='ext_settings'>
-				<param name='ext' type='select' label='contig extension' help='Whether to perform contig extension, this action will pick up information lost during assembly, but the process takes relative long time compared to only performing scaffolding'>
+				<param name='ext' type='select' label='contig extension' help='Whether to perform contig extension: this action picks up information lost during assembly, but the process takes a relatively long time compared to only performing scaffolding'>
 					<option selected='True' value='1'>Yes</option>
 					<option value='0'>No</option>
 				</param>
@@ -90,7 +90,7 @@ http://www.baseclear.com/lab-products/bioinformatics-tools/sspace-standard/
 
 **How to compute the insert size**
 
-The insertion size refers to the observed average library fragment size without adaptors during library preparation. Here's an example:
+The insert size refers to the observed average library fragment size without adaptors during library preparation. Here's an example:
 
 .. image:: ${static_path}/vamp_images/insertion_size.png 
 

@@ -1,4 +1,4 @@
-<tool id="quast_stat" name="Quality Assessment For Genome Assembling" version=2.2>
+<tool id="quast_stat" name="Quality Assessment For Genome Assembling" version="2.2">
 	<command interpreter="python"> quast_main.py -r $rinput 
 	-t $targetseq
 	-o $report.files_path
@@ -19,15 +19,15 @@
 
 **How to evaluate an assembly**
 
-VIRAMP uses QUAST (Quality Assessment Tools for Genome Assemblies) to evaluate the newly assembled genome.  
+VirAmp uses QUAST (Quality Assessment Tools for Genome Assemblies) to evaluate the newly assembled genome.  
 
-Basic statistics such as contig lengths, N50, NG50, #misassembles etc. are given on screen, a more detailed report is provided for download on the right "history" panel. 
+Basic statistics such as contig lengths, N50, NG50, # misassemblies etc. are given on screen, and more detailed report is provided for download on the right "history" panel. 
 
 Two important statistics here are **N50** and **NG50**.
 
-- **N50** is a weighted median statistic such that 50% of the entire assembly is contained in contigs or scaffolds equal to or larger than this value (Rounsley,S. etc. 2009).  This is one of the most accepted statistics to evaluate the quality of assembly.
+- **N50** is a weighted median statistic such that 50% of the entire assembly is contained in contigs or scaffolds equal to or larger than this value (Rounsley, S. etc. 2009).  This is one of the most accepted statistics to evaluate the quality of assembly.
 
-- **NG50** is a modified version of N50, when the reference genome is presented, the length of reference genome is used for normalization in stead of the cumulative length of the entire assembly. This reduce the bias brings by the misassemlies, which may cause big trouble when the percentage of misassemblies is significant. 
+- **NG50** is a modified version of N50. When a reference genome is presented, the length of reference genome is used for normalization instead of the cumulative length of the entire assembly. This reduces the bias brought by misassemlies, which may cause trouble when the percentage of misassemblies is significant. 
 
 -------------
 
@@ -37,7 +37,7 @@ Two important statistics here are **N50** and **NG50**.
 
 2. Target genome: Your newly assembled genome (or other genome you want to compare with the referece) in FASTA format
 
-3. Contig length threshold: Minimum length of contigs you want to consider as valid, by default is 500nt
+3. Contig length threshold: Minimum length of contigs you want to consider as valid, by default is 500 nucleotides.
  
 -------------
 

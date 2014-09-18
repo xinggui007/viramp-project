@@ -19,15 +19,15 @@
 
 **What Reference-guided Scaffolding does**
 
-Reference-guided Scaffolding is performed using AMOScmp, a comparative assembler that can assemble a set of shotgun reads from an organism using the orienting information from a related organism.  AMOScmp transforms the traditional overlap-layout-consensus approach to alignment-layout-consensus, which significantly increase the assembly efficiency.  The underline mapping engine of AMOS is MUMmer package, then the layout step is designed to take into the account of polymorphisms between two genome.
+Reference-guided Scaffolding is performed using AMOScmp, a comparative assembler that can assemble a set of shotgun reads from one organism using the orienting information from a related organism.  AMOScmp transforms the traditional overlap-layout-consensus approach to alignment-layout-consensus, which significantly increase the assembly efficiency.  The underlying mapping engine of AMOS is the MUMmer package, and then the layout step is designed to take into account any polymorphisms between the two genomes.
 
-In our pipeline, this step uses contigs as input instead of shotgun sequences, to keep most variation out of the sequencing data
+In our pipeline, this step uses contigs as input instead of shotgun sequences, to keep most variation out of the sequencing data.
 
 **What to input**
 
-For minimum, one FASTA file containing contigs assembled from de novo assemblers and a reference genome in FATSA format is required.
+At minimum, one FASTA file containing contigs from de novo assemblers and a reference genome in FATSA format is required.
 
-An interleaved dataset of pair-end read information is also encouraged, which will further help orient and bridge the contigs.
+An interleaved dataset of pair-end read information is also encouraged, because it will further help orient and bridge the contigs.
 
 **Reference**  
 

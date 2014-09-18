@@ -11,7 +11,7 @@
 
  <help>
 
-This tool uses MUMmer package version 3.23 to find large inexact repeats by comparing the set of sequences in the target genome. 
+This tool uses the MUMmer package version 3.23, to find large inexact repeats by comparing the set of sequences in the target genome. To detect short sequence repeats (microsatellites), please go to the **Tandem Repeats Discovery** tool. 
 
 --------------
 
@@ -28,7 +28,7 @@ This tool uses MUMmer package version 3.23 to find large inexact repeats by comp
 
 **Reference**
 
-For more details about MUMmer package, please go to http://mummer.sourceforge.net/
+For more details about the MUMmer package, please go to http://mummer.sourceforge.net/
 
  </help>
 </tool>

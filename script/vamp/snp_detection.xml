@@ -1,4 +1,4 @@
-<tool id='snp_det' name='SNP detection' version="1.0">
+<tool id='snp_det' name='SNV detection' version="1.0">
 	<command interpreter="python">snp_detection.py -r $rinput -t $tinput -o $output </command>
 
 	<inputs>
@@ -13,9 +13,9 @@
  <help>
 
 
-**How to detect SNPs**
+**How to detect SNVs**
 
-This SNP detection tool is built upon MUMmer package version 3.23 to align the target genome to the reference genome and identify the SNPs.
+This Single Nucleotide Variation (SNV) detection tool is built upon the MUMmer package version 3.23, to align the target genome to the reference genome and identify SNVs between the two genomes.
 
 ----------------------
 
@@ -28,7 +28,7 @@ This SNP detection tool is built upon MUMmer package version 3.23 to align the t
 2. Target genome (new assembly or other genome sequence you want to compare with the reference) in FASTA format
 
 **Output**:
-A VCF format SNP file
+A VCF format SNV file
 
 ----------------------
 

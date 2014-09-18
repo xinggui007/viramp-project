@@ -11,7 +11,7 @@
 	</outputs>
  <help>
 
-This tool merge the paired-reads which are separate files into one interleaved file
+This tool merges paired-reads which are in separate files (for example, forward and reverse) into one interleaved file.
 
 ------------
 

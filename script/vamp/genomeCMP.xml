@@ -4,7 +4,7 @@
 	<inputs>
 		<param type="data" format="fasta" name="refseq" label="Reference genome"/>
 		<param type="data" format="fasta" name="target" label="Target genome"/>
-		<param type="select" name="outformat" label="output order" help="Choose the result either sorted by reference genome coordinates(reference coordinates) or grouped by the assembled contigs name(contigs)" >
+		<param type="select" name="outformat" label="output order" help="Choose the result either sorted by reference genome coordinates (reference coordinates) or grouped by the assembled contigs name (contigs)" >
 			<option value='ref'>Reference Coordinates </option>
 			<option value='target'>Contigs</option>
 		</param>
@@ -18,7 +18,7 @@
 
 **What is does**
 
-Draft vs. Reference genome comparison gives user an overview of the similarity between the new assembled genome and reference.  It is built upon MUMmer package version 3.23 to align the assembly to the reference genome, and provide a tab-delimited file elaborate alignment of all parts.
+Draft vs. Reference genome comparison gives the user an overview of the similarity between the new assembled genome and the reference genome.  It is built upon the MUMmer package version 3.23, to align the assembly to the reference genome, and provide a tab-delimited file elaborating the alignment of all parts.
 
 -----------------
 
@@ -28,9 +28,9 @@ Draft vs. Reference genome comparison gives user an overview of the similarity b
 
 2. Target genome (or any genome you want to compare to the reference) in FASTA format
 
-3. Output order: you can choose how the result record is listed (see examples for details):
+3. Output order: you can choose how the results record is listed (see examples for details):
 
-- **Reference coordinates** lists the record according to the starting coordinates of each reference segmant in ascending order:
+- **Reference coordinates** lists the record according to the starting coordinates of each reference segment in ascending order:
 
 - **Contig coordinates** lists the record according to the starting coordinates of each target genome in ascending order:
 
@@ -52,9 +52,9 @@ Draft vs. Reference genome comparison gives user an overview of the similarity b
 
 - 7. **[LEN_T]** Target genome fragment length
 
-- 8. **[COV_R]** Percentage coverage of the reference fragment comparing to the whole reference sequence
+- 8. **[COV_R]** Percentage coverage of the reference fragment compared to the whole reference sequence
 
-- 9. **[COV_T]** Percentage coverage of the target fragment comparing to the whole target genome sequence
+- 9. **[COV_T]** Percentage coverage of the target fragment compared to the whole target genome sequence
 
 - 10. **[REF_ID]** Reference genome ID
 

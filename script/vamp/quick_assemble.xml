@@ -31,7 +31,7 @@
 					<option value="spades">SPAdes</option>
 				</param>
 				<param type="text" name="kmers" size="30" value="35,45,55,65" label="K-mer size" help="K-mers used in the de novo assemlbly"/>
-				<param type="integer" name="ins" size="15" value="350" label="Insertion size" help="Insertion size for paired-end seuqencing" />
+				<param type="integer" name="ins" size="15" value="350" label="Insert size" help="Insert size for paired-end seuqencing" />
 				<param type="select" name="highcov" label="Coverage" help="Choose 'High' if average coverage is higher than x500">
 					<option selected="True" value="">High</option>
 					<option value="-c">Normal</option>
@@ -69,7 +69,7 @@
 
 **Quick Reference**
 
-This runs the entire pipeline of the Virus Assembly Pipeline (VIRAMP) with default settings. **For impatient users**, you need at least three files: read#1 and read#2 shotgun sequencing file in FASTA or FASTQ format, and a reference genome in FASTA format.  If you know the insertion size of your paired-end library, you may also change the number.  Otherwise by default it's set to 350.
+This runs the entire pipeline of the Virus Assembly Pipeline (VirAmp) with default settings. **For impatient users**, you need at least three files: read#1 and read#2 of shotgun sequencing files in FASTA or FASTQ format, and a reference genome in FASTA format.  If you know the insertion size of your paired-end library, you may also change that number.  Otherwise by default it's set to 350.
 
 ------------
 
@@ -79,17 +79,17 @@ This runs the entire pipeline of the Virus Assembly Pipeline (VIRAMP) with defau
 
 2. A comprehensive report evaluating the assembly produced by Quast
 
-3. A SNP report in VCF format, when comparing the new assembly to the reference genome
+3. A SNV report in VCF format, which reports variants between the new assembly and the reference genome
 
-4. A stucture comparison report describing how the new assembly assigned to the reference genome
+4. A stucture comparison report describing how the new assembly aligned to the reference genome
 
-5. A circos graph visualizing the situation of **4**.  When the assembly result contains more than 100 contigs, it is suggested to turn down this option in **Advanced Setting**.
+5. A circos graph visualizing the report of **4**.  When the assembly result contains more than 100 contigs, it is suggested to turn off this option in **Advanced Settings**.
 
 6. (Optional) One linear genome created from the assembly result of **1**.  By default this is not provided.  We strongly recommend to use the result of **1** and look into those gaps before closing them, especially when **1** contains more than 20 contigs.
 
 ------------
 
-**VIRAMP workflow**
+**VirAmp workflow**
 
 Virus Assembly Pipeline contains a set of programs to assemble the the virus genome from shotgun sequence in a fast and accurate way with a related genome as guide.  In general, it contains the following steps:
 
@@ -100,37 +100,37 @@ This step trims out the low quality bases in reads from both end using seqtk too
 
 2. Diginal Normalization
 
-Digital normalization (diginorm) uses a single-pass computational algorithm to reduce the high and redundant coverage in shotgun sequence dataset, thus significantly decreases time and memory requirements for the de novo assembly while remain the accuracy.
+Digital normalization (diginorm) uses a single-pass computational algorithm to reduce the high and redundant coverage in shotgun sequence dataset, thus significantly decreasing time and memory requirements for the de novo assembly while retaining the accuracy.
 
 3. De novo assembly (velvet)
 
-This step uses the velvet program to do a de novo assembly from the shotgun sequence. This step result in a set of contigs in various length.
+This step uses the velvet program to do a de novo assembly from the shotgun sequence. This step results in a set of contigs of various lengths.
 
 4. Reference-guided Scaffolding (AMOScmp)
 
-Contigs generated from velvet in step 3 are oriented and connected into scaffolds by the reference-guided assemling tool AMOScmp
+Contigs generated from velvet in step 3 are oriented and connected into scaffolds by the reference-guided assembly tool AMOScmp
 
 5. Scaffolding using paired-end information (SSPACE)
 
-Using paired-end reads from the original dataset to extend and scaffold contigs
+Uses paired-end reads from the original dataset to extend and scaffold contigs
 
 6. Assembly assessment
 
 QUAST (Quality Assessment Tool for Genome Assemblies) program is used for the statistical assessment of the assemblies resulting from step 4
 
-7. SNP generation
+7. SNV generation
 
-MUMmer is used for aligning assembling result to the reference genome and generating snps.
+MUMmer is used to align the assembly results to the reference genome and report SNVs.
 
 8. Draft and reference genome comparison
 
-MUMmer is used to compare the assembling result (draft genome) with the reference genome.  
+MUMmer is used to compare the assembly results (draft genome) with the reference genome.  
 
 -------------
 
 **Citation**
 
-For more details and citation about each tool, please go to "VAMP" section and go through each step separately.
+For more details and citation about each tool, please go to "VirAmp" section and go through each step separately.
 
  </help>
 

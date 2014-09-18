@@ -17,7 +17,7 @@
 
 **What is VICUNA**
 
-VICUNA is a de novo assembler developed by the Broad Institute, especially targeted at viral population. VICUNA applies a modified overlap-layout-consensus (OLC) strategy to the NGS dataset.  Different from the other two assemblers which are both based on the de-bruijn graph algorithm, by using OLC algorithm, VICUNA may retrive a larger amount of variation data for some dataset, but require much higher computational resources (both time and memory). But it is still encouraged to try out this assembler and compare with other option if the system can fulfill VICUNA's computational requirement.  
+VICUNA is a de novo assembler developed by the Broad Institute, especially targeted at viral populations. VICUNA applies a modified overlap-layout-consensus (OLC) strategy to the NGS dataset.  Unlike the other two assemblers which are both based on the de-bruijn graph algorithm, VICUNA uses a modified OLC algorithm. VICUNA may retrive a larger amount of variation data for some datasets, but requires much higher computational resources (both time and memory). However it is still useful to try out this assembler and compare it with other options if the system can fulfill VICUNA's computational requirements.  
 
 For more details, please go to http://www.broadinstitute.org/scientific-community/science/projects/viral-genomics/vicuna
 
@@ -25,9 +25,9 @@ For more details, please go to http://www.broadinstitute.org/scientific-communit
 
 **What to input**
 
-Here we require combining dataset of similar kind into one file and submit at most one sing-end file and one paired-end file. This means if you have the paired-end reads separately in different file, you will need to combine them together into one interleaved file. We provide this tool under **UTILITY** section.
+Here VICUNA requires that you submit at most one paired-end file. This means if you have the forward and reverse paired-end reads in two separate files, you will need to combine them together into one interleaved file. We provide this tool **Merge Pair** under the **UTILITY** section.
 
-Since VICUNA requires much longer processing time, we only allow one round of assembly(with single k-mer) to be performed each time.
+Since VICUNA requires much longer processing time, we only allow one round of assembly (with a single k-mer) to be performed each time.
 
 -------------
 

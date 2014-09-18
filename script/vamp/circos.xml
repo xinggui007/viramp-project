@@ -15,7 +15,7 @@
 
 **What is Circos**
 
-Circos visualize data in a circular layout, here it is used for visualize reference-draft genome comparison, especially genomic rearrangements and large INDELs.  The tool is visualizing the comparison information from the previous session **Draft vs. Reference genome comparison**. Position based data is presented in circular way, which projects the specific regions in draft genome to the mapped reference genome region.
+Circos visualizes data in a circular layout. Here it is used to visualize the reference vs. draft genome comparison. It is especially useful to visualize genomic rearrangements and large INDELs.  This tool is visualizing the comparison information from the previous step **Draft vs. Reference genome comparison**. The position based data is presented in a circular way, which projects the specific regions in the draft genome to the mapped reference genome region.
 
 ------------------
 
@@ -29,7 +29,7 @@ Circos visualize data in a circular layout, here it is used for visualize refere
 
 **Output example**
 
-The grey segment on the right side represents the reference genome, and the colored segments on the left represent the contigs from the target genome.  The unit of the axis is kb.  The semi-transparant bands inside the circo connect the aligned fragment between target genome and reference genome.  
+The grey segment on the right side represents the reference genome, and the colored segments on the left represent the contigs from the target genome.  The unit of the axis is kb.  The semi-transparant bands inside the circle connect the aligned fragments between the target genome and the reference genome.  
 
 .. image:: ${static_path}/vamp_images/circos_new.png
 .. image:: ${static_path}/vamp_images/circos_new2.png
@@ -40,7 +40,4 @@ The grey segment on the right side represents the reference genome, and the colo
 
 Krzywinski, M. et al. Circos: an Information Aesthetic for Comparative Genomics. Genome Res (2009) 19:1639-1645
  </help>
-
-
-
 </tool>

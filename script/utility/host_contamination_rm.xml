@@ -52,7 +52,7 @@
 <help>
 **Host Contamination Removal**
 
-This module removes host contamination reads from the datasets. This process should be done to the raw reads directly from the machine before any further process is applied.  The input file should be in fastq format (standard sequence format from most of the sequencing facilities), if paired-end, the dataset should be in two seperated files.  The underline mechanism is to align the reads back to the host genome and filter out those which can perfectly mapped to the host. In order to keep most of the information, for paired-end dataset, if only one read in the pair maps to the host genome, we still keep both of the reads in the output dataset, since we don't want to lose the paired information. The output file is one or two fastq files(depending on it's paired-end or single-end) containing the reads do not map to the host genome.
+This module removes host contamination sequences from viral genome sequencing datasets. This process should be done to the raw reads directly from the machine before any further process is applied.  The input file should be in fastq format (standard sequence format from most sequencers). If the sequences are paired-end, then the dataset should be in two seperate files.  The underlying mechanism of this step is to align the reads back to the host genome and filter out those which map perfectly to the host. In order to keep as much of the information as possible, for paired-end datasets, if only one read in the pair maps to the host genome, we still keep both of the reads in the output dataset. The output file is one or two fastq files (depending on whether the input was paired-end or single-end) containing the reads did not map to the host genome.
 
 </help>
 

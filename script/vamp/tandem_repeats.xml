@@ -12,7 +12,7 @@
 
   <help>
 
-A tandem repeat is a pattern of two or more nucleotides is repeated and the repetitions are directly adjacent to each other.  This tool uses MUMmer package version 3.23 to find all tandem repeats with minimum length N (defined by user, default to be 15)
+A tandem repeat is a pattern of two or more nucleotides that is repeated, and for which the repetitions are directly adjacent to each other.  This tool uses the MUMmer package version 3.23, to find all tandem repeats with the minimum length N (defined by user; the default is set to 15). Note N is the full length (Extent) of the tandem repeat sequence, not the length of the repeating unit (UnitLen).
 
 ------------
 
@@ -36,7 +36,7 @@ A tandem repeat is a pattern of two or more nucleotides is repeated and the repe
 
 **Reference**
 
-For more details about MUMmer package, please go to http://mummer.sourceforge.net/
+For more details about the MUMmer package, please go to http://mummer.sourceforge.net/
   </help>
 
 </tool>

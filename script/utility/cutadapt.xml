@@ -32,7 +32,7 @@
 		<param name="finput" type="data" format="fasta,fastq" label="Input file" />
 		<param name="three_prime" type="text" size="200" label="Three prime adaptor" help="paste your 3-prime adaptor here"/>
 		<param name="five_prime" type="text" size="200" label="Five prime adaptor" help="paste your 5-prime adaptor here"/>
-		<param name="any_prime" type="text" size="200" label="Other adaptor" help="If you are not sure where your adaptor located, paste below"/>
+		<param name="any_prime" type="text" size="200" label="Other adaptor" help="If you are not sure where your adaptor located, paste above"/>
 
 		<conditional name="psetting">
 		 <param name="plist" type="select" label="Cutadapt settings">
@@ -74,5 +74,9 @@
 	<outputs>
 		<data name="foutput" format="fasta,fastq" label="cutadapt result on ${on_string}"/>
 	</outputs>
+
+	<help>
+This tool is used to remove the adaptor or primer sequences that may be present as a result of library preparation.  
+	</help>
 </tool>
 

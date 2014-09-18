@@ -10,4 +10,8 @@
 		<data name="output" format="fasta" label="linear genome from ${on_string}.fasta" from_work_dir="linear_out.fasta"/>
 	</outputs>
 
+	<help>
+This tool connects the contigs in one FASTA file into a single linear sequence. The gaps between consecutive contigs are filled by Ns, and the number of Ns filling each gap are estimated by the alignment between the newly assembled contigs and the reference genome.
+
+	</help>
 </tool>
