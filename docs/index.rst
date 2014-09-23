@@ -6,7 +6,7 @@
 Welcome to VirAmp's documentation!
 ==================================
 
-VIRamp is a galaxy-based system for fast virus genome assembly and variation discovery.
+VirAmp is a galaxy-based system for fast virus genome assembly and variation discovery.
 
 Following is an overview of how VIRamp platform works:
 

@@ -14,7 +14,7 @@ Click the blue button 'Launch Instance' at the mid-level of the page.
 Step-1: Choosing the instance
 -----------------------------
 
-Click Community AMIs tab at mid-left and search the VirAmp AMI-id: "ami-06a4426e", or you can simply search "viramp"
+Click Community AMIs tab at mid-left and simply search "viramp"
 
 .. image:: viramp-doc/search-ami.png
 
