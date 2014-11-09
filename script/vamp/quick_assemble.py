@@ -156,9 +156,7 @@ def wrap():
 		pretarget = '.'.join([SSPACE_PREFIX,'fasta'])
 		if args.m:
 			make_linear(pretarget)
-			target = '.'.join([LINEAR_PREFIX, 'fasta'])
-		else:
-			target = pretarget
+		target = pretarget
 
 		Quast(target, args.d)
 		SNP_det(target)

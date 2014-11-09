@@ -1,9 +1,9 @@
 <tool id='spades' name="SPAdes" version="2.5.1">
 <command interpreter="python"> SPAdes.py -k $khmer -o $output -f $fmt 
-				#if $pinput
+				#if $varExists('pinput'):
 				-p $pinput
 				#end if
-				#if $sinput
+				#if $varExists('sinput'):
 				-s $sinput
 				#end if
 				</command>
@@ -25,14 +25,16 @@
         </when>
 
         <when value="both">
-                <param type="data" format="fasta,fastq" name="pinput" label="Paired-end input file"/>
-                <param type="data" format="fasta,fastq" name="sinput" label="Single-end input file"/>
+                <param type="data" format="fasta,fastq" name="pinput" label="Paired-end input file" help="only reads shorter than 500bp are accepted" />
+                <param type="data" format="fasta,fastq" name="sinput" label="Single-end input file" help="only reads shorter than 500bp are accepted"/>
         </when>
  </conditional>
 	<param type='select' name="fmt" label='Data format'>
 		<option value='fasta'>FASTA</option>
 		<option value='fastq'>FASTQ</option>
 	</param>
+
+	<param type="text" name="khmer" size="30" value="35,45,55,65" label="K-mer size" help="K-mers used in the de novo assemlbly"/>
  </inputs>
 
  <outputs>

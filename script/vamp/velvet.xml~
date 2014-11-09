@@ -1,11 +1,10 @@
 <tool id="de_novo_asmbl" name="Velvet" version="1.2.10">
  <command interpreter="python"> velvet.py -k $khmer -o $output 
-				#if $varExists('pinput'):
+				#if $pinput in locals()
 				  -p $pinput
-				#end if
-
-				#if $varExists('sinput'):
-				  -s $sinput
+				#end if 
+				#if $sinput in locals()
+				  -s $sinput 
 				#end if
 				</command>
  <inputs>
@@ -25,8 +24,8 @@
 	</when>
 
 	<when value="both">
-		<param type="data" format="fasta,fastq" name="pinput" label="Paired-end input file" help="only reads shorter than 500bp are accepted"/>
-		<param type="data" format="fasta,fastq" name="sinput" label="Single-end input file" help="only reads shorter than 500bp are accepted"/>
+		<param type="data" format="fasta,fastq" name="pinput" label="Paired-end input file"/>
+		<param type="data" format="fasta,fastq" name="sinput" label="Single-end input file"/>
 	</when>
 	</conditional>
 

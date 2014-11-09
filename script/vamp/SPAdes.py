@@ -9,6 +9,11 @@ import sys, os, re
 import argparse
 import subprocess
 import shutil
+import string
+import random
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+	return ''.join(random.choice(chars) for _ in range(size))
 
 CPATH = os.path.abspath('./')
 PRD = 'spades_paired'
@@ -42,18 +47,21 @@ def wrap():
 			paired_rd = '--12'
 			new_prd = '.'.join([PRD, SFX])
 			shutil.copyfile(args.p, new_prd) 
+			careful = '--careful'
 		if args.s:
 			single_rd = '-s'
 			new_srd = '.'.join([SRD, SFX])
 			shutil.copyfile(args.s, new_srd)
+			careful = ''
 
-		commands = ['spades.py', '-k', args.k, '--careful', '--sc', paired_rd, new_prd, single_rd, new_srd, '-o', 'spades_out']
+		outdir = '_'.join([id_generator(), 'spadesout'])
+		commands = ['spades.py', '-k', args.k, careful, '--only-assembler', paired_rd, new_prd, single_rd, new_srd, '-o', outdir]
 		print ' '.join(commands)
 		run_cmd(commands, getval=True)
 		if args.p:
-			shutil.copyfile('spades_out/scaffolds.fasta', args.o)
+			shutil.copyfile('/'.join([outdir, 'scaffolds.fasta']), args.o)
 		else:
-			shutil.copyfile('spades_out/contigs.fasta', args.o)
+			shutil.copyfile('/'.join([outdir, 'contigs.fasta']), args.o)
 
 	parser.set_defaults(func=run_spades)
 	args = parser.parse_args()

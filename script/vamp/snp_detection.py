@@ -73,12 +73,14 @@ def wrap():
                                         	newrefpos = int(refpos) - 1
                                         	nsnps = [str(newrefpos), str(int(tgpos)-1), refseq[newrefpos-1]+refvar, refseq[newrefpos-1]]
 			return nsnps
+
 		snps = list()
 		for line in msnp.split('\n'):
 			if not re.match('^#', line) and len(line)>0:
 				elem = line.split('\t')
 				snps = read_snps(snps, elem[0],elem[1],elem[2],elem[3])
-		otf.write('\t'.join([gname, snps[0], 'nucmer', snps[2], snps[3], '0', 'PASS', '.']))
+		if len(snps)==4:
+			otf.write('\t'.join([gname, snps[0], 'nucmer', snps[2], snps[3], '0', 'PASS', '.']))
 		otf.write('\n')	
 		otf.close()
 

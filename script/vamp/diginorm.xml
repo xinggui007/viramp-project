@@ -13,7 +13,9 @@
 	</inputs>
 	<outputs>
 		<data name="seoutput" format="fasta" label="${tool.name} on ${on_string}.se" from_work_dir="diginorm_out.se.fasta"/>
-		<data name="peoutput" format="fasta" label="${tool.name} on ${on_string}.pe" from_work_dir="diginorm_out.pe.fasta"/>
+		<data name="peoutput" format="fasta" label="${tool.name} on ${on_string}.pe" from_work_dir="diginorm_out.pe.fasta">
+		<filter> pairflag == "-p"</filter>
+		</data>
 	</outputs>
 
 	<help>

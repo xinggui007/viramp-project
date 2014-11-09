@@ -54,7 +54,7 @@ def wrap():
 	def velvet(single_rd, fvelvet):
                 velvet_dir = os.path.join(VAMP_DIR, 'velvet.py')
                 khmers = ','.join(str(x) for x in range(31,72,8))
-                commands = ['python', velvet_dir, '-k', khmers, '-s', single_rd, '-o', fvelvet, '-f', 'fasta']
+                commands = ['python', velvet_dir, '-k', khmers, '-s', single_rd, '-o', fvelvet]
                 run_cmd(commands)
 
 	def vicuna(single_rd, fvicuna):
@@ -118,9 +118,11 @@ def wrap():
 
 		if args.m:
 			make_linear(pretarget)
-			target = '.'.join([LINEAR_PREFIX, 'fasta'])
-		else:
-			target = pretarget
+#			target = '.'.join([LINEAR_PREFIX, 'fasta'])
+#		else:
+#			target = pretarget
+
+		target = pretarget
 
 		Quast(target, args.d)
                 SNP_det(target)
