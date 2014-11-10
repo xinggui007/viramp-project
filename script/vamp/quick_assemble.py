@@ -156,6 +156,7 @@ def wrap():
 		pretarget = '.'.join([SSPACE_PREFIX,'fasta'])
 		if args.m:
 			make_linear(pretarget)
+
 		target = pretarget
 
 		Quast(target, args.d)
