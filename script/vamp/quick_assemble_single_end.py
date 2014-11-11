@@ -64,10 +64,11 @@ def wrap():
                 run_cmd(commands)
 
         def spades(single_rd, fspades):
-                spades_dir = os.path.join(VAMP_DIR, 'spades.py')
-                khmers = ','.join(str(x) for x in range(31,72,5))
+                spades_dir = os.path.join(VAMP_DIR, 'SPAdes.py')
+                khmers = ','.join(str(x) for x in range(31,52,10))
         
-                commands = ['python', spades_dir, '-k', khmers, '-s', single_rd, '-o', fspades]
+                commands = ['python', spades_dir, '-k', khmers, '-s', single_rd, '-o', fspades, '-f', 'fasta']
+		print ' '.join(commands)
                 run_cmd(commands)      
 
 	def AMOScmp(fctg, preamos):

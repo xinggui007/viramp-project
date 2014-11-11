@@ -8,6 +8,8 @@
 import os, re, shutil
 import argparse
 import subprocess
+import string
+import random
 
 def run_cmds(cmds, getval=True):
 	DEVNULL = open(os.devnull, 'wb')
@@ -24,6 +26,9 @@ def purge(dir, pattern):
 			except:
 				shutil.rmtree(os.path.join(dir,f))
 
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+        return ''.join(random.choice(chars) for _ in range(size))
+
 def wrap():
 	parser = argparse.ArgumentParser(description='Running the AMOScmp pipeline')
 	parser.add_argument('-c', metavar='contigs.fa', help='Contigs file, fasta format')
@@ -32,7 +37,7 @@ def wrap():
 	parser.add_argument('-o', metavar='AMOSoutput', default='AMOSouput', help='Output prefix, by default is AMOSoutput')
 
 	def AMOSpipeline():
-		PREFIX='_'.join([args.o, 'tmp'])
+		PREFIX = id_generator()
 		INPUT = 'combined_seq.fa'
 		AFG = '.'.join([PREFIX,'afg'])
 
