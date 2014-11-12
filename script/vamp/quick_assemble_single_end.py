@@ -35,8 +35,9 @@ def wrap():
 	parser.add_argument('-l', metavar='reads.fq', help='single-end read dataset, fastq format')
 	parser.add_argument('-r', metavar='refseq.fa', help='reference genome, fasta format')
 	parser.add_argument('-d', metavar='quast_out', default='quast_out', help='(optional) output directory of quast report, only need to specify when integrated into galaxy')
-	parser.add_argument('-a', choices=['velvet', 'vicuna', 'spades'], default='velvet', help='choose the de novo assembler, by default velvet') 
+	parser.add_argument('-a', choices=['velvet', 'spades'], default='velvet', help='choose the de novo assembler, by default velvet') 
 	parser.add_argument('-m', action='store_true', help='create one linear genome sequence')
+	parser.add_argument('-c', action='store_true', help='Do not perform digital normalization')
 
 	def quality_trim(infile, outfile):
                 qual_dir = os.path.join(VAMP_DIR, 'trim_quality.py')
@@ -57,17 +58,17 @@ def wrap():
                 commands = ['python', velvet_dir, '-k', khmers, '-s', single_rd, '-o', fvelvet]
                 run_cmd(commands)
 
-	def vicuna(single_rd, fvicuna):
-                vicuna_dir = os.path.join(VAMP_DIR, 'vicuna.py')
+#	def vicuna(single_rd, fvicuna):
+#                vicuna_dir = os.path.join(VAMP_DIR, 'vicuna.py')
 
-                commands = ['python', vicuna_dir, '-s', single_rd, '-f', 'fasta', '-o', fvicuna]
-                run_cmd(commands)
+#                commands = ['python', vicuna_dir, '-s', single_rd, '-f', 'fasta', '-o', fvicuna]
+#                run_cmd(commands)
 
-        def spades(single_rd, fspades):
+        def spades(single_rd, fspades, fmt='fasta'):
                 spades_dir = os.path.join(VAMP_DIR, 'SPAdes.py')
                 khmers = ','.join(str(x) for x in range(31,52,10))
         
-                commands = ['python', spades_dir, '-k', khmers, '-s', single_rd, '-o', fspades, '-f', 'fasta']
+                commands = ['python', spades_dir, '-k', khmers, '-s', single_rd, '-o', fspades, '-f', fmt]
 		print ' '.join(commands)
                 run_cmd(commands)      
 
@@ -105,14 +106,20 @@ def wrap():
 	def pipeline():
 		quality_trim(args.l, TRIM_RD)	
 		diginorm(TRIM_RD, DIGINORM_PREFIX)
-	
-		single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])	
+
+		if args.c:
+			single_rd = TRIM_RD
+			fmt = 'fastq'
+		else:	
+			single_rd = '.'.join([DIGINORM_PREFIX, 'se', 'fasta'])	
+			fmt = 'fasta'
+
 		if args.a == 'velvet':
 			velvet(single_rd, CTG_FILE)
-		elif args.a == 'vicuna':
-			vicuna(single_rd, CTG_FILE)
+#		elif args.a == 'vicuna':
+#			vicuna(single_rd, CTG_FILE)
 		elif args.a == 'spades':
-			spades(single_rd, CTG_FILE)
+			spades(single_rd, CTG_FILE, fmt)
 
 		AMOScmp(CTG_FILE, AMOS_PREFIX)
 		pretarget = '.'.join([AMOS_PREFIX, 'fasta'])

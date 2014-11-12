@@ -4,7 +4,7 @@
 					-r $settings.err_rate
 					-t $settings.orient
 					-z $settings.contlen
-					-k $settings.rd_scf
+					-k $settings.rd_scd
 					-s $settings.contolp
 
 					-x $settings.ext_settings.ext

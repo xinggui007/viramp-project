@@ -1,5 +1,5 @@
 <tool id="quick_assmeble_single_rd" name="Single-end pipeline" >
-	<command interpreter="python"> quick_assemble_single_end.py -l $rinput -r $refseq -d $report.files_path -a $asbtype $glinear
+	<command interpreter="python"> quick_assemble_single_end.py -l $rinput -r $refseq -d $report.files_path -a $asbtype $glinear $godgm
 	</command>
 
 	<inputs>
@@ -7,9 +7,13 @@
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
 		<param type="select" name="asbtype" label="Assembler" >
                         <option value="velvet">Velvet</option>
-                        <option value="vicuna">VICUNA</option>
-                        <option value="spades">SPAdes</option>
+                        <option value="vicuna">SPAdesA</option>
                 </param>
+
+		<param type="select" name="godgm" label="Perform Diginorm">
+			<option selected="True" value="">Yes</option>
+			<option value="-c">No</option>
+		</param>
 
 		<param type="select" name="glinear" label="Create one linear genome sequence" >
 			<option value="-m">yes</option>

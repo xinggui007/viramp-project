@@ -1,13 +1,9 @@
 <tool id='amoscmp' name='Reference-guided Scaffolding' version="3.1.0">
 <command interpreter="python"> AMOScmp.py -c $cinput -f $finput -o draft_genome
-				#if $pinput
-					-p $pinput
-				#end if
 				</command>
 
  <inputs>
 	<param type="data" format="fasta" name="cinput" label="Contig file" />
-	<param type="data" format="fasta,fastq" name="pinput" optional="true" label="Paired-end sequence" help="This should be an interleaved paired-end read file, if you have two separated read files, please merge them using 'Merge Pair' tool in UTILITY section"/>
 	<param type="data" format="fasta" name="finput" label="Reference sequence"/>
  </inputs>
 
