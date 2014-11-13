@@ -34,7 +34,7 @@
 		<option value='fastq'>FASTQ</option>
 	</param>
 
-	<param type="text" name="khmer" size="30" value="35,45,55,65" label="K-mer size" help="K-mers used in the de novo assemlbly"/>
+	<param type="text" name="khmer" size="30" value="35,45,55" label="K-mer size" help="K-mers used in the de novo assemlbly"/>
  </inputs>
 
  <outputs>

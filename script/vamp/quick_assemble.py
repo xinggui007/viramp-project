@@ -75,10 +75,7 @@ def wrap():
 	def vicuna(fvicuna, paired_rd, single_rd=None):
 		vicuna_dir = os.path.join(VAMP_DIR, 'vicuna.py')
 
-		if single_rd:
-			commands = ['python', vicuna_dir, '-p', paired_rd, '-s', single_rd, '-o', fvicuna]
-		else:
-			commands = ['python', vicuna_dir, '-p', paired_rd, '-o', fvicuna]	
+		commands = ['python', vicuna_dir, '-p', paired_rd, '-o', fvicuna]	
 		run_cmd(commands)
 
 	def spades(fspades, paired_rd, single_rd=None, fmt='fasta'):

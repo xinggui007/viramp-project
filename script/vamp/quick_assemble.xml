@@ -1,10 +1,9 @@
 <tool id="quick_assemble" name="Paired-end pipeline">
-	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path $glinear 
+	<command interpreter="python"> quick_assemble.py -l $read1 -e $read2 -r $refseq -d $report.files_path $glinear $dgm 
 					#if $settings.dset == "asb_full":
 						-a $settings.asbtype 
 						-i $settings.ins 
 						-k $settings.kmers
-						$settings.highcov
 						$settings.gcircos
 					#end if
 	</command>
@@ -14,8 +13,13 @@
 		<param type="data" format="fasta,fastq" name="read2" label="File of Read 2" help="Read_2 in paired-end sequencing"/>
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
 		<param type="select" name="glinear" label="Create one linear genome sequence" >
-			<option value="-m">yes</option>
-			<option selected="True" value="">no</option>
+			<option value="-m">Yes</option>
+			<option selected="True" value="">No</option>
+		</param>
+
+		<param type="select" name="dgm" label="Run Digital Normalization">
+			<option value="">Yes</option>
+			<option value="-c" selected="True">No</option>
 		</param>
 
 		<conditional name="settings">
@@ -32,10 +36,6 @@
 				</param>
 				<param type="text" name="kmers" size="30" value="35,45,55,65" label="K-mer size" help="K-mers used in the de novo assemlbly"/>
 				<param type="integer" name="ins" size="15" value="350" label="Insert size" help="Insert size for paired-end seuqencing" />
-				<param type="select" name="highcov" label="Coverage" help="Choose 'High' if average coverage is higher than x500">
-					<option selected="True" value="">High</option>
-					<option value="-c">Normal</option>
-				</param>
 				<param type="select" name="gcircos" label="Whether to create visualization for assembly result" help="Suggestions: Choose no if you have more than 100 contigs in your assembly result">
 					<option selected="True" value="">Yes</option>
 					<option value="-g">No</option>
@@ -101,6 +101,10 @@ This step trims out the low quality bases in reads from both end using seqtk too
 2. Diginal Normalization
 
 Digital normalization (diginorm) uses a single-pass computational algorithm to reduce the high and redundant coverage in shotgun sequence dataset, thus significantly decreasing time and memory requirements for the de novo assembly while retaining the accuracy.
+
+**Notice**
+Since Digital Normalization is designed to deal with extreme high coverage data (x1000 or above), by default it's not turned on. One can choose to turn on at the input panel.
+
 
 3. De novo assembly (velvet)
 

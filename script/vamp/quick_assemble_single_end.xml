@@ -7,7 +7,7 @@
 		<param type="data" format="fasta" name="refseq" label="Reference genome" />
 		<param type="select" name="asbtype" label="Assembler" >
                         <option value="velvet">Velvet</option>
-                        <option value="vicuna">SPAdesA</option>
+                        <option value="spades">SPAdes</option>
                 </param>
 
 		<param type="select" name="godgm" label="Perform Diginorm">
