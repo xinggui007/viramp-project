@@ -1,19 +1,19 @@
 <tool id='cutadapt' name='Remove sequencing adaptors' >
 <command> cutadapt -f $format -a $three_prime -b $any_prime -g $five_prime $finput 
-	#if $param.psetting.plist == "sfull":
+	#if $psetting.plist == "sfull":
 		-e $psetting.error_rate
 		-n $psetting.count
 		-O $overlaplen
-		#if $param.psetting.wildcards == "yes":
+		#if $psetting.wildcards == "yes":
 			--match-read-wildcards
 		#end if
 	#end if
 	
-	#if $filtering_setting.flist == "f_all":
-		#if $filtering_setting.dscard_trim == "dtrim":
+	#if $filter_setting.flist == "f_all":
+		#if $filter_setting.dscard_trim == "dtrim":
 			--discard-trimmed
 		#end if
-		#if $filtering_setting.dscard_trim == "duntrim":
+		#if $filter_setting.dscard_trim == "duntrim":
 			--discard-untrimmed
 		#end if
 
