@@ -1,14 +1,13 @@
 <tool id="bwa_mapping" name="BWA for read mapping">
  <command>
-	bwa
-	#if $param.mapping_method == "mem":
-		mem
+	#if $method.mapping_method == "mem":
+		bwa mem
 		#if $method.mem_setting.mapping_setting == "mfull":	
 			-k $method.mem_setting.seed_len
 			-w $method.mem_setting.band_wd
 			-d $method.mem_setting.off_diagnal
 			-r $method.mem_setting.internal_seed
-			-c $method.mem_setting.skip_seed
+			-c $method.mem_setting.skip_seeds
 
 			#if $method.mem_setting.skip_mate_rescue == "yes":
 				-S
@@ -26,17 +25,19 @@
 			-U $method.mem_setting.penalty_for_unpair
 		#end if
 
+		$refseq
+
 		#if $paired_single.ftype == "single":
 			$single_input
 		#else if $paired_single.ftype == "paired":
 			$paired_rd1 $paired_rd2
 		#else
-			$inter_paired	
+			-p $inter_paired	
 		#end if
 		> aln.sam
 	#else:
 		## build bwa index ##
-		bwa index $findex -p genome $findex
+		bwa index -p genome $refseq 
 
 		bwa aln
 		#if $method.normal_setting.normsetting == "norm_full":
@@ -96,6 +97,8 @@
 			<param name="inter_paired" type="data" format="fasta,fastq" label="Interleaved paired-end reads file"/>
 		</when>
 	</conditional>
+
+	<param name="refseq" type="data" format="fasta" label="Reference genome" />
 
 	<conditional name="method">
 	<param name="mapping_method" type="select" label="which mapping method to use" help="bwa-mem usually works with read length 70bp-1Mbp and can deal with large INDELs; if you have reads shorter than 100bp, normal-bwa is recommended">
