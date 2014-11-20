@@ -1,5 +1,6 @@
 <tool id="bwa_mapping" name="BWA for read mapping">
  <command>
+	bwa index -p genome $refseq;
 	#if $method.mapping_method == "mem":
 		bwa mem
 		#if $method.mem_setting.mapping_setting == "mfull":	
@@ -25,7 +26,7 @@
 			-U $method.mem_setting.penalty_for_unpair
 		#end if
 
-		$refseq
+		genome
 
 		#if $paired_single.ftype == "single":
 			$single_input
@@ -34,10 +35,8 @@
 		#else
 			-p $inter_paired	
 		#end if
-		> aln.sam
+		 > aln.sam;
 	#else:
-		## build bwa index ##
-		bwa index -p genome $refseq 
 
 		bwa aln
 		#if $method.normal_setting.normsetting == "norm_full":
@@ -50,11 +49,11 @@
 		genome 
 		
 		#if $paired_single.ftype == "single":
-			$single_input > aln_single.sai
-			bwa samse genome aln_single.sai $single_input > aln.sam
+			$single_input > aln_single.sai;
+			bwa samse genome aln_single.sai $single_input > aln.sam;
 
 		#else if $paired_single.ftype == "paired":
-			$paired_rd1 > aln_paired_rd1.sai
+			$paired_rd1 > aln_paired_rd1.sai;
 			bwa aln 
 			#if $method.normal_setting.normsetting == "norm_full":
 				-o $method.normal_setting.max_gap
@@ -63,16 +62,15 @@
 				-O $method.normal_setting.gap_open_penalty
 				-E $method.normal_setting.gap_extension_penalty
 			#end if
-			genome $paired_rd2 > aln_paired_rd2.sai
+			genome $paired_rd2 > aln_paired_rd2.sai;
 			
-			bwa sampe genome aln_paired_rd1.sai aln_paired_rd2.sai $paired_rd1 $paired_rd2 > aln.sam
+			bwa sampe genome aln_paired_rd1.sai aln_paired_rd2.sai $paired_rd1 $paired_rd2 > aln.sam;
 
 		#end if		
 	#end if
 
-	samtools view -Sb aln.sam > aln.bam
-	samtools sort aln.bam $boutput
-	samtools index $boutput 
+	samtools view -Sb aln.sam > aln.bam;
+	samtools sort aln.bam aln.sorted;
 	  
  </command>
 
@@ -139,7 +137,6 @@
 	</when>
 
 	<when value="normal">
-	 <param name="findex" type="data" format="fasta" label="Reference genome"/>
 	 <conditional name="normal_setting">
 		<param name="normsetting" type="select" label="Alignment setting">
 			<option value="norm_default">Default setting</option>
