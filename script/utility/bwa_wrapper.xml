@@ -1,169 +1,44 @@
-<tool id="bwa_mapping" name="BWA for read mapping">
- <command>
-	bwa index -p genome $refseq;
-	#if $method.mapping_method == "mem":
-		bwa mem
-		#if $method.mem_setting.mapping_setting == "mfull":	
-			-k $method.mem_setting.seed_len
-			-w $method.mem_setting.band_wd
-			-d $method.mem_setting.off_diagnal
-			-r $method.mem_setting.internal_seed
-			-c $method.mem_setting.skip_seeds
+<tool id="bwa_alignment" name="BWA genome alignment" version="0.7.5a-r405">
+	<command interpreter="python"> bwa_wrapper.py -l $reads-mode.read_1 -g $refseq -m $mode 
+					#if $reads-mode.paired-single == 'paired':
+						-r $reads-mode.read_2
+						-p
+					#end if
+	</command>
 
-			#if $method.mem_setting.skip_mate_rescue == "yes":
-				-S
-			#end if
-
-			#if $method.mem_setting.skip_pairing == "yes":
-				-P
-			#end if
-
-			-A $method.mem_setting.match_score
-			-B $method.mem_setting.mismatch_penalty
-			-O $method.mem_setting.gap_open_penalty
-			-E $method.mem_setting.gap_extension_penalty
-			-L $method.mem_setting.penalty_for_clipping
-			-U $method.mem_setting.penalty_for_unpair
-		#end if
-
-		genome
-
-		#if $paired_single.ftype == "single":
-			$single_input
-		#else if $paired_single.ftype == "paired":
-			$paired_rd1 $paired_rd2
-		#else
-			-p $inter_paired	
-		#end if
-		 > aln.sam;
-	#else:
-
-		bwa aln
-		#if $method.normal_setting.normsetting == "norm_full":
-			-o $method.normal_setting.max_gap
-			-e $method.normal_setting.max_gap_ext
-			-M $method.normal_setting.mismatch_penalty
-			-O $method.normal_setting.gap_open_penalty
-			-E $method.normal_setting.gap_extension_penalty
-		#end if
-		genome 
-		
-		#if $paired_single.ftype == "single":
-			$single_input > aln_single.sai;
-			bwa samse genome aln_single.sai $single_input > aln.sam;
-
-		#else if $paired_single.ftype == "paired":
-			$paired_rd1 > aln_paired_rd1.sai;
-			bwa aln 
-			#if $method.normal_setting.normsetting == "norm_full":
-				-o $method.normal_setting.max_gap
-				-e $method.normal_setting.max_gap_ext
-				-M $method.normal_setting.mismatch_penalty
-				-O $method.normal_setting.gap_open_penalty
-				-E $method.normal_setting.gap_extension_penalty
-			#end if
-			genome $paired_rd2 > aln_paired_rd2.sai;
-			
-			bwa sampe genome aln_paired_rd1.sai aln_paired_rd2.sai $paired_rd1 $paired_rd2 > aln.sam;
-
-		#end if		
-	#end if
-
-	samtools view -Sb aln.sam > aln.bam;
-	samtools sort aln.bam aln.sorted;
-	  
- </command>
-
- <inputs>
-	<conditional name="paired_single">
-		<param name="ftype" type="select" label="dataset type">	
-			<option value="single">Single end</option>
-			<option value="paired">Paired end reads in separate files</option>
-			<option value="spaired">Paired end reads in one file(interleaved, only available in bwa-mem)</option> 
+	<inputs>
+	  <conditional name="reads-mode">
+		<param type="select" name="paired-single" label='Reads type'>
+			<option value="paired">Paired-end </option>
+			<option value="single">Single-end </option>
 		</param>
-
-		<when value="single">
-			<param name="single_input" type="data" format="fasta,fastq" label="Single-end input file"/>
-		</when>
 
 		<when value="paired">
-			<param name="paired_rd1" type="data" format="fasta,fastq" label="Paired-end reads, file#1"/>
-			<param name="paired_rd2" type="data" format="fasta,fastq" label="Paired-end reads, file#2"/>
+			<param type="data" format="fasta, fastq" name="read_1" label="File of Read_1 in paired-end sequencing"/>
+			<param type="data" format="fasta, fastq" name="read_2" label="File of Read_2 in paired-end sequencing" />
 		</when>
-		
-		<when value="spaired">
-			<param name="inter_paired" type="data" format="fasta,fastq" label="Interleaved paired-end reads file"/>
+
+		<when value="single">
+			<param type="data" format="fasta, fastq" name="read_1" label="Read file from sequencing" />
 		</when>
-	</conditional>
+	  </conditional>
 
-	<param name="refseq" type="data" format="fasta" label="Reference genome" />
+	<param name="refseq" format="fasta" type="data" label="Reference Genome" help="Files should be in fasta format"/>
 
-	<conditional name="method">
-	<param name="mapping_method" type="select" label="which mapping method to use" help="bwa-mem usually works with read length 70bp-1Mbp and can deal with large INDELs; if you have reads shorter than 100bp, normal-bwa is recommended">
-		<option value="mem">BWA-MEM</option>
-		<option selected="True" value="normal">Normal BWA</option>
+	<param type="select" name="mode">
+		<option value="normal">Normal</option>
+		<option value="mem">MEM</option>
 	</param>
 
-	<when value="mem">
-		<conditional name="mem_setting">
-		<param name="mapping_setting" type="select" label="settings for BWA-MEM">
-			<option value="mdefault">Default setting</option>
-			<option value="mfull">Full setting</option>
-		</param>
-		<when value="mfull">
-			<param name="seed_len" type="integer" value="19" size="15" label="minimum seed length"/>
-			<param name="band_wd" type="integer" value="100" size="15" label="band width for banded alignment"/>
-			<param name="off_diagnal" type="integer" value="100" size="15" label="off-diagnal X-dropoff"/>
-			<param name="internal_seed" type="float" value="1.5" size="15" label="look for internal seeds inside a seed longer than k" help="k can be float"/>
-			<param name="skip_seeds" type="integer" value="10000" size="15" label="skip seeds with more than N occurrences"/>
-			<param name="skip_mate_rescue" type="select" label="skip mate rescue">
-				<option value="yes">Yes</option>
-				<option selected="True" value="no">No</option>
-			</param>
-			<param name="skip_pairing" type="select" label="skip pairing">
-				<option value="yes">Yes</option>
-				<option selected="True" value="no">No</option>
-			</param>
-			<param name="match_score" type="integer" value="1" size="15" label="score for a sequence match"/>
-			<param name="mismatch_penalty" type="integer" value="4" size="15" label="penalty for a mismatch"/>
-			<param name="gap_open_penalty" type="integer" value="6" size="15" label="gap open penalty"/>
-			<param name="gap_extension_penalty" type="integer" value="1" size="15" label="gap extension penalty" help="a gap of size k cost gap_open_penalty + gap_extension_penalty*k"/>
-			<param name="penalty_for_clipping" type="integer" value="5" size="15" label="penalty for clipping"/>
-			<param name="penalty_for_unpair" type="integer" value="17" size="15" label="penalty for an unpaired read pair"/>
-		</when>
-		<when value="mdefault" />
-		</conditional>
+	</inputs>
 
-	</when>
+	<outputs>
+		<data name="bamfile" format="bam" label="mapping result-bam" from_work_dir="aligned.bam"/>
+		<data name="bamidx" format="bai" label="mapping result-bam index" from_work_dir="aligned.bam.bai"/>
+	</outputs>	
 
-	<when value="normal">
-	 <conditional name="normal_setting">
-		<param name="normsetting" type="select" label="Alignment setting">
-			<option value="norm_default">Default setting</option>
-			<option value="norm_full">Full setting</option>
-		</param>
-
-		<when value="norm_full">
-			<param name="max_gap" type="integer" value="1" size="15" label="Maximum number of gap opens"/>
-			<param name="max_gap_ext" type="integer" value="-1" size="15" label="Maximum number of gap extensions" help="-1 for disabling long gaps"/>
-			<param name="mismatch_penalty" type="integer" value="3" size="15" label="Mismatch penalty"/>
-			<param name="gap_open_penalty" type="integer" value="11" size="15" label="Gap open penalty"/>
-			<param name="gap_extension_penalty" type="integer" value="4" size="15" label="Gap extension penalty"/>
-		</when>
-		<when value="norm_default" />
-
-	</conditional>
-	</when>
-	</conditional>
-
- </inputs>
-
- <outputs>
-	<data name="boutput" format="bam" />
- </outputs>
-
- <help>
+	 <help>
 BWA is a general tool to map the short sequence reads back to the newly assembled genome. This can be used for quality assessment of the new assembly. For instance, the output of bwa mapping can be used to detect the minor variants that are present within the viral population sequenced.
- </help>
-
+	 </help>
+	
 </tool>
