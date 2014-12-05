@@ -89,7 +89,7 @@ run() {
 
 #starting the script
 
-#check_install hg
+check_install hg
 
 #INSTALL_DIR=$HOME/work/tmp/src
 
