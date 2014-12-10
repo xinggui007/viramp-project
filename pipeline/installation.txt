@@ -1,0 +1,198 @@
+1. Get Galaxy
+hg clone https://bitbucket.org/galaxy/galaxy-dist/
+cd galaxy-dist
+hg update stable
+
+# galaxy config
+# copy the universei_wsgi.ini
+# copy tool_conf.xml
+
+#ProFTPd
+
+# The current VirAmp is using ProFTPd v1.3.5rc3
+wget ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.5rc3.tar.gz
+
+# config database to allow FTP server to connect
+
+# switch to postgres for postgresql admin
+ sudo su
+ su postgres
+ createuser -SDR galaxyadmin 
+ psql galaxydb
+  
+ galaxydb=# ALTER ROLE galaxyadmin PASSWORD 'virampgalaxy';
+ ALTER ROLE
+ galaxydb=# GRANT SELECT ON galaxy_user TO galaxyadmin; 
+ GRANT
+
+# config universe_wsgi.ini
+ #ftp_upload_site=<current viramp address>
+ 
+# config ProFTPd
+# extra (ProFTPd)modules needed: mod_sql; mod_sql_progres; mod_sql_passwd
+# install OPENSSL
+
+# install ProFTPd (under sudo account)
+./configure --prefix=/foo --disable-auth-file --disable-ncurses --disable-ident --disable-shadow --enable-openssl --with-modules=mod_sql:mod_sql_postgres:mod_sql_passwd --with-includes=/usr/postgres/9.1-pgdg/include:`pwd`/../openssl/.openssl/include --with-libraries=/usr/postgres/9.1-pgdg/lib/64:`pwd`/../openssl/.openssl/lib
+make
+make install
+# refer to <proftpd>/README for more details
+ 
+# the ProFTPd config file (proftpd.conf) is already edited and stored under <viramp>/config/proftpd.conf
+# the config file should be placed in the correct folder.  Depending on the version and how you install the program, it could be placed under:/usr/local/etc/; /usr/etc/ or other possible <root>/etc/ 
+# the ports is 21 for FTP and passive ports is 40000~50000 in the config file; corresponding ports should be open
+ 
+# detailed installation info https://wiki.galaxyproject.org/Admin/Config/UploadviaFTP
+
+2. Set up virtual env for Python
+virtualenv vmpenv
+
+source vmpenv/bin/activate
+# (optional) above command can be added to bashrc
+
+3. Digital Normalization
+# create a directory for python module
+mkdir pymod
+cd pymod
+git clone git://github.com/ged-lab/screed.git
+git clone git://github.com/ged-lab/khmer.git
+
+cd screed
+python setup.py install
+cd ..
+
+export PYTHONPATH=<root>/pymod/khmer/python:$PYTHONPATH
+
+3. seqtk
+git clone https://github.com/lh3/seqtk.git
+cd seqtk
+make
+#link seqtk to bin
+ln -s seqtk <home>/bin/
+
+4. Velvet
+# Current VirAmp is using v1.2.10
+curl -O 'https://www.ebi.ac.uk/~zerbino/velvet/velvet_1.2.10.tgz'
+tar zxvf velvet_1.2.10.tgz
+cd velvet_1.2.10/
+
+# define the maximum length you want to use in assembly
+make 'MAXKMERLENGTH=91' 'BIGASSEMBLY=1'
+
+#copy to bin 
+cp velveth <home>/bin/
+cp velvetg <home>/bin/
+#optionally, one could link the excutable to bin
+
+5. SPAdes
+# The current VirAmp is using SPAdes v2.5.1, but the most updated SPAdes is v3.1.1
+
+http://spades.bioinf.spbau.ru/release2.5.1/SPAdes-2.5.1.tar.gz
+tar zxvf SPAdes-2.5.1.tar.gz
+cd SPAdes-2.5.1/
+./spades_compile.sh
+# adding SPAdes installation directory to PATH in bashrc
+PATH=$PATH:<root>/SPAdes-2.5.1/bin
+
+# if the source code cannot be compiled (due to cmake version problem), download the binary version
+# wget http://spades.bioinf.spbau.ru/release2.5.1/SPAdes-2.5.1-Linux.tar.gz
+
+6. VICUNA
+# Need registration and manual download
+# Pre-request
+# install Perl
+# install g++ compiler
+
+# download and install NCBI Toolkit 7.0.0
+wget ftp://ftp.ncbi.nih.gov/toolbox/ncbi_tools++/CURRENT/ncbi_cxx--12_0_0.tar.gz
+tar zxvf ncbi_cxx--12_0_0.tar.gz
+# create folder to hold the installation
+mkdir <root>/NCBI_toolkit
+./configure --prefix=<root>/NCBI_toolkit --with-optimization --with-mt --with-dll
+make
+make install
+# adding NCBI toolkit library path to bashrc
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<root>/NCBI_toolkit/lib
+
+cd VICUNA_v1.3
+# edit src/Makefile:
+# a> set parameter MYPATH=<root>/NCBI_toolkit
+# b> set parameter COMPILER=/path/to/g++
+# g++ path can be found using $which g++
+
+cd src/
+make
+
+# adding VICUNA path to bashrc
+PATH=$PATH:<root>/VICUNA_v1.3/bin 
+
+# configuration file for running vicuna has already been put in the Galaxy viramp tool directory <galaxy>/tools/vamp/vicuna_conf
+# Please refer to VICUNA_v1.3/vicuna.pdf for more installation.
+
+7. bedtools
+# Current VirAmp is using BEDtools v2.17; the most updated version is v2.22
+wget https://github.com/arq5x/bedtools2/releases/download/v2.22.0/bedtools-2.22.0.tar.gz
+tar zxvf bedtools-2.22.0.tar.gz
+cd bedtools-2.22.0
+make
+ln -s bin/bedtools <home>/bin/
+
+8. AMOS
+wget 'http://sourceforge.net/projects/amos/files/amos/3.1.0/amos-3.1.0.tar.gz/download' -O amos-3.1.0.tar.gz
+tar zxvf amos-3.1.0.tar.gz
+cd amos-3.1.0
+mkdir <root>/AMOS
+./configure --prefix=<root>/AMOS
+make
+make install
+
+## AMOS is using MUMmer 3.0 (the final version), since the MUMmer package no longer has technical support and the latest version is released in 2004, there's high chance the compilation is going to fail. One suggestion is to compile the MUMmer seperately and then copy the whole MUMmer package into AMOS and change the name to the exact same as the one in AMOS
+## MUMmer is using 32bit system library (if I remember correctly) 
+## different compiler and platform may have different prerequisite libraries.  For details refer to amos-3.1.0/INSTALL
+
+9. SSPACE
+## need registration and manual download
+## Current VirAmp is using v2.0, the most updated SSPACE is v3.0, and seems only v3.0 is available on the website
+tar zxvf SSPACE-STANDARD-3.0_linux-x86_64.tar.gz
+## the SSPACE_Standard_v3.0.pl can be run directly; one check first, some system may have perl module missing
+
+10. QUAST
+# Current VirAmp is using v2.2, the most updated QUAST version is v2.3
+# check http://quast.bioinf.spbau.ru/manual.html for specific installation instruction
+# prerequisite: Python2; perl5.6 or above; g++; make; sh; csh; sed; awk; ar
+# MUMmer is the same situation as in AMOS
+
+pip install matplotlib
+wget 'http://sourceforge.net/projects/quast/files/quast-2.2.tar.gz/download' -O quast-2.2.tar.gz
+tar zxvf quast-2.2.tar.gz
+cd quast-2.2
+python quast.py --test
+
+
+11. Circos
+## current VirAmp is using Circos v0.64, the most updated version is 0.67-4.
+## only v0.67 and above is available on the website
+wget http://circos.ca/distribution/circos-0.67-4.tgz
+tar zxvf circos-0.67-4.tgz
+cd circos-0.67-4
+
+# detailed installation instruction is here 
+# http://circos.ca/software/installation/
+# http://circos.ca/software/requirements/
+
+#prerequisite
+# perl and related module http://circos.ca/tutorials/lessons/configuration/perl_and_modules/
+# dependency of above modules include but not limited to: libpng; jpegsrc; freestype; libgd
+# the executable is bin/circos
+
+12. bwa
+# Current VirAmp is using v0.7.5a, the most updated bwa version is v0.7.10
+wget 'http://sourceforge.net/projects/bio-bwa/files/bwa-0.7.5a.tar.bz2/download' -O bwa-0.7.5a.tar.bz2
+tar jxf bwa-0.7.5a.tar.bz2
+cd bwa-0.7.5a
+make
+ln -s bwa <home>/bin
+ 
+13. admin account
+ mail notification
+ 
