@@ -193,6 +193,10 @@ cd bwa-0.7.5a
 make
 ln -s bwa <home>/bin
  
-13. admin account
- mail notification
- 
+13. other universe_wsgi.ini config
+ ## mail and notification
+ # smtp_server=##
+ # smtp_username=##
+ # smtp_password=##
+
+ # error_email_to=<admin account> 
