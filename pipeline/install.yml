@@ -1,0 +1,13 @@
+---
+
+# install virtual env
+- name : install virtualenv
+  pip: name=virtualenv
+
+# activate virtualenv
+#- name: virtualenv activate
+#  shell: source {{ cwd }}/venv/bin/activate
+
+#install mercurial to clone galaxy
+- name: install mercurial
+  easy_install: name=mercurial virtualenv={{ cwd }}/venv
