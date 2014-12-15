@@ -1,0 +1,53 @@
+---
+- hosts: all
+  vars:
+     galaxy_url: https://bitbucket.org/galaxy/galaxy-dist/
+     viramp_url: https://github.com/ialbert/viramp-project.git
+     gal_config_file: "{{ cwd }}/galaxy/config/tool_conf.xml"
+     vamp_path: "{{ cwd }}/viramp/script/vamp/"
+     vamp_config_file: "{{ cwd }}/viramp/config/tool_conf.xml"
+     tempfile: "{{ cwd }}/tempfile.txt"
+  tasks:
+  
+     - name: Store the current working directory
+       shell: pwd
+       register: cwd
+     - set_fact:
+          cwd: "{{cwd.stdout}}"
+          bin: "{{cwd.stdout}}/bin"
+          source: "{{cwd.stdout}}/source"
+          galaxy: "{{cwd.stdout}}/galaxy"
+          viramp: "{{cwd.stdout}}/viramp"
+          venv: "{{cwd.stdout}}/venv"
+
+     - name: Create directories
+       file: path={{item}} state=directory
+       with_items:
+            - bin
+            - share
+            - galaxy
+            - viramp
+            - venv
+     - include: install.yaml
+     
+     # get galaxy
+     - name: clone galaxy
+       hg: repo={{ galaxy_url }} dest={{ galaxy }}
+
+     # get viramp
+     - name: clone viramp
+       git: repo={{ viramp_url }} dest={{ viramp }}
+
+     #change path in config file and place it the galay folder
+     - name: copy config file into tempfile
+       copy: src={{ vamp_config_file }} dest={{ tempfile }} mode="u+rw,g-wx,o-rwx"
+     - name: change the path in config file
+       replace: dest={{ tempfile }} regexp='vamp\/' replace={{ vamp_path }}
+
+     - name: copy config file
+       copy: src={{ tempfile }} dest={{ gal_config_file }}
+
+     # run galaxy
+     #- name: run galaxy
+     #  shell: sh {{ cwd }}/galaxy/run.sh
+
