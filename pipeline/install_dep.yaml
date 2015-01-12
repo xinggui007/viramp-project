@@ -1,0 +1,12 @@
+---
+
+- name: Install perl with homebrew
+  homebrew: name=perl state=present
+  when: ansible_os_family == 'Darwin'
+
+- name: Install perl with apt-get
+  apt: name=perl state=present
+  when: ansible_os_family == 'Debian'
+
+  
+

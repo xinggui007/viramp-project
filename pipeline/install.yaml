@@ -5,8 +5,8 @@
   pip: name=virtualenv
 
 # activate virtualenv
-#- name: virtualenv activate
-#  shell: source {{ cwd }}/venv/bin/activate
+- name: virtualenv activate
+  shell: source {{ cwd }}/venv/bin/activate
 
 #install mercurial to clone galaxy
 - name: install mercurial
@@ -22,3 +22,82 @@
 
 - name: link seqtk
   file: path={{ bin }}/seqtk src={{ source }}/seqtk/seqtk state=link
+
+#install velvet-assembler
+- name: get velvet
+  get_url: url={{ velvet_url }} dest={{source}}/velvet.tgz
+
+- name: unpack velvet
+  unarchive: src={{source}}/velvet.tgz dest={{source}}
+     creates={{source}}/velvet_1.2.10
+
+- name: make velevt
+  shell: cd {{source }}/velvet_1.2.10; make 'MAXKMERLENGTH=91' 'BIGASSEMBLY=1'
+
+- name: link velvetg
+  file: path={{bin}}/velvetg src={{source}}/velvet_1.2.10/velvetg state=link
+- name: link velveth
+  file: path={{bin}}/velveth src={{source}}/velvet_1.2.10/velveth state=link
+
+# install SPAdes  with binary
+- name: get SPAdes
+  get_url: url={{spades_url}} dest={{source}}/SPAdes.tgz
+
+- name: unpack SPAdes
+  unarchive: src={{source}}/SPAdes.tgz dest={{source}}
+     creates={{source}}/SPAdes-3.1.0-Linux
+
+- name: link SPADes bin folder to bin
+  file: path={{bin}}/spades.py src={{source}}/SPAdes-3.1.0-Linux/bin/spades.py state=link
+  
+# install vicuna
+# manual registration and download
+# copy vicuna.zip into the current working dir
+
+#get ncbi toolkit
+#- name: get ncbi toolkit
+#  get_url: url={{ncbi_toolkit_url}} dest={{source}}/ncbi_toolkit.tgz
+
+#- name: unpack ncbi_toolkit
+#  unarchive: src={{source}}/ncbi_toolkit.tgz dest={{source}}
+#      creates={{source}}/ncbi_cxx--12_0_0
+
+# install bedtools
+- name: get bedtools
+  get_url: url={{bedtools_url}} dest={{source}}/bedtools-2.22.0.tar.gz
+
+- name: unpack bedtools
+  unarchive: src={{source}}/bedtools-2.22.0.tar.gz dest={{source}}
+     creates={{source}}/bedtools2
+
+- name: make bedtools
+  shell: cd {{ source }}/bedtools2; make
+     creates={{ source }}/bedtools2/bedtools
+
+- name: link SPADes bin folder to bin
+  file: path={{bin}}/bedtools src={{source}}/bedtools2/bin/bedtools state=link
+
+# insatll amos with homebrew
+- name: install amos with homebrew
+  homebrew: name={{item}} state=present
+  when: ansible_os_family == 'Darwin'
+  with_items:
+      - gcc
+      - amos
+
+# install quast
+- name: install matplotlib
+  pip: name=matplotlib executable=pip2.7
+
+- name: get quast
+  get_url: url={{quast_url}} dest={{source}}/quast-2.2.tar.gz
+
+- name: unpack quast
+  unarchive: src={{source}}/quast-2.2.tar.gz dest={{source}}
+     creates={{source}}/quast-2.2
+
+- name: test quast
+  shell: cd {{ source }}/quast-2.2 | python quast.py --test 
+
+- name: link quast
+  file: path={{ bin }}/quast.py src={{ source }}/quast-2.2/quast.py state=link

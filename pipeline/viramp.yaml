@@ -7,8 +7,15 @@
      vamp_path: "{{ cwd }}/viramp/script/vamp/"
      vamp_config_file: "{{ cwd }}/viramp/config/tool_conf.xml"
      tempfile: "{{ cwd }}/tempfile.txt"
+     velvet_url: https://www.ebi.ac.uk/~zerbino/velvet/velvet_1.2.10.tgz
+     spades_url: http://spades.bioinf.spbau.ru/release3.1.0/SPAdes-3.1.0-Linux.tar.gz      
+     ncbi_toolkit_url: ftp://ftp.ncbi.nih.gov/toolbox/ncbi_tools++/CURRENT/ncbi_cxx--12_0_0.tar.gz
+     bedtools_url: https://github.com/arq5x/bedtools2/releases/download/v2.22.0/bedtools-2.22.0.tar.gz
+     quast_url: http://sourceforge.net/projects/quast/files/quast-2.3.tar.gz 
+
   tasks:
-  
+     
+     - include: install_dep.yaml 
      - name: Store the current working directory
        shell: pwd
        register: cwd
@@ -28,7 +35,7 @@
             - galaxy
             - viramp
             - venv
-     - include: install.yaml
+     - include: install_1.yaml
      
      # get galaxy
      - name: clone galaxy
